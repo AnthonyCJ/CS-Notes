@@ -21,7 +21,7 @@
 
 缺点：枚举时间效率较低。
 
-### 代码
+### 代码实现
 
 ~~~java
     public int[] twoSum_Violent(int[] nums, int target) {
@@ -55,6 +55,33 @@
 2. 如果有说明 key + nums[i] == target，即找到了数组中的两个数nums[i], key，其和 == target，此时前者的下标为 i，后者 key 的下标可通过哈希映射在 O(1)时间内访问，所以直接返回即可
 3. 如果哈希表中不存在 key == target - nums[i]，则将当前的 nums[i], i 作为 **键** **/** **值** 对加入哈希表。之后的循环过程中，每个元素将继续搜索是否含有目标键（key） == target - nums[i]
 4. 如果全部遍历后没有合法结果，返回空数组 new int[0]
+
+### 代码实现
+
+~~~java
+    /**
+     * 两数之和_HashTable
+     * Version 2.0 2021-07-20 by XCJ
+     * @param nums int[] 数组，存储全部元素
+     * @param target int 两个数的目标之和
+     * @return 两个数在数组中的下标
+     */
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> hashTable = new HashMap<Integer, Integer>();
+        // 最外层循环，对数组 nums[] 进行遍历
+        for (int i = 0; i < nums.length; ++i) {
+            // 查找 hashTable 是否存在键 target - nums[i])
+            if (hashTable.containsKey(target - nums[i])) {
+                return new int[] { hashTable.get(target - nums[i]), i };
+            }
+            // 如果不存在，则将 nums[i] / i 作为 键/值 对加入HashTable
+            hashTable.put(nums[i], i);
+        }
+        return new int[0];
+    }
+~~~
+
+
 
 ### 复杂度分析
 

@@ -16,6 +16,7 @@
 
 ## 数据结构
 
-* 链表
+* [链表](https://github.com/AnthonyCJ/CS-Notes/blob/trunk/notes/algorithm/leetcode/datastructure/LeetCode题解_链表.md)
 * 二叉树
-* 数组
+* [数组](https://github.com/AnthonyCJ/CS-Notes/blob/trunk/notes/algorithm/leetcode/datastructure/LeetCode题解_数组.md)
+
