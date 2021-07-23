@@ -2,7 +2,7 @@
 
 难度（medium）
 
-![image-20210723091128154](image-20210723091128154.png)
+![LeetCode_56](LeetCode_56.png)
 
 ---
 
