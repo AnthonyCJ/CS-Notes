@@ -2,6 +2,13 @@
 
 ---
 
+## 二叉树递归心得
+
+* 写递归算法的关键是明确递归函数的【定义】是什么，然后利用定义推导最终结果。尽量不要跳入递归的细节（不要用大脑进行压栈）。
+* 写树相关的算法，一个比较实用的思路是，先弄清楚 **null** 节点如何处理， **root** 节点该做什么，然后根据函数定义递归地处理子节点。递归调用会让子节点做相同的事情。
+
+## 二叉树题目
+
 * [1.LeetCode_144_二叉树的前序遍历](https://github.com/AnthonyCJ/CS-Notes/blob/trunk/notes/algorithm/leetcode/datastructure/binarytree/LeetCode_144_二叉树的前序遍历.md)
 
 > 递归

@@ -40,6 +40,8 @@ public void preorder(TreeNode root, List<Integer> res) {
 
  J.H.Morris在1979年的论文「Traversing Binary Trees Simply and Cheaply」中首次提出一种只占用**常数空间**来实现前序遍历的算法。故该算法被称为 Morris 算法。
 
+
+
 ### 详解
 
 ![image-20210723122913400](LeetCode_144_2.png)
