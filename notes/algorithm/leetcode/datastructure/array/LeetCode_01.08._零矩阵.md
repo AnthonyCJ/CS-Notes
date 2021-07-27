@@ -185,6 +185,7 @@
    public void setZeroes(int[][] matrix) {
         int m = matrix.length, n = matrix[0].length;
         boolean flagCol0 = false;
+       // 记录位置信息
         for (int i = 0; i < m; i++) {
             if (matrix[i][0] == 0) {
                 flagCol0 = true;
@@ -195,6 +196,7 @@
                 }
             }
         }
+       // 根据位置信息 行倒序处理矩阵
         for (int i = m - 1; i >= 0; i--) {
             for (int j = 1; j < n; j++) {
                 if (matrix[i][0] == 0 || matrix[0][j] == 0) {
@@ -208,4 +210,3 @@
     }
 
 ~~~
-
