@@ -30,6 +30,6 @@
 
 > 空间优化
 
-* 7.LeetCode_498_对角线遍历
+* [7.LeetCode_498_对角线遍历](https://github.com/AnthonyCJ/CS-Notes/blob/trunk/notes/algorithm/leetcode/datastructure/array/LeetCode_498_对角线遍历.md)
 
 > 数组、矩阵
