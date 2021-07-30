@@ -138,12 +138,28 @@ Java EE（Java Platform，Enterprise Edition）是sun公司（2009年4月20日�
 
 3. 打开dos命令行进入存放 Hello.java 的**当前目录**
 4. 通过 javac + Java文件名（全名，带 .java 后缀）命令编译 .java 文件，生成 .class 文件
-5. 通过 java + Java文件名（不需要带后缀）命令运行 java class 文件
+5. 通过 java + Java文件名 命令运行 java class 文件
+
+* 没有包的情况下，在 .java 文件的当前目录执行如下命令即可编译 + 运行
 
 ~~~markdown
 	javac Hello.java	// 编译 Hello.java 文件，自动生成 Hello.class 文件
     java Hello		// 运行 Hello.class 文件
 ~~~
+
+* 有包的情况下（比如 Hello.java 声明了该文件属于 package set; ），要如下操作进行编译 + 运行
+
+~~~markdown
+	// 方法1：直接编译运行
+	java Hello.
+	
+	// 方法2：先生成 .class 文件，再运行 .class 文件
+	javac Hello.java	// 编译 Hello.java 文件，自动生成 Hello.class 文件
+	cd..	// 返回包名所在目录
+	java set.Hello	// 运行 Hello.class 文件
+~~~
+
+
 
 ### 可能遇到的情况
 
@@ -198,6 +214,7 @@ IDE（Integrated Development Environment, **集成开发环境**）是用于提�
 * setup SDK：设置软件开发工具包，此处选择自己电脑已安装的jdk。
 * 选择项目存储的位置。开发环境会在路径终点自动生成一个与项目名称同名的文件夹
   * 项目文件夹中包括 **.idea** 文件夹和 **src** 文件夹。代码要放在 src 目录下。
+* 运行项目需要设置 Modues 。
 
 ### 自定义设置
 
