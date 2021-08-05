@@ -46,6 +46,8 @@
 
 
 
+---
+
 ## 2. 反射：框架设计的灵魂
 
 ### 2.1 简介
@@ -193,3 +195,122 @@
     3. 使用反射技术来加载类文件进内存
     4. 创建对象
     5. 执行方法
+
+
+
+---
+
+## 3. 注解
+
+### 3.1 注解的基本概念
+
+* 概念：从JDK5开始,Java增加对元数据的支持，也就是注解，注解与注释是有一定区别的，可以把注解理解为代码里的特殊标记，这些标记可以在编译，类加载，运行时被读取，并执行相应的处理。通过注解开发人员可以在不改变原有代码和逻辑的情况下在源代码中嵌入补充信息。
+* 概念描述
+  * JDK1.5后的新特性
+  * 用于说明程序
+  * 使用注解：@注解名称
+* 作用分类
+  1. 编写文档：通过代码里标识的**注解**生成文档【生成文档doc文档】
+  2. 代码分析：通过代码里标识的**注解**对代码进行分析【使用反射】
+  3. 编译检查：通过代码里标识的**注解**让编译器能够实现基本的编译检查【以Override注解为例，编译器将检查该方法是否是重写其父类的方法，不是会报错。是一种安全机制】
+
+### 3.2 JDK中预定义的一些注解
+
+* @Override	：检测被该注解标注的方法是否是继承自父类(接口)的
+* @Deprecated：该注解标注已过时的内容
+* @SuppressWarnings：压制警告
+  * 一般传递参数all  @SuppressWarnings("all") 【放在类前，可压制类中所有警告，放在方法前可压制单方法警告】
+
+### 3.3 自定义注解
+
+* 格式
+
+  元注解
+
+  public @interface 注解名称 {
+  		属性列表;
+  }
+
+* 本质：==注解本质==上就是一个==接口==，该接口默认继承Annotation接口
+
+  ~~~java
+  public interface MyAnno extends java.lang.annotation.Annotation {}
+  ~~~
+
+* 属性：接口中的抽象方法
+
+  * 要求：
+    1. 属性的返回值类型有且仅有下列
+       * 基本数据类型
+       * String
+       * Enumeration
+       * 注解
+       * 以上类型的数组
+    2. 定义了属性，在使用时需要给属性赋值
+       1. 如果定义属性时，使用 **default** 关键字给**属性默认初始化值**，则使用注解时，可以不进行属性的赋值。
+       2. 如果只有一个属性需要赋值，并且属性的名称是value，则value可以省略，直接定义值即可。
+       3. 数组赋值时，值使用 {} 包裹。如果数组中只有一个值，则 {} 可以省略
+
+* 元注解：用于描述注解的注解
+  * @Target：描述**注解**能够==作用的位置==
+    * ElementType取值【enum类型，仅有TYPE, METHOD, FIELD 三种】
+      * TYPE：可以作用于**类**上
+      * METHOD：可以作用于**方法**上
+      * FIELD：可以作用于**成员变量**上
+  * @Retention：描述**注解**==被保留的阶段==【三个阶段：SOURCE, CLASS, RUNTIME】
+    * @Retention(RetentionPolicy.RUNTIME)：【RetentionPolicy.RUNTIME】表示当前被描述的注解，会保留到class字节码文件中，并被 JVM 读取到，一般自定义注解都使用 RetentionPolicy.RUNTIME
+  * @Documented：描述**注解**==是否被抽取到api文档==中【添加注解的位置会在 API 文档中显示】
+  * @Inherited：描述**注解**==是否被子类继承==
+
+> 较常用的是 @Target 和 @Retention 注解。
+
+### 3.4 在程序中使用（解析）注解【获取注解中定义的属性值】
+
+> 注解在程序中的作用是简化配置文件的操作，用于==替代配置文件==的各种内容。
+>
+> 配置文件中定义了各种属性，注解中也可以定义各种属性，起到配置文件的作用。
+>
+> 例：在测试样例中，我期望在 ReflectTest.java 中执行注解【标注、提供】的类或方法，那么
+>
+> * 设计注解时
+>   * 注解的属性就包括类名、方法名
+>   * 通过@Target({ElementType.TYPE})标注谁【这里为类】可以使用注解
+>   * 通过@Retention(RetentionPolicy.RUNTIME)标注注解的保留时段【这里是运行时】。
+> * 在 ReflectTest.java 中使用注解时，对注解的属性【类名、方法名】进行初始化。
+
+1. 获取注解定义的位置的对象  （Class，Method，Field）
+
+   ~~~java
+   ClassAnnotation annotation = targetClass.getAnnotation(ClassAnnotation.class);	// 类注解
+   MethodAnnotation annotation = targetMethod.getAnnotation(MethodAnnotation.class);// 方法注解
+   FieldAnnotation annotation = targetField.getAnnotation(FieldAnnotation.class);	// 域注解
+   ~~~
+
+   
+
+2. 获取指定的注解
+
+   * getAnnotation(Class)
+
+   ~~~java
+       Pro annotation = reflectTestClass.getAnnotation(Pro.class);
+   // 上方语句的实质：在内存中生成一个该注解接口的子类实现对象。子类如下：
+       public class ProImpl implements Pro {
+           public String className() {
+               return "com.anthony.annotation.Demo1";
+           }
+           public String methodName() {
+               return "show";
+           }
+       }
+   ~~~
+
+3. 调用注解中的抽象方法获取配置的属性值
+
+### 3.5 注解小结
+
+1. 大多数情况，会使用注解，而不是自定义注解
+2. 注解给谁使用？
+   1. 编译器
+   2. 解析程序使用
+3. 注解不是程序的一部分，可以理解为是一个【标签】
