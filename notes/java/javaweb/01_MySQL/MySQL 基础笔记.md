@@ -178,7 +178,7 @@
      	alter database 数据库名称 character set 字符集名称;
      ~~~
 
-4. D(Delete):删除
+4. D(Delete):删除 
 
    * 删除数据库
 
