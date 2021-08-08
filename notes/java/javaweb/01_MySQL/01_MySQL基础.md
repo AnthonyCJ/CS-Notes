@@ -1,4 +1,4 @@
-# MySQL 基础笔记
+# MySQL 基础
 
 ---
 
@@ -344,7 +344,7 @@
 * 语法：
 
   ~~~mysql
-  	INSERT INTO 表名(列名1,列名2,...列名n) VALUES(值1,值2,...值n);
+  INSERT INTO 表名(列名1,列名2,...列名n) VALUES(值1,值2,...值n);
   ~~~
 
 * 注意：
@@ -354,7 +354,7 @@
   2. 如果表名后，不定义列名，则默认给所有列添加值
 
      ~~~mysql
-     	INSERT INTO 表名 VALUES(值1,值2,...值n);
+     INSERT INTO 表名 VALUES(值1,值2,...值n);
      ~~~
 
   3. **除了数字**类型，==其他类型需要使用引号==(单双都可以)引起来
@@ -427,12 +427,12 @@
    ~~~
 
    * 注意：
-     * 如果查询所有字段，则可以使用*来替代字段列表。
+     * 如果查询所有字段，则可以使用 * 来替代字段列表。
 
 2. 去除重复
 
    ~~~mysql
-   	DISTINCT
+   	SELECT DISTINCT 字段 FROM 表名;
    ~~~
 
 3. 计算列
@@ -440,7 +440,12 @@
    * 一般可以使用四则运算计算一些列的值。（一般只会进行数值型的计算）			
 
    ~~~mysql
-   	IF NULL(表达式1,表达式2) -- NULL 参与的运算，计算结果都为 NULL
+   	-- 计算 math 和 english 字段分数之和【要求显示 name, math, english, math+english 字段】
+   	SELECT name, math, english, math + english FROM student;
+   	-- 对 english 字段可能为NULL的情况作处理
+   	SELECT name, math, english, math + IFNULL(english, 0) FROM student;
+   	
+   	IFNULL(表达式1,表达式2) -- NULL参与的运算，计算结果都为NULL，可以使用IFNULL()表达式替换为某值
    		-- 表达式1：哪个字段需要判断是否为NULL
    		-- 如果该字段为 NULL 后的替换值。
    ~~~
@@ -448,7 +453,10 @@
 4. 起别名
 
    ~~~mysql
-   	AS -- as也可以省略
+   	原字段名 AS 别名 -- AS 也可以省略
+   	-- 例
+   	SELECT name, math, english, math + IFNULL(english, 0) AS 总分 FROM student;
+   	SELECT name, math, english, math + IFNULL(english, 0) 总分 FROM student;	-- 省略AS
    ~~~
 
 ### 6.3 条件查询
@@ -456,16 +464,16 @@
 1. WHERE 子句后跟条件
 2. 运算符
    * <、> 、<= 、>= 、= 、<>
-   * BETWEEN...AND
-   * IN( 集合) 
+   * BETWEEN...AND 【包含左右区间】
+   * IN (集合) 
    * LIKE：模糊查询
      * 占位符：
-       * _:单个任意字符
+       * _：单个任意字符
        * %：多个任意字符
    * IS NULL  
-   * and  或 &&
-   * or  或 ||
-   * not  或 !
+   * AND  或 &&
+   * OR  或 ||
+   * NOT  或 !
 
 ~~~mysql
 	-- 查询年龄大于20岁
@@ -482,7 +490,7 @@
 	-- 查询年龄大于等于20 小于等于30
 	SELECT * FROM student WHERE age >= 20 && age <= 30;
 	SELECT * FROM student WHERE age >= 20 AND age <= 30;
-	SELECT * FROM student WHERE age BETWEEN 20 AND 30;
+	SELECT * FROM student WHERE age BETWEEN 20 AND 30;	-- 包含左右区间
 	
 	-- 查询年龄22岁，18岁，25岁的信息
 	SELECT * FROM student WHERE age = 22 OR age = 18 OR age = 25;
@@ -506,16 +514,3 @@
 	-- 查询姓名中包含德的人
 	SELECT * FROM student WHERE name LIKE '%德%';
 ~~~
-
-
-
-
-
-
-
-
-
-
-
-
-
