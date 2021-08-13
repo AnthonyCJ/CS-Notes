@@ -192,7 +192,7 @@
 
   * Xxx：代表数据类型   如： int getInt() ,	String getString()
   * 参数
-    1. int：代表列的编号,从1开始   如： getString(1)
+    1. int：代表列的编号,**从1开始**   如： getString(1)
     2. String：代表列名称。 如： getDouble("balance")
 
 * 注意：
@@ -205,17 +205,16 @@
 
     ~~~java
         //循环判断游标是否是最后一行末尾。
-        while(rs.next()){
+        while (resultSet.next()) {
             //获取数据
-            //6.2 获取数据
-            int id = rs.getInt(1);
-            String name = rs.getString("name");
-            double balance = rs.getDouble(3);
+            int id = resultSet.getInt(1);
+            String name = resultSet.getString("name");
+            double balance = resultSet.getDouble(3);
     
-            System.out.println(id + "---" + name + "---" + balance);
+            System.out.println(id + " --- " + name + " --- " + balance);
         }
     ~~~
-
+  
 * 练习：
 
   * 定义一个方法，查询emp表的数据将其封装为对象，然后装载集合，返回。
@@ -223,20 +222,22 @@
     2. 定义方法 public List<Emp> findAll(){}
     3. 实现方法 select * from emp;
 
-#### 1.3.5 **PreparedStatement**：执行sql的对象
+#### 1.3.5 ==**PreparedStatement**==：执行sql的对象
 
-1. SQL注入问题：在拼接sql时，有一些sql的特殊关键字参与字符串的拼接。会造成安全性问题
+1. SQL注入问题：在拼接sql时，有一些sql的特殊关键字参与字符串的拼接。会造成**安全性问题**
 
    1. 输入用户随便，输入密码：a' or 'a' = 'a
    2. sql：select * from user where username = 'fhdsjkf' and password = 'a' or 'a' = 'a' 
 
-2. 解决sql注入问题：使用PreparedStatement对象来解决
+   > 该sql语句是一个恒为true的语句，将查询并返回该表所有的字段
 
-3. 预编译的SQL：参数使用?作为占位符
+2. 解决sql注入问题：**使用 PreparedStatement 对象来解决**
 
-4. 步骤：
+3. 预编译的SQL：参数使用 ? 作为占位符
 
-   1. 导入驱动jar包 mysql-connector-java-5.1.37-bin.jar
+4. ==步骤==：
+
+   1. 导入驱动 jar 包，如mysql-connector-java-5.1.37-bin.jar
 
    2. 注册驱动
 
@@ -247,12 +248,12 @@
       * 注意：sql的参数使用？作为占位符。 如：
 
         ~~~mysql
-        select * from user where username = ? and password = ?;
+        SELECT * FROM user WHERE username = ? AND password = ?;
         ~~~
 
-   5. 获取执行sql语句的对象 PreparedStatement  Connection.prepareStatement(String sql) 
+   5. 调用方法获取执行sql语句的对象 **PreparedStatement  Connection.prepareStatement(String sql)** 
 
-   6. 给？赋值：
+   6. 给 ？赋值：
 
       * 方法： setXxx(参数1,参数2)
         * 参数1：？的位置编号 从1 开始
@@ -264,7 +265,7 @@
 
    9. 释放资源
 
-5. **注意**：后期都会使用PreparedStatement来完成增删改查的所有操作
+5. **注意**：==后期都会使用 **PreparedStatement** 来完成增删改查的所有操作==
 
    1. 可以防止SQL注入
    2. 效率更高
@@ -281,54 +282,59 @@
 
 * 分析：
 
-  1. 注册驱动也抽取
+  1. 注册驱动抽取
 
   2. 抽取一个方法获取连接对象
 
-     * 需求：不想传递参数（麻烦），还得保证工具类的通用性。
+     * 需求：不想传递参数（麻烦），同时要保证工具类的通用性。
 
-     * 解决：配置文件
+     * 解决方案：**配置文件**
 
        jdbc.properties
-       				url=
-       				user=
-       				password=
+       				url =
+       				user =
+       				password =
 
   3. 抽取一个方法释放资源
 
 ### 2.2 代码实现
 
 ~~~java
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.sql.*;
+import java.util.Properties;
+
 public class JDBCUtils {
-    private static String url;
-    private static String user;
-    private static String password;
-    private static String driver;
+    private static String url;  // 数据库URL
+    private static String user; // 数据库用户
+    private static String password; // 登录密码
+    private static String driver;   // 驱动路径
+
     /**
-     * 文件的读取，只需要读取一次即可拿到这些值。使用静态代码块
+     * 使用静态代码块，令文件读取操作只执行一次
      */
-    static{
-        //读取资源文件，获取值。
+    static {
+        // 读取资源文件，获取值
 
         try {
-            //1. 创建Properties集合类。
-            Properties pro = new Properties();
-
-            //获取src路径下的文件的方式--->ClassLoader 类加载器
+            // 1.创建Properties集合类
+            Properties properties = new Properties();
+            // 获取src路径下的文件方式-->ClassLoader
             ClassLoader classLoader = JDBCUtils.class.getClassLoader();
-            URL res  = classLoader.getResource("jdbc.properties");
-            String path = res.getPath();
-            System.out.println(path);///D:/IdeaProjects/itcast/out/production/day04_jdbc/jdbc.properties
-            //2. 加载文件
-           // pro.load(new FileReader("D:\\IdeaProjects\\itcast\\day04_jdbc\\src\\jdbc.properties"));
-            pro.load(new FileReader(path));
-
-            //3. 获取数据，赋值
-            url = pro.getProperty("url");
-            user = pro.getProperty("user");
-            password = pro.getProperty("password");
-            driver = pro.getProperty("driver");
-            //4. 注册驱动
+            URL resource = classLoader.getResource("jdbc.properties");
+            String path = resource.getPath();
+            System.out.println(path);
+            // 2.加载文件
+            //properties.load(new FileReader("src/jdbc.properties"));
+            properties.load(new FileReader(path));
+            // 3.获取数据，赋值
+            url = properties.getProperty("url");
+            user = properties.getProperty("user");
+            password = properties.getProperty("password");
+            driver = properties.getProperty("driver");
+            // 4.注册驱动
             Class.forName(driver);
         } catch (IOException e) {
             e.printStackTrace();
@@ -336,71 +342,68 @@ public class JDBCUtils {
             e.printStackTrace();
         }
     }
-    
-    
+
+
     /**
      * 获取连接
-     * @return 连接对象
+     * @return 数据库连接对象
      */
     public static Connection getConnection() throws SQLException {
-
         return DriverManager.getConnection(url, user, password);
     }
-    
-     /**
-     * 释放资源
-     * @param stmt
-     * @param conn
-     */
-    public static void close(Statement stmt,Connection conn){
-        if( stmt != null){
-            try {
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
 
-        if( conn != null){
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    
     /**
      * 释放资源
-     * @param stmt
-     * @param conn
+     * @param statement 执行sql对象
+     * @param connection 数据库连接对象
      */
-    public static void close(ResultSet rs,Statement stmt, Connection conn){
-        if( rs != null){
+    public static void close(Statement statement, Connection connection) {
+
+        if (statement != null) {
             try {
-                rs.close();
+                statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-
-        if( stmt != null){
+        if (connection != null) {
             try {
-                stmt.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if( conn != null){
-            try {
-                conn.close();
+                connection.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
     }
+
+    /**
+     * 释放资源
+     * @param statement 执行sql对象
+     * @param connection 数据库连接对象
+     */
+    public static void close(ResultSet resultSet,Statement statement, Connection connection) {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
 ~~~
 
 
@@ -411,7 +414,7 @@ public class JDBCUtils {
 
   1. 通过键盘录入用户名和密码
   2. 判断用户是否登录成功
-     * select * from user where username = "" and password = "";
+     * SELECT * FROM user WHERE username = "..." AND password = "...";
      * 如果这个sql有查询结果，则成功，反之，则失败
 
 * 步骤：
@@ -419,76 +422,112 @@ public class JDBCUtils {
   1. 创建数据库表 user
 
   ~~~mysql
-  CREATE TABLE USER(
+  CREATE TABLE user(
       id INT PRIMARY KEY AUTO_INCREMENT,
       username VARCHAR(32),
-      PASSWORD VARCHAR(32)
-  
+      password VARCHAR(32)
   );
   
-  	INSERT INTO USER VALUES(NULL,'zhangsan','123');
-  	INSERT INTO USER VALUES(NULL,'lisi','234');
+  INSERT INTO user VALUES(NULL, 'Anthony', '123');
+  INSERT INTO user VALUES(NULL, 'Pure', '456');
   ~~~
-
+  
   2. 代码实现：
-
+  
   ~~~java
-      public class JDBCDemo9 {
+  import com.anthony.util.JDBCUtils;
   
-          public static void main(String[] args) {
-              //1.键盘录入，接受用户名和密码
-              Scanner sc = new Scanner(System.in);
-              System.out.println("请输入用户名：");
-              String username = sc.nextLine();
-              System.out.println("请输入密码：");
-              String password = sc.nextLine();
-              //2.调用方法
-              boolean flag = new JDBCDemo9().login(username, password);
-              //3.判断结果，输出不同语句
-              if(flag){
-                  //登录成功
-                  System.out.println("登录成功！");
-              }else{
-                  System.out.println("用户名或密码错误！");
-              }
+  import java.sql.*;
+  import java.util.Scanner;
+  
+  /**
+   * 需求
+       * 1. 通过键盘录入用户名和密码
+       * 2. 判断用户是否登录成功
+   */
+  public class JDBCDemo9 {
+      public static void main(String[] args) {
+          // 1.键盘录入，接受用户名和密码
+          Scanner in = new Scanner(System.in);
+          System.out.println("请输入用户名：");
+          String username = in.nextLine();
+          System.out.println("请输入密码：");
+          String password = in.nextLine();
+          // 2.调用方法
+          boolean flag = new JDBCDemo9().loginSafely(username, password);
+          // 3.判断结果，输出不同语句
+          if (flag) {
+              // 登录成功
+              System.out.println("登录成功！");
+          } else {
+              System.out.println("用户名或密码错误！");
           }
+      }
   
-          /**
-                       * 登录方法
-                       */
-          public boolean login(String username ,String password){
-              if(username == null || password == null){
-                  return false;
-              }
-              //连接数据库判断是否登录成功
-              Connection conn = null;
-              Statement stmt =  null;
-              ResultSet rs = null;
-              //1.获取连接
-              try {
-                  conn =  JDBCUtils.getConnection();
-                  //2.定义sql
-                  String sql = "select * from user where username = '"+username+"' and password = '"+password+"' ";
-                  //3.获取执行sql的对象
-                  stmt = conn.createStatement();
-                  //4.执行查询
-                  rs = stmt.executeQuery(sql);
-                  //5.判断
-                  /* if(rs.next()){//如果有下一行，则返回true
-                                  return true;
-                              }else{
-                                  return false;
-                              }*/
-                  return rs.next();//如果有下一行，则返回true
-  
-              } catch (SQLException e) {
-                  e.printStackTrace();
-              }finally {
-                  JDBCUtils.close(rs,stmt,conn);
-              }
+      /**
+       * 登录方法
+       */
+      public boolean login(String username, String password) {
+          if (username == null || password == null) {
               return false;
           }
-      }                    
+          // 声明连接资源
+          Connection connection = null;
+          Statement statement = null;
+          ResultSet resultSet = null;
+          try {
+              // 1.获取连接
+              connection = JDBCUtils.getConnection();
+              // 2.定义sql
+              String sql = "SELECT * FROM user WHERE username = '" + username +
+                      "'AND password = '" + password + "'";
+              // 3.获取执行sql的对象
+              statement = connection.createStatement();
+              // 4.执行查询
+              resultSet = statement.executeQuery(sql);
+              //5.判断
+              return resultSet.next();
+          } catch (SQLException e) {
+              e.printStackTrace();
+          } finally {
+              JDBCUtils.close(resultSet, statement, connection);
+          }
+          return false;
+      }
+  
+      /**
+       * 登录方法，使用PreparedStatement实现
+       */
+      public boolean loginSafely(String username, String password) {
+          if (username == null || password == null) {
+              return false;
+          }
+          // 声明连接资源
+          Connection connection = null;
+          PreparedStatement preparedStatement = null;
+          ResultSet resultSet = null;
+          try {
+              // 1.获取连接
+              connection = JDBCUtils.getConnection();
+              // 2.定义sql
+              String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
+              // 3.获取执行sql的对象
+              preparedStatement = connection.prepareStatement(sql);
+              // 4.给 ？ 赋值
+              preparedStatement.setString(1, username);
+              preparedStatement.setString(2, password);
+              // 5.执行查询[不需要传递sql参数]
+              resultSet = preparedStatement.executeQuery();
+              // 6.判断
+              return resultSet.next();
+          } catch (SQLException e) {
+              e.printStackTrace();
+          } finally {
+              JDBCUtils.close(resultSet, preparedStatement, connection);
+          }
+          return false;
+      }
+  }       
   ~~~
 
 ---
@@ -507,7 +546,7 @@ public class JDBCUtils {
 2. 提交事务
 3. 回滚事务
 
-### 3.3 使用Connection对象来管理事务
+### 3.3 使用 Connection对象来管理事务
 
 * 开启事务：setAutoCommit(boolean autoCommit) ：调用该方法设置参数为false，即开启事务
   * 在执行sql之前开启事务
@@ -519,55 +558,68 @@ public class JDBCUtils {
 ### 3.4 代码实现
 
 ~~~java
-	public class JDBCDemo10 {
-	    public static void main(String[] args) {
-	        Connection conn = null;
-	        PreparedStatement pstmt1 = null;
-	        PreparedStatement pstmt2 = null;
-	
-	        try {
-	            //1.获取连接
-	            conn = JDBCUtils.getConnection();
-	            //开启事务
-	            conn.setAutoCommit(false);
-	
-	            //2.定义sql
-	            //2.1 张三 - 500
-	            String sql1 = "update account set balance = balance - ? where id = ?";
-	            //2.2 李四 + 500
-	            String sql2 = "update account set balance = balance + ? where id = ?";
-	            //3.获取执行sql对象
-	            pstmt1 = conn.prepareStatement(sql1);
-	            pstmt2 = conn.prepareStatement(sql2);
-	            //4. 设置参数
-	            pstmt1.setDouble(1,500);
-	            pstmt1.setInt(2,1);
-	
-	            pstmt2.setDouble(1,500);
-	            pstmt2.setInt(2,2);
-	            //5.执行sql
-	            pstmt1.executeUpdate();
-	            // 手动制造异常
-	            int i = 3/0;
-	
-	            pstmt2.executeUpdate();
-	            //提交事务
-	            conn.commit();
-	        } catch (Exception e) {
-	            //事务回滚
-	            try {
-	                if(conn != null) {
-	                    conn.rollback();
-	                }
-	            } catch (SQLException e1) {
-	                e1.printStackTrace();
-	            }
-	            e.printStackTrace();
-	        }finally {
-	            JDBCUtils.close(pstmt1,conn);
-	            JDBCUtils.close(pstmt2,null);
-	        }
-	    }	
-	}	        
+import com.anthony.util.JDBCUtils;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+/**
+ * 事务操作
+ */
+public class JDBCDemo10 {
+    public static void main(String[] args) {
+        Connection connection = null;
+        PreparedStatement preparedStatement1 = null;
+        PreparedStatement preparedStatement2 = null;
+
+        try {
+            // 1.获取连接
+            connection = JDBCUtils.getConnection();
+
+            // 【执行sql之前】开启事务
+            connection.setAutoCommit(false);
+
+            // 2.定义sql
+            // 2.1 张三 - 500
+            String sql1 = "UPDATE account SET balance = balance - ? WHERE id = ?";
+            // 2.2 李四 + 500
+            String sql2 = "UPDATE account SET balance = balance + ? WHERE id = ?";
+            // 3.获取执行sql对象
+            preparedStatement1 = connection.prepareStatement(sql1);
+            preparedStatement2 = connection.prepareStatement(sql2);
+            // 4.设置参数
+            preparedStatement1.setDouble(1,500);
+            preparedStatement1.setInt(2,1);
+
+            preparedStatement2.setDouble(1,500);
+            preparedStatement2.setInt(2,2);
+            // 5.执行sql
+            preparedStatement1.executeUpdate();
+
+            // 手动制造异常
+            int i = 3/0;
+
+            preparedStatement2.executeUpdate();
+
+            // 【所有sql都执行后】提交事务
+            connection.commit();
+
+        } catch (Exception e) {
+            // 【出现异常时，在catch块内】回滚事务
+            try {
+                if (connection != null) {
+                    connection.rollback();
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            JDBCUtils.close(preparedStatement1, connection);
+            JDBCUtils.close(preparedStatement2,null);
+        }
+    }
+}
 ~~~
 
