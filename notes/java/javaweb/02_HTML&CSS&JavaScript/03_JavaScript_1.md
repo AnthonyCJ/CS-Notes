@@ -1,4 +1,4 @@
-# JavaScript
+# JavaScript_1
 
 ---
 
@@ -36,7 +36,7 @@ JavaScript：一门客户端脚本语言
 
 ## 4. ECMAScript：客户端脚本语言的标准
 
-### 4.1 基本语法
+### 4.1 ECMAScript 基本语法
 
 1. 与html结合方式
 
@@ -110,7 +110,7 @@ JavaScript：一门客户端脚本语言
 
       * 比较方式
         1. 类型相同：直接比较
-           * 字符串：按照字典顺序比较。按位逐一比较，直到得出大小为止。
+           * 字符串：**按照字典顺**序比较。**按位**逐一比较，直到得出大小为止。
         2. 类型不同：先进行类型转换，再比较
            * ===：全等于。在比较之前，先判断类型，如果类型不一样，则直接返回false
 
@@ -120,9 +120,22 @@ JavaScript：一门客户端脚本语言
 
       * 其他类型转boolean：
         1. number：0或NaN为假，其他为真
-        2. string：除了空字符串("")，其他都是true
+        2. string：**除了空字符串("")**，其他都是true
         3. null&undefined:都是false
         4. 对象：所有对象都为true
+        
+      * 逻辑运算符的应用
+
+        ~~~javascript
+        obj = "123";
+        if(obj != null && obj.length > 0){	// 防止空指针异常
+            alert(123);
+        }
+        // js中可以这样定义，简化书写。
+        if(obj){ // 防止空指针异常，也可以同时判断字符串长度是否为0
+            alert(111);
+        }
+        ~~~
 
    6. 三元运算符
 
@@ -144,13 +157,19 @@ JavaScript：一门客户端脚本语言
 
    2. switch:
 
-      * 在java中，switch语句可以接受的数据类型： byte int shor char,枚举(1.5) ,String(1.7)
+      * 在**java**中，**switch**语句可以接受的数据类型： **byte int shor char,枚举**(1.5) ,**String**(1.7)
 
-        * switch(变量):
+        * switch(变量): {
 
-          case 值:
+          ​	case 值1:
 
-      * 在JS中,switch语句可以接受任意的原始数据类型
+          ​	case 值2:
+
+          ​	...
+
+          }
+
+      * 在**JavaScript**中,switch语句可以接受**任意原始数据类型**
 
    3. while
 
@@ -169,41 +188,42 @@ JavaScript：一门客户端脚本语言
 
 ~~~html
 <!DOCTYPE html>
-    <html lang="en">
-        <head>
-        <meta charset="UTF-8">
-            <title>99乘法表</title>
-<style>
-                td{
-                    border: 1px solid;
-                }
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>99乘法表</title>
+    <style>
+        td {
+            border: 1px solid;
+        }
 
-</style>
+    </style>
 
-<script>
+    <script>
 
-    document.write("<table  align='center'>");
-//1.完成基本的for循环嵌套，展示乘法表
-for (var i = 1; i <= 9 ; i++) {
-    document.write("<tr>");
-    for (var j = 1; j <=i ; j++) {
-        document.write("<td>");
+        document.write("<table  align='center'>");
+        
+        // 1.完成基本的for循环嵌套，展示乘法表
+        for (var i = 1; i <= 9 ; i++) {
+            document.write("<tr>");
+            for (var j = 1; j <=i ; j++) {
+                //输出一行元素
+                document.write("<td>");
 
-        //输出  1 * 1 = 1
-        document.write(i + " * " + j + " = " + ( i*j) +"&nbsp;&nbsp;&nbsp;");
+                document.write(i + " * " + j + " = " + (i*j) + "&nbsp;&nbsp;&nbsp;");
 
-        document.write("</td>");
-    }
-    /*//输出换行
-		            document.write("<br>");*/
+                document.write("</td>");
+            }
+            /*//输出换行
+            document.write("<br>");*/
 
-    document.write("</tr>");
-}
+            document.write("</tr>");
+        }
 
-//2.完成表格嵌套
-document.write("</table>");
+        // 2.完成表格嵌套
+        document.write("</table>");
 
-</script>
+    </script>
 </head>
 <body>
 
@@ -213,22 +233,24 @@ document.write("</table>");
 
 
 
-### 4.2 基本对象
+### 4.2 ECMAScript 基本对象
 
 1. **Function**：函数(方法)对象
 
    1. 创建：
 
-      1. var fun = new Function(形式参数列表,方法体);  //忘掉吧
+      1. ~~~javascript
+         var fun = new Function(形式参数列表,方法体);  // 忘掉吧
+         ~~~
 
       2. ~~~javascript
-         function 方法名称(形式参数列表){
+         function 方法名称(形式参数列表) {
              方法体
          }
          ~~~
 
       3. ~~~javascript
-         var 方法名 = function(形式参数列表){
+         var 方法名 = function(形式参数列表) {
              方法体
          }
          ~~~
@@ -257,8 +279,8 @@ document.write("</table>");
       2. var arr = new Array(默认长度);
       3. var arr = [元素列表];
    2. 方法
-      1. join(参数):将数组中的元素按照指定的分隔符拼接为字符串
-      2. push()	向数组的末尾添加一个或更多元素，并返回新的长度。
+      1. **join(参数)**: 将数组中的元素按照参数指定的**分隔符**拼接为字符串
+      2. **push()**: **向数组末尾**添加一个或更多**元素**，并返回新的长度。
    3. 属性
       1. length:数组的长度
    4. 特点：
@@ -288,20 +310,20 @@ document.write("</table>");
 
    2. 方法：
 
-      1. random():返回 0 ~ 1 之间的随机数。 含0不含1
-      2. ceil(x)：对数进行上舍入。
-      3. floor(x)：对数进行下舍入。
-      4. round(x)：把数四舍五入为最接近的整数。
+      1. **random()**:返回 [0 ~ 1) 的**随机数**。 含0不含1
+      2. **ceil(x)**：对数进行**上舍入**【向上取整】。
+      3. **floor(x)**：对数进行**下舍入**【向下取整】。
+      4. **round(x)**：把数**四舍五入为**最接近的**整数**。
 
    3. 属性：
 
-      PI
+      **Math.PI**
 
-6. Number
+6. **Number**
 
-7. String
+7. **String**
 
-8. RegExp：正则表达式对象
+8. **RegExp**：正则表达式对象【用于校验输入的信息内容、格式是否符合规范】
 
    1. 正则表达式：定义字符串的组成规则。
 
@@ -342,11 +364,11 @@ document.write("</table>");
 
       2. 方法
 
-         1. test(参数):验证指定的字符串是否符合正则定义的规范	
+         1. **test(参数)**:验证指定的字符串是否符合正则定义的规范	
 
 9. **Global**
 
-   1. 特点：全局对象，这个Global中封装的方法不需要对象就可以直接调用。  方法名();
+   1. 特点：**全局对象**，这个Global中封装的方法不需要对象就可以**直接调用**。  **方法名()**;
    2. 方法：
       1. encodeURI():url编码
       2. decodeURI():url解码
@@ -356,7 +378,7 @@ document.write("</table>");
          * 逐一判断每一个字符是否是数字，直到不是数字为止，将前边数字部分转为number
            			    isNaN():判断一个值是否是NaN
          * NaN六亲不认，连自己都不认。NaN参与的==比较全部问false
-      6. eval():讲 JavaScript 字符串，并把它作为脚本代码来执行。
+      6. **eval()**: 将 JavaScript 字符串，并把它作为脚本代码来执行。
    3. URL编码
       * 传智播客 =  %E4%BC%A0%E6%99%BA%E6%92%AD%E5%AE%A2
 
@@ -364,11 +386,11 @@ document.write("</table>");
 
 ---
 
-## 5. BOM
+## 5. BOM 对象
 
 
 
 ---
 
-## 6. DOM
+## 6. DOM 对象
 
