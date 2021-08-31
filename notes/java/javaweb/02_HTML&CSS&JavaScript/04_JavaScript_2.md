@@ -279,7 +279,7 @@ light.onclick = function(){
      2. document
   2. 方法：
      1. **获取**Element对象：
-        
+       
         1. **getElementById()**： 根据id属性值获取元素对象。id属性值一般唯一
         
         2. **getElementsByTagName()**：根据元素名称获取元素对象们。返回值是一个数组
@@ -290,7 +290,7 @@ light.onclick = function(){
         
         4. **getElementsByName()**: 根据name属性值获取元素对象们。返回值是一个数组
      2. **创建**其他DOM对象：
-        
+       
         1. createAttribute(name) 创建属性
         2. createComment() 创建注释
         3. createElement() 创建元素
@@ -383,34 +383,39 @@ light.onclick = function(){
 ### 5.1 概念
 
 * 概念：某些组件被执行了某些操作后，触发某些代码的执行。	
-  * 事件：某些操作。如： 单击，双击，键盘按下了，鼠标移动了
-  * 事件源：组件。如： 按钮 文本输入框...
-  * 监听器：代码。
+  * 事件：某些操作。如： 单击，双击，键盘按下，鼠标移动
+  * 事件源：组件。如： 按钮 文本输入框 ...
+  * 监听器：代码实现。
   * 注册监听：将事件，事件源，监听器结合在一起。 当事件源上发生了某个事件，则触发执行某个监听器代码。
 
 ### 5.2 常见事件
 
 1. 点击事件：
-   1. onclick：单击事件
-   2. ondblclick：双击事件
+   1. **onclick**：单击事件
+   2. **ondblclick**：双击事件
 2. 焦点事件
-   1. onblur：失去焦点
-   2. onfocus:元素获得焦点。
+   1. **onblur**：失去焦点【闪动光标】
+      * 一般用于表单验证【验证输入内容是否符合规范】
+   2. **onfocus**:元素获得焦点。
 3. 加载事件：
-   1. onload：一张页面或一幅图像完成加载。
+   1. **onload**：一张页面或一幅图像完成加载。
 4. 鼠标事件：
-   1. onmousedown	鼠标按钮被按下。
-   2. onmouseup	鼠标按键被松开。
-   3. onmousemove	鼠标被移动。
-   4. onmouseover	鼠标移到某元素之上。
-   5. onmouseout	鼠标从某元素移开。
+   1. **onmousedown**	鼠标按钮被按下。
+      * 定义方法时，定义一个形参，接收 event 对象
+      * event 对象的 button 属性可以获取鼠标被点击的结构【左键0、滚轮1或右键2】。
+   2. **onmouseup**	鼠标按键被松开。
+   3. **onmousemove**	鼠标被移动。
+   4. **onmouseover**	鼠标移到某元素之上。
+   5. **onmouseout**	鼠标从某元素移开。
 5. 键盘事件：
-   1. onkeydown	某个键盘按键被按下。	
-   2. onkeyup		某个键盘按键被松开。
-   3. onkeypress	某个键盘按键被按下并松开。
+   1. **onkeydown**	某个键盘按键被按下。	
+   2. **onkeyup**		某个键盘按键被松开。
+   3. **onkeypress**	某个键盘按键被按下并松开。
 6. 选择和改变
-   1. onchange	域的内容被改变。
-   2. onselect	文本被选中。
+   1. **onchange**	域的内容被改变。
+   2. **onselect**	文本被选中。
 7. 表单事件：
-   1. onsubmit	确认按钮被点击。
-   2. onreset	重置按钮被点击。
+   1. **onsubmit**	确认按钮被点击。
+   2. **onreset**	重置按钮被点击。
+
+****
