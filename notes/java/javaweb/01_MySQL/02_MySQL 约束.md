@@ -237,7 +237,7 @@
         	ALTER TABLE stu MODIFY id INT AUTO_INCREMENT;
         ~~~
 
-* 外键约束：foreign key，让表于表产生**关联**关系，从而保证数据的正确性。
+* **外键约束**：foreign key，让表于表产生**关联**关系，从而保证数据的正确性。
 
   1. 在创建表时，可以添加外键
 

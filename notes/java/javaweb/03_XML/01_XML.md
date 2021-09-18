@@ -8,7 +8,7 @@
 2. 语法
 3. 解析
 
-
+---
 
 
 
@@ -18,12 +18,12 @@
   * 可扩展：标签都是自定义的。 <user>  <student>
   * 功能
     * 存储数据
-      1. **作为配置文件**
-      2. **在网络中传输**
+      1. ==**作为配置文件**==
+      2. ==**在网络中传输**==
   *  xml与html的区别
     1. **XML**标签都是**自定义**的，**HTML**标签是**预定义**。
     2. **XML**的语法**严格**，HTML语法松散
-    3. **XML**用于存储数据的，**HTML**用于**展示数据**
+    3. **XML**用于**存储数据**的，**HTML**用于**展示数据**
   * w3c:万维网联盟
 
 
@@ -37,7 +37,7 @@
 1. XML文档的后缀名 .xml
 2. **XML第一行**必须定义为**文档声明**
 3. XML文档中**有且仅有一个根标签**
-4. 属性值必须使用引号(单双都可)引起来
+4. 属性值【如标签的id】必须使用引号(单双都可)引起来
 5. 标签必须正确关闭
 6. xml标签名称区分大小写
 
@@ -64,9 +64,9 @@
 ### 2.3 组成部分
 
 1. 文档声明
-   1. 格式：<?xml 属性列表 ?>
+   1. 固定格式：<?xml 属性列表 ?>
    2. 属性列表：
-      * **version**：版本号。**必需的属性**
+      * **version**：版本号。**必需的属性**【不写报错】
       * **encoding**：编码方式。告知解析引擎当前文档使用的字符集，默认值：ISO-8859-1
       * standalone：是否独立
         * 取值：
@@ -81,7 +81,7 @@
      * 名称不能以字母 xml（或者 XML、Xml 等等）开始 
      * 名称不能包含空格 
 4. 属性
-   1. id属性值唯一
+   1. **id属性值唯一**
 5. 文本：
    * CDATA区：在该区域中的数据会被原样展示
      * 格式：  <![CDATA[ 数据 ]]>
@@ -105,6 +105,8 @@
     * 外部dtd：将约束的规则定义在外部的dtd文件中
       * 本地：<!DOCTYPE 根标签名 SYSTEM "dtd文件的位置">
       * 网络：<!DOCTYPE 根标签名 PUBLIC "dtd文件名字" "dtd文件的位置URL">
+      
+      > dtd文件名字随意取 
 
 * Schema:
 
@@ -168,25 +170,25 @@
 
 ### 3.2 解析xml的方式
 
-1. DOM（Document Object Model）：将标记语言文档一次性加载进内存，在内存中形成一颗dom树
+1. **DOM**（**Document Object Model**）：将标记语言文档一次性加载进内存，在内存中形成一颗dom树
    * 优点：操作方便，可以对文档进行CRUD的所有操作
    * 缺点：占内存【DOM生成的dom树所占内存大小可能是原文件的上千倍】
-   * 通常在服务端【服务器】使用DOM
-2. SAX（simple API for XML）：逐行读取，基于**事件驱动**的。
+   * ==通常在服务器端【JavaEE】使用DOM==
+2. **SAX（simple API for XML）**：逐行读取，基于**事件驱动**的。
    * 优点：不占内存。
    * 缺点：只能读取，不能增删改。
-   * 通常在移动端【Android设备】使用DOM
+   * ==通常在移动端【Android设备】使用SAX==
 
 ### 3.3 xml常见的解析器
 
-1. JAXP：sun公司提供的解析器，支持dom和sax两种思想
-2. DOM4J：一款非常优秀的解析器
-3. Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。
-4. PULL：Android操作系统内置的解析器，是sax方式的。
+1. JAXP：sun公司提供的解析器，支持dom和sax两种思想【比较烂】
+2. **DOM4J**：一款非常优秀的解析器
+3. **Jsoup**：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可**通过DOM**，CSS以及类似于jQuery的操作方法来取出和操作数据。
+4. **PULL**：Android操作系统内置的解析器，是**SAX**方式的。
 
 ### 3.4 Jsoup
 
-* Jsoup：jsoup 是一款Java 的HTML解析器，可直接**解析**某个**URL地址、HTML文本内容**。它提供了一套非常省力的API，可**通过DOM，CSS**以及类似于JQuery的操作方法来**取出**和**操作数据**。
+* Jsoup：jsoup 是一款Java 的**HTML解析器**，可直接**解析**某个**URL地址、HTML文本内容**。它提供了一套非常省力的API，可**通过DOM，CSS**以及类似于JQuery的操作方法来**取出**和**操作数据**。
 
 * 快速入门：
 
@@ -247,77 +249,261 @@
      * parse(URL url, int timeoutMillis)：通过网络路径获取指定的html或xml的文档对象
 2. **Document**：文档对象。代表内存中的dom树
    * 获取Element对象
-     * getElementById(String id)：根据id属性值获取唯一的element对象
-     * getElementsByTag(String tagName)：根据标签名称获取元素对象集合
-     * getElementsByAttribute(String key)：根据属性名称获取元素对象集合
-     * getElementsByAttributeValue(String key, String value)：根据对应的属性名和属性值获取元素对象集合
+     * **getElementById(String id)**：根据id属性值获取唯一的element对象
+     * **getElementsByTag(String tagName)**：根据标签名称获取元素对象集合
+     * **getElementsByAttribute(String key)**：根据属性名称获取元素对象集合
+     * **getElementsByAttributeValue(String key, String value)**：根据对应的属性名和属性值获取元素对象集合
+     
+     ~~~java
+     package com.anthony.javaweb.day12_xml.jsoup;
+     
+     
+     import org.jsoup.Jsoup;
+     import org.jsoup.nodes.Document;
+     import org.jsoup.nodes.Element;
+     import org.jsoup.select.Elements;
+     
+     import java.io.File;
+     import java.io.IOException;
+     import java.net.URL;
+     
+     /**
+      * Document/Element对象功能
+      */
+     public class JsoupDemo3 {
+         public static void main(String[] args) throws IOException {
+             //1.获取student.xml的path
+             String path = JsoupDemo3.class.getClassLoader().getResource("student.xml").getPath();
+             //2.获取Document对象
+             Document document = Jsoup.parse(new File(path), "utf-8");
+     
+             //3.获取元素对象了。
+             //3.1获取所有student对象
+             Elements elements = document.getElementsByTag("student");
+             System.out.println(elements);
+     
+             System.out.println("-----------");
+     
+             // 3.2 获取属性名为id的元素对象们
+             Elements elements1 = document.getElementsByAttribute("id");
+             System.out.println(elements1);
+             System.out.println("-----------");
+             // 3.2获取 number属性值为heima_0001的元素对象
+             Elements elements2 = document.getElementsByAttributeValue("number", "heima_0001");
+             System.out.println(elements2);
+     
+             System.out.println("-----------");
+             // 3.3获取id属性值的元素对象
+             Element element = document.getElementById("2");
+             System.out.println(element);
+         }
+     }
+     ~~~
+     
+   
 3. **Elements**：元素Element对象的集合。可以当做 ArrayList<Element>来使用
-4. Element：元素对象
+4. **Element**：元素对象
+  
    1. 获取子元素对象
-      * getElementById(String id)：根据id属性值获取唯一的element对象
-      * getElementsByTag(String tagName)：根据标签名称获取元素对象集合
-      * getElementsByAttribute(String key)：根据属性名称获取元素对象集合
-      * getElementsByAttributeValue(String key, String value)：根据对应的属性名和属性值获取元素对象集合
+      * **getElementById(String id)**：根据id属性值获取唯一的element对象
+      * **getElementsByTag(String tagName)**：根据标签名称获取元素对象集合
+      * **getElementsByAttribute(String key)**：根据属性名称获取元素对象集合
+      * **getElementsByAttributeValue(String key, String value)**：根据对应的属性名和属性值获取元素对象集合
+      
    2. 获取属性值
-      * String attr(String key)：根据属性名称获取属性值
+      * **String attr(String key)**：根据属性名称获取属性值【属性名称不区分大小写】
+      
    3. 获取文本内容
-      * String text():获取文本内容
-      * String html():获取标签体的所有内容(包括字标签的字符串内容)
-5. Node：节点对象
-   * 是Document和Element的父类
+      * **String text()**: 获取所有子标签所有**纯文本内容**
+      * **String html()**: 获取标签体的**所有内容**【包括子标签的字符串表现形式】
+      
+      ~~~java
+      package com.anthony.javaweb.day12_xml.jsoup;
+      
+      
+      import org.jsoup.Jsoup;
+      import org.jsoup.nodes.Document;
+      import org.jsoup.nodes.Element;
+      import org.jsoup.select.Elements;
+      
+      import java.io.File;
+      import java.io.IOException;
+      
+      /**
+       *Element对象功能
+       */
+      public class JsoupDemo4 {
+          public static void main(String[] args) throws IOException {
+              //1.获取student.xml的path
+              String path = JsoupDemo4.class.getClassLoader().getResource("student.xml").getPath();
+              //2.获取Document对象
+              Document document = Jsoup.parse(new File(path), "utf-8");
+              /*
+              Element：元素对象
+      				1. 获取子元素对象
+      					* getElementById​(String id)：根据id属性值获取唯一的element对象
+      					* getElementsByTag​(String tagName)：根据标签名称获取元素对象集合
+      					* getElementsByAttribute​(String key)：根据属性名称获取元素对象集合
+      					* getElementsByAttributeValue​(String key, String value)：根据对应的属性名和属性值获取元素对象集合
+      
+      				2. 获取属性值
+      					* String attr(String key)：根据属性名称获取属性值
+      				3. 获取文本内容
+      					* String text():获取所有字标签的纯文本内容
+      					* String html():获取标签体的所有内容(包括子标签的标签和文本内容)
+      
+               */
+              // 通过Document对象获取name标签，获取所有的name标签，可以获取到两个
+              Elements elements = document.getElementsByTag("name");
+              System.out.println(elements.size());
+              System.out.println("----------------");
+      
+              // 通过Element对象获取子标签对象
+              Element element_student = document.getElementsByTag("student").get(0);
+              Elements ele_name = element_student.getElementsByTag("name");
+              System.out.println(ele_name);
+              //获取student对象的属性值
+              String number = element_student.attr("number");
+              System.out.println(number);
+              System.out.println("------------");
+      
+              //获取文本内容
+              String text = ele_name.text();  // 获取所有子标签纯文本内容
+              String html = ele_name.html();
+              System.out.println(text);
+              System.out.println("----");
+              System.out.println(html);
+          }
+      }
+      ~~~
+      
+   
+5. **Node**：节点对象
+
+   * **是 Document 和 Element 的父类**
 
 ### 3.6 快捷查询方式
 
-1. selector:选择器
+1. **selector**:选择器
 
-   * 使用的方法：Elements	select(String cssQuery)
+   * 使用的方法：**Elements	select(String cssQuery)**
      * 语法：参考Selector类中定义的语法
+     * 参数：一个css选择器
 
-2. XPath：XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言
+   ~~~java
+   package com.anthony.javaweb.day12_xml.jsoup;
+   
+   
+   import org.jsoup.Jsoup;
+   import org.jsoup.nodes.Document;
+   import org.jsoup.nodes.Element;
+   import org.jsoup.select.Elements;
+   
+   import java.io.File;
+   import java.io.IOException;
+   
+   /**
+    *选择器查询
+    */
+   public class JsoupDemo5 {
+       public static void main(String[] args) throws IOException {
+           //1.获取student.xml的path
+           String path = JsoupDemo5.class.getClassLoader().getResource("student.xml").getPath();
+           //2.获取Document对象
+           Document document = Jsoup.parse(new File(path), "utf-8");
+   
+           //3.查询name标签
+           /*
+               div{
+   
+               }
+            */
+           Elements elements = document.select("name");
+           System.out.println(elements);
+           System.out.println("----------------");
+           //4.查询id值为itcast的元素
+           Elements elements1 = document.select("#1");
+           System.out.println(elements1);
+           System.out.println("----------------");
+           //5.获取student标签并且number属性值为heima_0001的age子标签
+           //5.1.获取student标签并且number属性值为heima_0001
+           Elements elements2 = document.select("student[number=\"heima_0001\"]"); // 由于字符串不能嵌套，故使用 \" 进行转义
+           System.out.println(elements2);
+           System.out.println("----------------");
+   
+           //5.2获取student标签并且number属性值为heima_0001的age子标签
+           Elements elements3 = document.select("student[number=\"heima_0001\"] > age");
+           System.out.println(elements3);
+       }
+   }
+   ~~~
+
+   
+
+2. **XPath**：XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言
 
    * 使用Jsoup的Xpath需要额外导入jar包。
    * 查询w3cshool参考手册，使用xpath的语法完成查询
    * 代码
 
    ~~~java
-   //1.获取student.xml的path
-   String path = JsoupDemo6.class.getClassLoader().getResource("student.xml").getPath();
-   //2.获取Document对象
-   Document document = Jsoup.parse(new File(path), "utf-8");
+   package com.anthony.javaweb.day12_xml.jsoup;
    
-   //3.根据document对象，创建JXDocument对象
-   JXDocument jxDocument = new JXDocument(document);
    
-   //4.结合xpath语法查询
-   //4.1查询所有student标签
-   List<JXNode> jxNodes = jxDocument.selN("//student");
-   for (JXNode jxNode : jxNodes) {
-       System.out.println(jxNode);
-   }
+   import cn.wanghaomiao.xpath.exception.XpathSyntaxErrorException;
+   import cn.wanghaomiao.xpath.model.JXDocument;
+   import cn.wanghaomiao.xpath.model.JXNode;
+   import org.jsoup.Jsoup;
+   import org.jsoup.nodes.Document;
    
-   System.out.println("--------------------");
+   import java.io.File;
+   import java.io.IOException;
+   import java.util.List;
    
-   //4.2查询所有student标签下的name标签
-   List<JXNode> jxNodes2 = jxDocument.selN("//student/name");
-   for (JXNode jxNode : jxNodes2) {
-       System.out.println(jxNode);
-   }
+   /**
+    * XPath查询
+    */
+   public class JsoupDemo6 {
+       public static void main(String[] args) throws IOException, XpathSyntaxErrorException {
+           //1.获取student.xml的path
+           String path = JsoupDemo6.class.getClassLoader().getResource("student.xml").getPath();
+           //2.获取Document对象
+           Document document = Jsoup.parse(new File(path), "utf-8");
    
-   System.out.println("--------------------");
+           //3.根据document对象，创建JXDocument对象
+           JXDocument jxDocument = new JXDocument(document);
    
-   //4.3查询student标签下带有id属性的name标签
-   List<JXNode> jxNodes3 = jxDocument.selN("//student/name[@id]");
-   for (JXNode jxNode : jxNodes3) {
-       System.out.println(jxNode);
-   }
-   System.out.println("--------------------");
-   //4.4查询student标签下带有id属性的name标签 并且id属性值为itcast
+           //4.结合xpath语法查询
+           //4.1查询所有student标签
+           List<JXNode> jxNodes = jxDocument.selN("//student");
+           for (JXNode jxNode : jxNodes) {
+               System.out.println(jxNode);
+           }
    
-   List<JXNode> jxNodes4 = jxDocument.selN("//student/name[@id='itcast']");
-   for (JXNode jxNode : jxNodes4) {
-       System.out.println(jxNode);
+           System.out.println("--------------------");
+   
+           //4.2查询所有student标签下的name标签
+           List<JXNode> jxNodes2 = jxDocument.selN("//student/name");
+           for (JXNode jxNode : jxNodes2) {
+               System.out.println(jxNode);
+           }
+   
+           System.out.println("--------------------");
+   
+           //4.3查询student标签下带有id属性的name标签
+           List<JXNode> jxNodes3 = jxDocument.selN("//student/name[@id]");
+           for (JXNode jxNode : jxNodes3) {
+               System.out.println(jxNode);
+           }
+           System.out.println("--------------------");
+           //4.4查询student标签下带有id属性的name标签 并且id属性值为itcast
+   
+           List<JXNode> jxNodes4 = jxDocument.selN("//student/name[@id='itcast']");
+           for (JXNode jxNode : jxNodes4) {
+               System.out.println(jxNode);
+           }
+       }
    }
    ~~~
-
    
-
+   

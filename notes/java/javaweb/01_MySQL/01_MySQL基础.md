@@ -66,7 +66,7 @@
 
    * MySQL目录结构
 
-     1.  MySQL安装目录：basedir="D:/develop/MySQL/"
+     1.  MySQL安装目录：basedir="D:\SourceFiles\mysql\mysql-8.0.25-winx64\"
 
         * bin：二进制可执行文件
         * data：数据目录
@@ -74,11 +74,10 @@
         * lib：库文件
         * share：MySQL的错误信息
 
-        *  ==**配置文件**== my.ini
-        * 
-
+        * ==**配置文件**== my.ini
+     
      2. MySQL数据目录：datadir=D:\SourceFiles\mysql\mysql-8.0.25-winx64\data
-
+     
         * 几个概念
           * 数据库：文件夹
           * 表：文件
