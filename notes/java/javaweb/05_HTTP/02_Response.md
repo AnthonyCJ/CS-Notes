@@ -127,7 +127,7 @@
              * ./：当前目录
              * ../:后退一级目录
         2. **绝对路径**【推荐使用】：通过绝对路径可以**确定唯一资源**
-           
+          
            * 如：http://localhost/day15/responseDemo2		/day15/responseDemo2
            * 以/开头的路径
            * 规则：判断定义的路径是给谁用的？判断请求将来从哪儿发出
@@ -190,33 +190,35 @@
 
 ### 3.2 获取
 
-1. 通过request对象获取
+1. 通过 request 对象获取
 
-   ​	request.getServletContext();
+   ​	**request.getServletContext();**
 
-2. 通过HttpServlet获取
+2. 通过 HttpServlet 获取
 
-   ​	this.getServletContext();
+   ​	**this.getServletContext();**
 
 ### 3.3 功能
 
 1. 获取MIME类型：
 
-   * MIME类型:在互联网通信过程中定义的一种文件数据类型
+   * MIME类型：在互联网通信过程中定义的一种文件数据类型
      * 格式： 大类型/小类型   text/html		image/jpeg
    * 获取：String getMimeType(String file)  
 
-2. 域对象：共享数据
+   > **MIME(Multipurpose Internet Mail Extensions)**多用途互联网邮件扩展类型。
+
+2. ServletContext对象是一个**域对象**：具有**共享数据**的功能
 
    1. setAttribute(String name,Object value)
    2. getAttribute(String name)
    3. removeAttribute(String name)
 
-   * ServletContext对象范围：所有用户所有请求的数据
+   * ServletContext 对象**范围**：==**所有用户所有请求的数据**==，共享所有用户数据。
 
 3. 获取文件的真实(服务器)路径
 
-   1. 方法：String getRealPath(String path)  
+   1. 方法：**String getRealPath(String path)**  
 
    ~~~java
    String b = context.getRealPath("/b.txt");	// web目录下资源访问
