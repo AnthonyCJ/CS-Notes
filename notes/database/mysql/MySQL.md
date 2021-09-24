@@ -1,4 +1,4 @@
-# 
+#MySQL 
 
 ---
 
@@ -2915,6 +2915,2501 @@ FROM products;
 
 
 
+#### 12.1.4 MIN()函数
+
+* MIN()的功能为返回指定列最小值。**要求指定列名**。
+
+**例**：
+
+#### 输入
+
+~~~mysql
+SELECT MIN(prod_price) AS min_price 
+FROM products;
+~~~
+
+#### 输出
+
+~~~bash
++-----------+
+| min_price |
++-----------+
+|      2.50 |
++-----------+
+1 row in set (0.00 sec)
+~~~
+
+
+
+> **对非数值数据使用MIN()**	与MAX()类似，对于文本数据，如果数据按相应的列排序，MIN() 返回最前面的行。
+
+> **NULL值**	MIN()函数忽略列值为NULL的行。
+
+
+
+### 12.1.5 SUM()函数
+
+* SUM()用于返回指定列值的和（总计）
+
+**例1**：检索 orderitems 表订单号 order_num 为20005的 quantity 列总数。
+
+#### 输入
+
+~~~mysql
+SELECT SUM(quantity) AS items_quantity 
+FROM orderitems 
+WHERE order_num = 20005;
+~~~
+
+#### 输出
+
+~~~bash
++----------------+
+| items_quantity |
++----------------+
+|             19 |
++----------------+
+1 row in set (0.00 sec)
+~~~
+
+**例2**：合计计算数值
+
+#### 输入
+
+~~~mysql
+SELECT SUM(item_price*quantity) AS total_price 
+FROM orderitems
+WHERE order_num = 2005;
+~~~
+
+#### 输出
+
+~~~bash
++-------------+
+| total_price |
++-------------+
+|        NULL |
++-------------+
+1 row in set (0.00 sec)
+~~~
+
+
+
+> **在多个列上进行计算**	如本例所示，利用标准的算术操作符，所有聚集函数都可用来执行多个列上的计算。
+
+> **NULL值**	SUM()忽略列值为NULL的行。
+
+
+
+
+
+## 12.2 聚集不同值
+
+以上的5个聚集函数都可以如下使用：
+
+* 对所有的行执行计算，指定ALL参数或不给参数（ALL时默认行为）；
+* 只包含不同的值，指定 **DISTINCT** 参数。
+
+
+
+**例**：使用AVG()函数 + DISTINCT 参数，只考虑不同的的价格
+
+#### 输入
+
+~~~mysql
+SELECT AVG(DISTINCT prod_price) AS avg_price 
+FROM products 
+WHERE vend_id = 1003;
+~~~
+
+#### 输出
+
+~~~bash
++-----------+
+| avg_price |
++-----------+
+| 15.998000 |
++-----------+
+1 row in set (0.01 sec)
+~~~
+
+
+
+#### DISTINCT 只能用于列名
+
+> 注意：如果指定列名，则DISTINCT只能用于COUNT(列名)。DISTINCT不能用于COUNT(*)，因此**不允许使用** **`COUNT(DISTINCT)`** ,否则会产生错误。
+
+
+
+
+
+## 12.3 组合聚集函数
+
+SELECT 语句可根据需要包含多个聚集函数
+
+例：
+
+#### 输入
+
+~~~mysql
+SELECT COUNT(*) AS num_items,
+	MIN(prod_price) AS price_min, 
+	MAX(prod_price) AS price_max, 
+	AVG(prod_price) AS price_avg 
+FROM products;
+~~~
+
+#### 输出
+
+~~~bash
++-----------+-----------+-----------+-----------+
+| num_items | price_min | price_max | price_avg |
++-----------+-----------+-----------+-----------+
+|        14 |      2.50 |     55.00 | 16.133571 |
++-----------+-----------+-----------+-----------+
+1 row in set (0.00 sec)
+~~~
+
+#### 分析
+
+**注意**：不同聚合函数调用之间要用**逗号分隔**。
+
+
+
+### 取别名
+
+> **取别名**	在指定别名以包含某个聚集函数的结果时，推荐使用 **AS 别名**。这样易于理解和使用（容易定位和排除故障）。
+
+
+
+
+
+## 12.4 小结
+
+使用聚集函数比客户机应用程序计算效率更高。
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 13.分组数据
+
+* 分组数据，以汇总表内容的子集。涉及如下两个SELECT语句子句：
+  * **GROUP BY** 子句
+  * **HAVING**  子句
+
+
+
+
+
+## 13.1 数据分组
+
+分组允许把数据分为多个逻辑组，以便能对每个组进行聚集运算。
+
+
+
+
+
+## 13.2 创建分组
+
+分组通过SELECT语句的 GROUP BY 子句创建
+
+**例**：
+
+#### 输入
+
+~~~mysql
+SELECT vend_id, COUNT(*) AS num_prods
+FROM products
+GROUP BY vend_id;
+~~~
+
+#### 输出
+
+~~~bash
++---------+-----------+
+| vend_id | num_prods |
++---------+-----------+
+|    1001 |         3 |
+|    1002 |         2 |
+|    1003 |         7 |
+|    1005 |         2 |
++---------+-----------+
+4 rows in set (0.00 sec)
+~~~
+
+#### 分析
+
+GROUP BY 子句指示MySQL按vend_id排序并分组数据。这导致对每个 vend_id 而不是整个表计算 num_prods 一次。
+
+
+
+**有关 GROUP BY 的重要规定**：
+
+* GROUP BY 子句可以包含任意数目的列。这使得能对分组进行嵌套，为数据分组提供更细致的控制。
+* 如果在 GROUP BY 子句中嵌套了分组，数据将在最后规定的分组上进行汇总。换句话说，在建立分组时，指定的所有列都一起计算（所以不能从个别的列取回数据）
+* GROUP BY 子句中列出的梅格列都必须是检索列或有效的表达式（单不能时聚集函数）。如果在SELECT中使用表达式，则必须去GROUP BY子句中指定相同的表达式，不能使用别名。
+* 除聚集计算语句之外，**SELECT语句中的每个列**都**必须在 GROUP BY 子句中给出**。
+* 如果分组列中具有NULL值，则NULL将作为一个分组返回。如果列中有多行NULL值，它们将分为一组。
+
+
+
+
+
+## 13.3 过滤分组
+
+* **WHERE** 子句用于**过滤行**
+* ==**HAVING**== 子句用与==**过滤分组**==
+
+> **HAVING支持所有WHERE操作符**	有关WHERE的所有技术和选项都适用于HAVING（如通配符条件和带多个操作符的子句），它们的语法时相同的，只是关键字有差别。
+
+例1：
+
+#### 输入
+
+~~~mysql
+SELECT cust_id, COUNT(*) AS orders 
+FROM orders 
+GROUP BY cust_id 
+HAVING COUNT(*) >= 2;
+~~~
+
+#### 输出
+
+~~~bash
++---------+--------+
+| cust_id | orders |
++---------+--------+
+|   10001 |      2 |
++---------+--------+
+1 row in set (0.02 sec)
+~~~
+
+#### 分析
+
+该语句前3行与上一个例子一致。最后一行为 HAVING 子句，过滤出两个以上订单的分组。
+
+
+
+#### HAVING 和 WHERE 的重要差别
+
+> WHERE 在数据分组前进行过滤，HAVING 在数据分组后进行过滤。
+>
+> WHERE 排除的行不包括在分组中，
+
+例2：WHERE 和 HAVING 同时使用的例子——列出具有2个及以上、价格为10及以上的产品的供应商
+
+#### 输入
+
+~~~mysql
+SELECT vend_id, COUNT(*) AS num_prods 
+FROM products 
+WHERE prod_price >= 10 
+GROUP BY vend_id 
+HAVING COUNT(*) >= 2;
+~~~
+
+#### 输出
+
+~~~bash
++---------+-----------+
+| vend_id | num_prods |
++---------+-----------+
+|    1003 |         4 |
+|    1005 |         2 |
++---------+-----------+
+2 rows in set (0.00 sec)
+~~~
+
+#### 分析
+
+分组的目的往往在于对目标组的数据进行运算或整合，所以 GROUP BY 经常与聚合函数联用。WHERE 子句初步过滤一些行，HAVING 子句进一步过滤一些组。
+
+
+
+
+
+## 13.4 分组和排序
+
+GROUP BY 和 ORDER BY 经常完成相同的工作，但它们是非常不同的。
+
+下表汇总了它们之间的差别。
+
+|                   ORDER BY                   |                           GROUP BY                           |
+| :------------------------------------------: | :----------------------------------------------------------: |
+|                  排序产生的                  |               分组行。但输出可能不是分组的顺序               |
+| 任意列都可以使用（甚至非选择的列也可以使用） | 只可能使用选择列或表达式列，而且**必须使用每个选择列表达式** |
+|                  不一定需要                  |       如果与聚集函数一起使用列（或表达式），则必须使用       |
+
+注意表中的第一项差别。一般在使用 GROUP BY 子句时，应该也给出 ORDER BY 子句。这是保证数据正确排序的唯一方法。不要仅依赖GROUP BY排序数据。
+
+**例**：检索总计订单价格大于等于50的订单的**订单号**和**总计订单价格**，并**按总计订单价格排序**。
+
+#### 输入
+
+~~~mysql
+SELECT order_num, SUM(quantity*item_price) AS ordertotal 
+FROM orderitems 
+GROUP BY order_num 
+HAVING SUM(quantity*item_price) >= 50 
+ORDER BY ordertotal;
+~~~
+
+#### 分析
+
+执行步骤：
+
+* FROM确定表
+* GROUP BY将行分组
+* 执行SUM()聚合函数
+* HAVING对分组过滤
+* SELECT选择指定的列
+* ORDER BY对分组排序
+
+#### 输出
+
+~~~bash
++-----------+------------+
+| order_num | ordertotal |
++-----------+------------+
+|     20006 |      55.00 |
+|     20008 |     125.00 |
+|     20005 |     149.87 |
+|     20007 |    1000.00 |
++-----------+------------+
+4 rows in set (0.06 sec)
+~~~
+
+
+
+ 
+
+
+
+## 13.5 SELECT子句书写顺序
+
+目前为止涉及到的**SELECT子句书写顺序**如下表
+
+|   子句    |        说明        |      是否必须使用      |
+| :-------: | :----------------: | :--------------------: |
+|  SELECT   | 要返回的列或表达式 |           是           |
+|   FROM    |  从中检索数据的表  | 仅在从表选择数据时使用 |
+|   WHERE   |      行级过滤      |           否           |
+| GROUP BY  |      分组说明      | 仅在按组计算聚集时使用 |
+|  HAVING   |      组级过滤      |           否           |
+| ORDERE BY |    输出排序顺序    |           否           |
+|   LIMIT   |    要检索的行数    |           否           |
+
+
+
+
+
+## 13.6 小结
+
+* 用SQL聚集函数对数据进行汇总计算
+  * 使用GROUP BY子句汇总计算，返回每个组的结果
+  * 使用HAVIGN子句过滤特定组
+  * ORDER BY和GROUP BY 的差异
+  * WHERE 和 HAVING 的差异
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 14. 使用子查询
+
+* 什么是子查询
+* 如何使用它们
+
+
+
+
+
+## 14.1 子查询
+
+> **版本要求**	MySQL4.1引入了对子查询的支持。
+
+* **查询（query）**：任何SQL语句都是查询。此术语一般是指SELECT语句。
+* **子查询（subquery）**：即嵌套在其他查询中的查询。
+
+
+
+
+
+## 14.2 利用子查询进行过滤
+
+订单存储在两张表中，客户存储在一张表中。
+
+**orders**表存储**订单号**、**客户ID**、**订单日期**。
+
+**orderitems**表存储各**订单的物品**。
+
+**customers**表存储**客户信息**。
+
+
+
+目标：列出**订购物品TNT2的所有用户**。检索步骤如下：
+
+1. 检索包含物品TNT2的所有订单的编号。
+
+   * 输入
+
+     ~~~mysql
+     SELECT order_num 
+     FROM orderitems 
+     WHERE prod_id = 'TNT2';
+     ~~~
+
+   * 输出
+
+     ~~~bash
+     +-----------+
+     | order_num |
+     +-----------+
+     |     20005 |
+     |     20007 |
+     +-----------+
+     2 rows in set (0.01 sec)
+     ~~~
+
+     
+
+2. 检索具有前一步骤列出的订单编号的所有客户的ID。
+
+   * 输入
+
+     ~~~mysql
+     SELECT cust_id 
+     FROM orders 
+     WHERE order_num IN (20005, 20007);
+     ~~~
+
+   *  输出
+
+     ~~~bash
+     +---------+
+     | cust_id |
+     +---------+
+     |   10001 |
+     |   10004 |
+     +---------+
+     2 rows in set (0.00 sec)
+     ~~~
+
+     
+
+3. 检索前一步骤返回的所有客户ID的客户信息。
+
+   * 输入
+
+     ~~~mysql
+     SELECT cust_name, cust_contact 
+     FROM customers 
+     WHERE cust_id IN (10001, 10004);
+     ~~~
+
+   * 输出
+
+     ~~~bash
+     +----------------+--------------+
+     | cust_name      | cust_contact |
+     +----------------+--------------+
+     | Coyote Inc.    | Y Lee        |
+     | Yosemite Place | Y Sam        |
+     +----------------+--------------+
+     2 rows in set (0.00 sec)
+     ~~~
+
+
+
+现在，将三个查询合并：
+
+#### 输入
+
+~~~mysql
+SELECT cust_name, cust_contact 
+FROM customers 
+WHERE cust_id IN (SELECT cust_id 
+                  FROM orders 
+                  WHERE order_num IN (SELECT order_num 
+                                      FROM orderitems 
+                                      WHERE prod_id = 'TNT2'));
+~~~
+
+#### 输出
+
+~~~bash
++----------------+--------------+
+| cust_name      | cust_contact |
++----------------+--------------+
+| Coyote Inc.    | Y Lee        |
+| Yosemite Place | Y Sam        |
++----------------+--------------+
+2 rows in set (0.01 sec)
+~~~
+
+#### 分析
+
+在SELECT语句中，子查询总是从内向外处理。最里面的子查询返回订单号列表，中间的子查询返回客户ID列表，最外层的SELECT语句根据客户ID列表查询客户信息。
+
+
+
+在实际使用时，由于性能的限制，不能嵌套太多的子查询。
+
+> **列必须匹配**	在WHERE子句中使用子查询，应该保证SELECT语句具有与WHERE子句中相同数目的列。通常，子查询将返回单个列并与单个列匹配，但如果需要也可以使用多个列。
+
+虽然子查询一般与**`IN`**操作符结合使用，但也可以用于测试等于（=）、不等于（<>）等。
+
+> **子查询和性能**	之里给出的代码有效并能够获取所需结果。但使用子查询并不总是执行该种数据检索的最有效办法。15节将给出更多论述。
+
+
+
+
+
+## 14.3 作为计算字段使用子查询
+
+**例**：要显示customers表中每个客户的订单总数。订单与相应的客户ID存储在orders表中。
+
+为了对每个客户执行`COUNT(*)`计算，应该将 `COUNT(*)`作为一个子查询。
+
+#### 输入
+
+~~~mysql
+SELECT cust_name, 
+	cust_state, 
+	(SELECT COUNT(*)
+     FROM orders 
+     WHERE orders.cust_id = customers.cust_id) AS orders 
+FROM customers 
+ORDER BY cust_name;
+~~~
+
+#### 输出
+
+~~~bash
++----------------+------------+--------+
+| cust_name      | cust_state | orders |
++----------------+------------+--------+
+| Coyote Inc.    | MI         |      2 |
+| E Fudd         | IL         |      1 |
+| Mouse House    | OH         |      0 |
+| Wascals        | IN         |      1 |
+| Yosemite Place | AZ         |      1 |
++----------------+------------+--------+
+5 rows in set (0.01 sec)
+~~~
+
+#### 分析
+
+orders是一个计算字段，它是由圆括号中的子查询建立的。该子查询对检索出的每个客户执行一次。在此例子中，该子查询执行了5次，因为检索出了5个客户。
+
+
+
+
+
+## 14.4 小结
+
+* 子查询最常见的使用是在WHERE子句的IN操作符中，以及用来填充计算列。
+* 推荐先建立最内层的查询，然后逐步用硬编码数据建立和测试外层查询，确认正确后再嵌入子查询，并再次测试它。
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 15. 联结表
+
+* 什么是联结
+* 为什么要使用联结
+* 如何编写使用联结的SELECT语句
+
+
+
+联结：就是把两张表通过两个字段一一对应的关系按行联系起来，使之从一个表的数据查询到另外一张表的数据。JOIN 概念包括内联（**INNER JOIN**）、外联（**LEFT OUTER JOIN**, **RIGHT OUTER JOIN**, **FULL OUTER JOIN**）
+
+* 内联：涉及**两张表相关联字段一一对应**的关系，即**每一对相联结的属性均有值**。
+* 外联：两张表内联的部分 + **附表**所“附加”的，**还没有与主表构成对应关系的记录**。这种情况所查询出来的**附表字段均有值**，而**主表对应属性可能为NULL**。
+
+
+
+
+
+
+
+## 15.1 联结
+
+SQL最**强大的功能之一**就是能在数据检索查询的执行中**联结（join）表**。联结是利用SQL的SELECT能执行的**最重要**的操作。
+
+使用联结前，需要了解关系表以及关系数据库的一些基础知识。
+
+
+
+### 15.1.1 关系表
+
+相同数据出现多次绝不是一件好事，次因素是关系数据库设计的基础。关系表的设计就是要保证把信息分解成多个表，一类数据一个表。各表通过某些常用的值（即关系数据库中的关系（relational））互相关联。
+
+* **外键（foreign key）**：外键为某个表中的一列，它包含另一个表的主键值，定义了两个表之间的关系。
+
+关系数据可以有效地存储和方便地处理。关系数据库的可伸缩性远比非关系数据库要好。
+
+* **可伸缩性（scale）**：能够适应不断增加的工作量而不失败。设计良好的数据库或应用程序称之为可伸缩性好（scale well）。
+
+
+
+### 15.1.2 为什么要使用联结
+
+分解数据为多个表能够更有效地存储，更方便地处理，并且具有更大的可伸缩性。
+
+数据存储在多个表中，如何用单条SELECT语句检索出数据？
+
+方法为：使用联结。简单来说，**联结是一种机制，用来在一条SELECT语句中关联表**，因此称之为联结。使用特殊的语法，可以联结多个表返回一组输出，联结在运行时关联表中正确的行。
+
+#### 维护引用完整性
+
+> ==**维护引用完整性**==	重要的是，**要理解联结不是物理实体**。换句话说，它在实际的数据库表中不存在。**联结由MySQL根据需要建立**，它**存在于查询的执行当中**。
+>
+> 在使用关系表时，仅在关系列中插入合法的数据非常重要。如果管系列数据非法，将无法访问到另一个表中的数据。
+>
+> 为防止这种情况发生，可指示MySQL只允许在某表的外键列中出现合法值（即出现在另一张表主键中的值）。这就是**维护引用完整性**。它是**通过在表的定义中指定主键和外键来实现的**。
+
+
+
+
+
+## 15.2 创建联结
+
+联结的创建非常简单，规定要联结的所有表以及它们如何关联即可。
+
+例：
+
+#### 输入
+
+~~~mysql
+SELECT vend_name, prod_name, prod_price 
+FROM vendors, products 
+WHERE vendors.vend_id = products.vend_id 
+ORDER BY vend_name, prod_name;
+~~~
+
+#### 输出
+
+~~~bash
++-------------+----------------+------------+
+| vend_name   | prod_name      | prod_price |
++-------------+----------------+------------+
+| ACME        | Bird seed      |      10.00 |
+| ACME        | Carrots        |       2.50 |
+| ACME        | Detonator      |      13.00 |
+| ACME        | Safe           |      50.00 |
+| ACME        | Sling          |       4.49 |
+| ACME        | TNT (1 stick)  |       2.50 |
+| ACME        | TNT (5 sticks) |      10.00 |
+| Anvils R Us | .5 ton anvil   |       5.99 |
+| Anvils R Us | 1 ton anvil    |       9.99 |
+| Anvils R Us | 2 ton anvil    |      14.99 |
+| Jet Set     | JetPack 1000   |      35.00 |
+| Jet Set     | JetPack 2000   |      55.00 |
+| LT Supplies | Fuses          |       3.42 |
+| LT Supplies | Oil can        |       8.99 |
++-------------+----------------+------------+
+14 rows in set (0.00 sec)
+~~~
+
+#### 分析
+
+SELECT语句最大的差别是所指定的两个列（prod_name和prod_price）在一个表中，而另一个列（vend_name）在另一个表中。
+
+FROM子句列出了两个表。这两个表用WHERE子句正确联结，WHERE子句指示MySQL匹配vendors表中的vend_id和products表中的vend_id。
+
+> 注：在引用的列可能出现二义性时，必须使用**完全限定列名**（用一个点分隔的表名和列名）。
+
+
+
+### 15.2.1 WHERE子句的重要性
+
+在联结表时，会形成从第一张表到第二张表的笛卡尔积，即将第一张表中的每一个行与第二个表中的每一个行配对。WHERE子句作为过滤条件，只包含哪些匹配给定条件（此处为联结条件）的行。
+
+* **笛卡尔积（cartesian product）**：由**没有联结条件**的表关系返回的结果为笛卡尔积。检索出的行数将是第一个表的行数乘以第二个表中的行数。
+
+例：笛卡尔积举例
+
+#### 输入
+
+~~~mysql
+SELECT vend_name, prod_name, prod_price 
+FROM vendors, products 
+ORDER BY vend_name, prod_name;
+~~~
+
+#### 输出
+
+~~~bash
++----------------+----------------+------------+
+| vend_name      | prod_name      | prod_price |
++----------------+----------------+------------+
+| ACME           | .5 ton anvil   |       5.99 |
+| ACME           | 1 ton anvil    |       9.99 |
+| ACME           | 2 ton anvil    |      14.99 |
+| ACME           | Bird seed      |      10.00 |
+| ACME           | Carrots        |       2.50 |
+| ACME           | Detonator      |      13.00 |
+| ACME           | Fuses          |       3.42 |
+| ACME           | JetPack 1000   |      35.00 |
+| ACME           | JetPack 2000   |      55.00 |
+| ACME           | Oil can        |       8.99 |
+| ACME           | Safe           |      50.00 |
+| ACME           | Sling          |       4.49 |
+| ACME           | TNT (1 stick)  |       2.50 |
+| ACME           | TNT (5 sticks) |      10.00 |
+| Anvils R Us    | .5 ton anvil   |       5.99 |
+| Anvils R Us    | 1 ton anvil    |       9.99 |
+| Anvils R Us    | 2 ton anvil    |      14.99 |
+| Anvils R Us    | Bird seed      |      10.00 |
+| Anvils R Us    | Carrots        |       2.50 |
+| Anvils R Us    | Detonator      |      13.00 |
+| Anvils R Us    | Fuses          |       3.42 |
+| Anvils R Us    | JetPack 1000   |      35.00 |
+| Anvils R Us    | JetPack 2000   |      55.00 |
+| Anvils R Us    | Oil can        |       8.99 |
+| Anvils R Us    | Safe           |      50.00 |
+| Anvils R Us    | Sling          |       4.49 |
+| Anvils R Us    | TNT (1 stick)  |       2.50 |
+| Anvils R Us    | TNT (5 sticks) |      10.00 |
+| Furball Inc.   | .5 ton anvil   |       5.99 |
+| Furball Inc.   | 1 ton anvil    |       9.99 |
+| Furball Inc.   | 2 ton anvil    |      14.99 |
+| Furball Inc.   | Bird seed      |      10.00 |
+| Furball Inc.   | Carrots        |       2.50 |
+| Furball Inc.   | Detonator      |      13.00 |
+| Furball Inc.   | Fuses          |       3.42 |
+| Furball Inc.   | JetPack 1000   |      35.00 |
+| Furball Inc.   | JetPack 2000   |      55.00 |
+| Furball Inc.   | Oil can        |       8.99 |
+| Furball Inc.   | Safe           |      50.00 |
+| Furball Inc.   | Sling          |       4.49 |
+| Furball Inc.   | TNT (1 stick)  |       2.50 |
+| Furball Inc.   | TNT (5 sticks) |      10.00 |
+| Jet Set        | .5 ton anvil   |       5.99 |
+| Jet Set        | 1 ton anvil    |       9.99 |
+| Jet Set        | 2 ton anvil    |      14.99 |
+| Jet Set        | Bird seed      |      10.00 |
+| Jet Set        | Carrots        |       2.50 |
+| Jet Set        | Detonator      |      13.00 |
+| Jet Set        | Fuses          |       3.42 |
+| Jet Set        | JetPack 1000   |      35.00 |
+| Jet Set        | JetPack 2000   |      55.00 |
+| Jet Set        | Oil can        |       8.99 |
+| Jet Set        | Safe           |      50.00 |
+| Jet Set        | Sling          |       4.49 |
+| Jet Set        | TNT (1 stick)  |       2.50 |
+| Jet Set        | TNT (5 sticks) |      10.00 |
+| Jouets Et Ours | .5 ton anvil   |       5.99 |
+| Jouets Et Ours | 1 ton anvil    |       9.99 |
+| Jouets Et Ours | 2 ton anvil    |      14.99 |
+| Jouets Et Ours | Bird seed      |      10.00 |
+| Jouets Et Ours | Carrots        |       2.50 |
+| Jouets Et Ours | Detonator      |      13.00 |
+| Jouets Et Ours | Fuses          |       3.42 |
+| Jouets Et Ours | JetPack 1000   |      35.00 |
+| Jouets Et Ours | JetPack 2000   |      55.00 |
+| Jouets Et Ours | Oil can        |       8.99 |
+| Jouets Et Ours | Safe           |      50.00 |
+| Jouets Et Ours | Sling          |       4.49 |
+| Jouets Et Ours | TNT (1 stick)  |       2.50 |
+| Jouets Et Ours | TNT (5 sticks) |      10.00 |
+| LT Supplies    | .5 ton anvil   |       5.99 |
+| LT Supplies    | 1 ton anvil    |       9.99 |
+| LT Supplies    | 2 ton anvil    |      14.99 |
+| LT Supplies    | Bird seed      |      10.00 |
+| LT Supplies    | Carrots        |       2.50 |
+| LT Supplies    | Detonator      |      13.00 |
+| LT Supplies    | Fuses          |       3.42 |
+| LT Supplies    | JetPack 1000   |      35.00 |
+| LT Supplies    | JetPack 2000   |      55.00 |
+| LT Supplies    | Oil can        |       8.99 |
+| LT Supplies    | Safe           |      50.00 |
+| LT Supplies    | Sling          |       4.49 |
+| LT Supplies    | TNT (1 stick)  |       2.50 |
+| LT Supplies    | TNT (5 sticks) |      10.00 |
++----------------+----------------+------------+
+84 rows in set (0.01 sec)
+~~~
+
+
+
+> **不要忘记WHERE子句**	应该保证所有联结都有WHERE子句。同时应该保证WHERE子句的正确性。
+
+
+
+### 15.2.2 内部联结
+
+目前为止所使用的联结称为**等值联结**（equijoin），它基于两个表之间的相等测试。这种链接也成为**内部联结**。可以使用特殊的语法来明确指定联结的类型。
+
+例：
+
+#### 输入
+
+~~~mysql
+SELECT vend_name, prod_name, prod_price 
+FROM vendors INNER JOIN products 
+ON vendors.vend_id = products.vend_id;
+~~~
+
+#### 分析
+
+这里，两个表之间的关系是FROM子句的组成部分，以INNER JOIN指定。在使用这种语法时，联结条件用特定的ON子句而不是WHERE子句给出。传递给ON的实际条件与传递给WHERE的相同。
+
+> **使用哪种语法**	ANSI SQL规范首选INNER JOIN语法。
+
+
+
+### 15.2.3 联结多个表
+
+列出所有表，定义表之间的关系。
+
+例1：
+
+#### 输入
+
+~~~mysql
+SELECT prod_name, vend_name, prod_price, quantity
+FROM orderitems, products, vendors 
+WHERE products.vend_id = vendors.vend_id 
+    AND orderitems.prod_id = products.prod_id 
+    AND order_num = 20005;
+~~~
+
+#### 输出
+
+~~~bash
++----------------+-------------+------------+----------+
+| prod_name      | vend_name   | prod_price | quantity |
++----------------+-------------+------------+----------+
+| .5 ton anvil   | Anvils R Us |       5.99 |       10 |
+| 1 ton anvil    | Anvils R Us |       9.99 |        3 |
+| TNT (5 sticks) | ACME        |      10.00 |        5 |
+| Bird seed      | ACME        |      10.00 |        1 |
++----------------+-------------+------------+----------+
+4 rows in set (0.00 sec)
+~~~
+
+> **性能考虑**	联结的表越多，性能下降越厉害，所以不要联结不必要的表。
+
+
+
+例2：14章的例子使用联结重写。
+
+使用**IN关键字**的**原解法**：
+
+#### 输入
+
+~~~mysql
+SELECT cust_name, cust_contact 
+FROM customers 
+WHERE cust_id IN (SELECT cust_id 
+                  FROM orders 
+                  WHERE order_num IN  (SELECT order_num 
+                                      FROM orderitems 
+                                      WHERE prod_id = 'TNT2'));
+~~~
+
+使用**联结**的**新解法**
+
+#### 输入
+
+~~~mysql
+SELECT cust_name, cust_contact 
+FROM customers, orders, orderitems 
+WHERE customers.cust_id = orders.cust_id 
+    AND orders.order_num = orderitems.order_num
+    AND orderitems.prod_id = 'TNT2';
+~~~
+
+#### 输出
+
+~~~bash
++----------------+--------------+
+| cust_name      | cust_contact |
++----------------+--------------+
+| Coyote Inc.    | Y Lee        |
+| Yosemite Place | Y Sam        |
++----------------+--------------+
+2 rows in set (0.00 sec)
+~~~
+
+#### 分析
+
+这里没有使用嵌套子查询，而是使用两个联结。这里有3个WHERE子句条件。前面两个关联联结中的表，后一个过滤产品TNT2的数据。
+
+
+
+
+
+## 15.3 小结
+
+* 联结的概念
+* 等值联结（内部联结）。
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 16. 创建高级联结
+
+* 另外一些联结类型（包括含义和使用方法）。
+* 介绍如何对被联结的表使用表别名和聚集函数。
+
+
+
+
+
+## 16.1 使用表别名
+
+表别名的作用：
+
+* 缩短SQL语句。
+* 允许在单条SELECT语句中多次使用相同的表。
+
+例：
+
+#### 输入
+
+~~~mysql
+SELECT cust_name, cust_contact
+FROM customers AS c, orders AS o, orderitems AS oi 
+WHERE c.cust_id = o.cust_id 
+	AND oi.order_num = o.order_num 
+	AND prod_id = 'TNT2';
+~~~
+
+#### 分析
+
+表别名还可以用于SELECT的列表，ORDER BY子句以及语句的其他部分。
+
+==**注意**==：**表别名只在查询执行中使用**。与列别名不一样，**表别名不返回到客户机**。
+
+
+
+
+
+## 16.2 使用不同类型的联结
+
+四种联结：等值联结、自联结、自然联结、外部联结
+
+
+
+### 16.2.1 自联结
+
+例：假如某物品（ID为DTNTR）存在问题，想知道生产该物品的供应商生产的其他物品是否也存在这些问题。次查询要求首先找到生产ID（prod_id）为DTNTR的物品的供应商 vend_id，然后找出这个供应商生产的其他物品 （prod_id, prod_name）。
+
+#### 输入
+
+~~~mysql
+SELECT p1.prod_id, p1.prod_name 
+FROM products AS p1, products AS p2 
+WHERE p1.vend_id = p2.vend_id;
+	AND p2.prod_id = 'DTNTR';	-- 正确输入
+	
+SELECT p1.prod_id, p1.prod_name 
+FROM products AS p1
+WHERE p1.vend_id = p1.vend_id
+	AND p1.prod_id = 'DTNTR';	-- 错误输入
+~~~
+
+#### 输出
+
+~~~bash
++---------+----------------+
+| prod_id | prod_name      |
++---------+----------------+
+| DTNTR   | Detonator      |
+| FB      | Bird seed      |
+| FC      | Carrots        |
+| SAFE    | Safe           |
+| SLING   | Sling          |
+| TNT1    | TNT (1 stick)  |
+| TNT2    | TNT (5 sticks) |
++---------+----------------+
+7 rows in set (0.00 sec)	-- 正确输出
+
++---------+-----------+
+| prod_id | prod_name |
++---------+-----------+
+| DTNTR   | Detonator |
++---------+-----------+
+1 row in set (0.00 sec)		-- 错误输出（只查询到了自己）
+~~~
+
+#### 分析
+
+此查询中需要的两个表实际上是相同的表，因此products表在FROM子句中出现两次。虽然是合法的，但对products的引用具有二义性。
+
+为解决此问题，使用了表别名。WHERE（通过匹配p1中的vend_id和p2中的vend_id）首先联结两个表，然后按第二个表中的prod_id过滤数，返回所需的数据。
+
+> **用自联结而不是子查询**	自联结通常作为外部语句用来替代从相同表中检索数据时使用的子查询语句。虽然最终的结果是相同的，但有时候处理联结远比处理子查询快得多。应该尝试并比较一下二者的性能哪个更好。
+
+
+
+### 16.2.2 自然联结
+
+在自然联结中，你只能选择哪些唯一的列。这一般要求通过对表使用通配符（SELECT *），对所有其他表的列使用明确的子集来完成。
+
+
+
+### 16.2.3 外部联结
+
+在一个表与另一个表相联结时，有时会需要包含没有关联的行。例如，可能会需要用联结完成以下工作：
+
+* 对每个客户下了多少订单进行计数，**包括**那些至今**尚未下单的客户**。
+* 列出所有产品以及订购数量，**包括没有人订购的产品**。
+* 计算平均销售规模，**包括**那些至今**尚未下单的客户**。
+
+在上述例子中，联结**包含了**那些==**在相关表中没有关联的行**==。这种类型的联结称为==**外部联结**==。
+
+下面的SELECT语句给出一个简单的内部联结，检索所有客户及其订单：
+
+#### 输入
+
+~~~mysql
+SELECT customers.cust_id, orders.order_num 
+FROM customers INNER JOIN orders 
+ON customers.cust_id = orders.cust_id;
+~~~
+
+#### 输出
+
+~~~bash
++---------+-----------+
+| cust_id | order_num |
++---------+-----------+
+|   10001 |     20005 |
+|   10001 |     20009 |
+|   10003 |     20006 |
+|   10004 |     20007 |
+|   10005 |     20008 |
++---------+-----------+
+5 rows in set (0.00 sec)
+~~~
+
+外部联结语法类似，但可以检索所有客户，**包括那些没有订单的客户**【此处customers表的表列要求出给出“**全集**”】，语句如下：
+
+#### 输入
+
+~~~mysql
+SELECT customers.cust_id, orders.order_num 
+FROM customers LEFT OUTER JOIN orders 
+ON customers.cust_id = orders.cust_id;
+~~~
+
+#### 输出
+
+~~~bash
++---------+-----------+
+| cust_id | order_num |
++---------+-----------+
+|   10001 |     20005 |
+|   10001 |     20009 |
+|   10002 |      NULL |
+|   10003 |     20006 |
+|   10004 |     20007 |
+|   10005 |     20008 |
++---------+-----------+
+~~~
+
+
+
+在使用OUTER JOIN语法时，必须使用 RIGHT 或 LEFT 关键字指定包括其所有行的表。（RIGHT指出的是OUTER JOIN右边的表，而LEFT 指出的是 OUTER JOIN 左边的表。
+
+> **联结语法的顺序可自由调整**，可由不同顺序实现相同的联结关系。
+
+
+
+
+
+## 16.3 使用带聚集函数的联结
+
+聚集函数可以与联结共同使用。
+
+**例1**：检索所有客户【给出cust_name, cust_id】即每个客户所下的订单数【此处使用 GROUP BY 按 cust_id 分组，聚集函数COUNT()求订单数量 + 别名】。
+
+~~~mysql
+SELECT customers.cust_name, 
+	customers.cust_id, 
+	COUNT(orders.order_num) AS num_ord 
+FROM customers INNER JOIN orders 
+ON customers.cust_id = orders.cust_id 
+GROUP BY customers.cust_id;
+-- 聚合函数的另一种调用
+SELECT customers.cust_name, 
+	customers.cust_id, 
+	COUNT(orders.cust_id) AS num_ord 
+FROM customers INNER JOIN orders 
+ON customers.cust_id = orders.cust_id 
+GROUP BY customers.cust_id;
+~~~
+
+#### 输出
+
+~~~bash
++----------------+---------+---------+
+| cust_name      | cust_id | num_ord |
++----------------+---------+---------+
+| Coyote Inc.    |   10001 |       2 |
+| Wascals        |   10003 |       1 |
+| Yosemite Place |   10004 |       1 |
+| E Fudd         |   10005 |       1 |
++----------------+---------+---------+
+~~~
+
+#### 分析
+
+INNER JOIN将customers和orders表互相关联。GROUP BY 按客户分组数据；COUNT()对每个客户的订单计数，将它作为num_ord返回。
+
+
+
+聚集函数也可以和其他联结一起使用。
+
+#### 输入
+
+~~~mysql
+SELECT customers.cust_name, 
+	customers.cust_id, 
+	COUNT(orders.order_num) AS num_ord 
+FROM customers LEFT OUTER JOIN orders 
+ON customers.cust_id = orders.cust_id 
+GROUP BY customers.cust_id;
+~~~
+
+#### 输出
+
+~~~bash
++----------------+---------+---------+
+| cust_name      | cust_id | num_ord |
++----------------+---------+---------+
+| Coyote Inc.    |   10001 |       2 |
+| Mouse House    |   10002 |       0 |
+| Wascals        |   10003 |       1 |
+| Yosemite Place |   10004 |       1 |
+| E Fudd         |   10005 |       1 |
++----------------+---------+---------+
+~~~
+
+
+
+
+
+## 16.4 使用联结和联结条件
+
+以下为关于联结及其使用的某些要点：
+
+* ==**注意所使用的联结类型**==。**一般**我们**使用内部联结**，但使用外部连接也是有效的。
+* 保证==**使用正确的联结条件**==，否则将返回不正确的数据。
+* 应该总是==**提供连接条件**==，否则会得出笛卡尔积。
+* 在一个联结中可以包含多个表，甚至对于每个联结可以采用不同的联结类型。注意分别测试每个联结，简化故障排除过程。
+
+
+
+
+
+## 16.5 小结
+
+假设查询语句是：
+
+```mysql
+SELECT ... 
+FROM tableA ??? JOIN tableB 
+ON tableA.column1 = tableB.column2;
+```
+
+我们把tableA看作左表，把tableB看成右表，那么 **INNER JOIN** 是选出两张表都存在的记录：
+
+<img src="image-20210923082407583.png" style="zoom:67%;" />
+
+**LEFT OUTER JOIN** 是选出左表存在的记录：
+
+![image-20210922214104970](image-20210922214104970.png)
+
+**RIGHT OUTER JOIN** 是选出右表存在的记录：
+
+![](image-20210922214200926.png)
+
+**FULL OUTER JOIN** 则是选出左右表都存在的记录：
+
+<img src="image-20210923082313943.png" style="zoom:67%;" />
+
+### 注意：
+
+* JOIN查询需要**先确定主表**，然后把**另一个表的数据**“**附加**”到结果集上；
+
+  ~~~MYSQL
+  SELECT ...
+  FROM 附表 LEFT OUTER JOIN 主表
+  ON ...
+  ~~~
+
+* INNER JOIN是最常用的一种JOIN查询，它的语法是`SELECT ... FROM <表1> INNER JOIN <表2> ON <条件...>`；
+
+* JOIN查询仍然可以使用`WHERE`条件和`ORDER BY`排序。
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 17. 组合查询
+
+* 利用 UNION 操作符将多条SELECT语句组合成一个结果集。
+
+
+
+
+
+## 17.1 组合查询
+
+多数SQL查询都只包含从一个或多个表中返回数据的单条SELECT语句。MySQL也允许==**执行多个查询（多条SELECT语句），并将结果作为单个查询结果集返回**==。这些组合查询通常称为**并（union）**或**复合查询（compound query）**。
+
+* 以下两种基本情况，需要使用组合查询：
+  * 在**单个查询**中从**不同的表**返回**类似结构的数据**。
+  * 对**单个表执**行**多个查询**，**按单个查询返回数据**。
+
+> **组合查询和多个WHERE条件**	多数情况下，组合相同表的两个查询完成的工作与具有多个WHERE子句的SELECT语句完成的工作相同。但二者的性能可能会不同。
+
+
+
+
+
+## 17.2 创建组合查询
+
+可用UNION操作符来组合数条SQL查询。利用UNION，可给出多条SELECT语句，将它们的结果组合成单个结果集。
+
+
+
+
+
+### 17.2.1 使用UNION
+
+使用方法：**给出每条SELECT语句，在各条语句之间放上关键字UNION**。
+
+**例**：检索价格小于等于5的所有物品的一个 列表，同时还包括供应商1001，1002生产的所有物品（不考虑价格）。
+
+#### 输入
+
+~~~mysql
+SELECT vend_id, prod_id, prod_price 
+FROM products 
+WHERE prod_price <= 5 
+UNION -- UNION 组合两条SELECT语句
+SELECT vend_id, prod_id, prod_price 
+FROM products 
+WHERE vend_id IN (1001,1002);
+~~~
+
+#### 输出
+
+~~~bash
++---------+---------+------------+
+| vend_id | prod_id | prod_price |
++---------+---------+------------+
+|    1003 | FC      |       2.50 |
+|    1002 | FU1     |       3.42 |
+|    1003 | SLING   |       4.49 |
+|    1003 | TNT1    |       2.50 |	#这里以上为第一条SELECT子句的查询结果
+|    1001 | ANV01   |       5.99 |	#这里以下为第二条SELECT子句的查询结果
+|    1001 | ANV02   |       9.99 |
+|    1001 | ANV03   |      14.99 |
+|    1002 | OL1     |       8.99 |
++---------+---------+------------+	#共8行结果，其中1行重复记录已被自动去除
+~~~
+
+#### 分析
+
+这条语句由两条SELECT语句组成，语句中的UNION关键字分隔。UNION指示MySQL执行两条SELECT语句，并把输出组合成单个查询结果集。
+
+
+
+作为参考，在这里给出使用多条WHERE子句而不是使用UNION的相同查询语句。
+
+#### 输入
+
+~~~mysql
+SELECT vend_id, prod_id, prod_price 
+FROM products
+WHERE prod_price <=5 
+	OR vend_id IN (1001,1002);
+~~~
+
+#### 分析
+
+在这里，使用UNION比WHERE子句更复杂。但对于更复杂的过滤条件，或从多个表中检索数据时，使用UNION可能会使处理更简单。
+
+
+
+### 17.2.2 UNION规则
+
+UNION有几条规则需要注意。
+
+* UNION必须由两条或两条以上的SELECT语句组成，语句之间用关键字UNION分隔（例：组合4条SELECT语句，需要使用3个UNION关键字）。
+* UNION中的**每个查询**必须**包含相同的列、表达式或聚集函数**（各个列不需要以相同的次序列出，但这样结果集中相同列的数据将不一致。）
+* 列数据类型必须兼容：类型不必完全相同，但必须是DBMS可以隐含地转换的类型（例如，不同的数值类型或不同的日期类型）。
+
+遵守这些基本规则或限制，则可以将UNION用于任何数据检索的任务。
+
+
+
+### 17.2.3 包含或取消重复的行
+
+UNION从查询结果集中自动去除了重复的行。
+
+这是UNION的默认行为，如果需要不去除重复的行，即返回所有匹配行，可以使用 **UNION ALL** 关键字。
+
+例：与17.2.1的需求一致
+
+#### 输入
+
+~~~mysql
+SELECT vend_id, prod_id, prod_price 
+FROM products 
+WHERE prod_price <= 5 
+UNION ALL	-- UNION ALL 返回所有匹配行
+SELECT vend_id, prod_id, prod_price 
+FROM products 
+WHERE vend_id IN (1001,1002);
+~~~
+
+#### 输出
+
+~~~bash
++---------+---------+------------+
+| vend_id | prod_id | prod_price |
++---------+---------+------------+
+|    1003 | FC      |       2.50 |
+|    1002 | FU1     |       3.42 |
+|    1003 | SLING   |       4.49 |
+|    1003 | TNT1    |       2.50 |
+|    1001 | ANV01   |       5.99 |
+|    1001 | ANV02   |       9.99 |
+|    1001 | ANV03   |      14.99 |
+|    1002 | FU1     |       3.42 |
+|    1002 | OL1     |       8.99 |
++---------+---------+------------+	#共9条结果
+~~~
+
+
+
+### 17.2.4 对组合查询结果排序
+
+使用UNION组合查询时，只允许使用一条ORDER BY子句，它必须出现在最后一条SELECT语句之后。MySQL将按照它排序所有返回的结果。
+
+例：排序之前检索的内容。
+
+#### 输入
+
+~~~mysql
+SELECT vend_id, prod_id, prod_price 
+FROM products 
+WHERE prod_price <= 5 
+UNION 
+SELECT vend_id, prod_id, prod_price 
+FROM products 
+WHERE vend_id IN (1001,1002) 
+ORDER BY vend_id, prod_price;	-- 指明排序标准
+~~~
+
+#### 输出
+
+~~~bash
++---------+---------+------------+
+| vend_id | prod_id | prod_price |
++---------+---------+------------+
+|    1001 | ANV01   |       5.99 |
+|    1001 | ANV02   |       9.99 |
+|    1001 | ANV03   |      14.99 |
+|    1002 | FU1     |       3.42 |
+|    1002 | OL1     |       8.99 |
+|    1003 | FC      |       2.50 |
+|    1003 | TNT1    |       2.50 |
+|    1003 | SLING   |       4.49 |
++---------+---------+------------+
+~~~
+
+
+
+> **组合不同的表**	使用UNION可以应用于不同的表。
+
+
+
+
+## 17.3 小结
+
+* 利用UNION，可以把多条查询结果作为一条组合查询返回，不管它们的结果是否包含重复。
+* 使用**UNION**可极大地**简化复杂的WHERE子句**，**简化从多个表中检索数据的工作**。
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 18. 全文本搜索
+
+* 使用MySQL的全文本搜索功能进行高级的数据查询和选择
+
+
+
+
+
+## 18.1 理解全文本搜索
+
+> **并非所有引擎都支持全文本搜索**	如21节所述，MySQL支持几种基本的数据引擎。两个最常使用的引擎为 **MyISAM** 和 **InnoDB**。**前者支持**全文本搜索，而==**后者【InnoDB】不支持**==。所以如果要使用全文本搜索功能，建表时**注意存储引擎的选择**。
+
+* 回顾：
+  * 第8节的**LIKE**关键字——利用通配操作符匹配文本（和部分文本）。使用LIKE，能够查找包含特殊值或部分值得行（不管这些值位于列内什么位置）。
+  * 第9节的**正则表达式**——可编写查找所需行的非常复杂的匹配模式。
+* 分析
+  * 这些搜索机制非常有用，但存在几个限制
+    * 性能——通配符和正则表达式匹配通常要求MySQL尝试匹配表中所有行。因此，由于被搜索行数不断增加，这些搜索可能非常耗时。
+    * 明确控制——使用通配符和正则表达式很难明确地控制匹配什么和不匹配什么。
+    * 智能化的结果——不嫩提供一种智能化的选择结果的方法（如按匹配相关度排序等）。
+
+这些限制都可用MySQL的全文本搜索来解决。使用MySQL的全文本搜索时，MySQL不需要分别查看每个行，不需要分别分析和处理每个词。**MySQL创建指定列中各词的一个索引**，搜索可以针对这些词进行。
+
+
+
+
+
+## 18.2 使用全文本搜索
+
+为了进行全文本搜索，**必须索引被搜索的列**。而且要随着数据的改变不断地重新索引。在对表列进行适当设计后，MySQL会自动进行所有的索引和重新索引。
+
+在索引之后，SELECT可与Match()和Against()一起使用以实际执行搜索。
+
+
+
+### 18.2.1 启用全文本搜索支持
+
+一般**在创建表时启动全文本搜索**。CREATE TABLE 语句（21节介绍）接受 FULLTEXT 子句，它给出被索引列的一个逗号分隔的列表。
+
+例：CREATE 语句演示FULLTEXT子句的使用方法
+
+#### 输入
+
+~~~mysql
+CREATE TABLE productnotes
+(
+    note_id		int			NOT NULL AUTO_INCREMENT, 
+    prod_id		char(10)	NOT NULL, 
+    note_date	datetime	NOT NULL, 
+    note_text	text		NULL,
+    PRIMARY KEY(note_id), 
+    FULLTEXT(note_text)
+) ENGINE=MyISAM;
+~~~
+
+#### 分析
+
+一条建表语句。其中 note_text 列，为了进行全文本搜索，MySQL根据子句 FULLTEXT(note_text) 的指示对它进行索引。这里的FULLTEXT索引单个列，如果需要也可以逗号分隔指定多个列。
+
+在定义之后，MySQL自动维护该索引。在增加、更新、删除行时，索引随之自动更新。
+
+可以在创建表时指定FULLTEXT，或稍后指定。
+
+> **不要在导入数据时使用FULLTEXT**	应该先导入所有数据，然后再定义FULLTEXT。哟主语更快地导入数据。
+
+
+
+### 18.2.2 进行全文本搜索
+
+索引之后，使用 Match() 和 Against() 两个函数执行全文本搜索。
+
+* **Match()**：指定被搜索的列
+* **Against()**：指定要使用的搜索表达式
+
+**例**：
+
+#### 输入
+
+~~~mysql
+SELECT note_text 
+FROM productnotes
+WHERE Match(note_text) Against('rabbit');
+~~~
+
+#### 输出
+
+~~~bash
++-----------------------------------------------------------------------------------------------------------------------+
+| note_text                                                                                                             |
++-----------------------------------------------------------------------------------------------------------------------+
+| Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                          |
+| Quantity varies, sold by the sack load.
+All guaranteed to be bright and orange, and suitable for use as rabbit bait. |
++-----------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.01 sec)
+~~~
+
+#### 分析
+
+由于WEHRE子句，一个全文本搜索被执行。Match(note_text)指示MySQL针对指定列进行搜索；Against('rabbit')zhi顶词 rabbit 作为搜索文本。最终返回包含词 rabbit 的两行。
+
+> **使用完整的Match()说明**	传递给Match()的值必须与FULLTEXT()定义中的相同。如果指定多个列，则必须列出它们（而且次序正确）。
+
+> **搜索不分大小写**	除非使用BINARY方式，否则全文本搜索不区分大小写。
+
+
+
+全文本搜索不仅返回包含目标的行，还会按文本匹配的良好程度排序。
+
+下面演示排序等级。
+
+#### 输入
+
+~~~mysql
+SELECT note_text, 
+	Match(note_text) Against('rabbit') AS ranks
+FROM productnotes;
+~~~
+
+#### 输出
+
+~~~bash
++------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+| note_text                                                                                                                                                  | ranks              |
++------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+| Customer complaint:
+Sticks not individually wrapped, too easy to mistakenly detonate all at once.
+Recommend individual wrapping.                         |                  0 |
+| Can shipped full, refills not available.
+Need to order new can if refill needed.                                                                          |                  0 |
+| Safe is combination locked, combination not provided with safe.
+This is rarely a problem as safes are typically blown up or dropped by customers.         |                  0 |
+| Quantity varies, sold by the sack load.
+All guaranteed to be bright and orange, and suitable for use as rabbit bait.                                      | 1.5905543565750122 |
+| Included fuses are short and have been known to detonate too quickly for some customers.
+Longer fuses are available (item FU1) and should be recommended. |                  0 |
+| Matches not included, recommend purchase of matches or detonator (item DTNTR).                                                                             |                  0 |
+| Please note that no returns will be accepted if safe opened using explosives.                                                                              |                  0 |
+| Multiple customer returns, anvils failing to drop fast enough or falling backwards on purchaser. Recommend that customer considers using heavier anvils.   |                  0 |
+| Item is extremely heavy. Designed for dropping, not recommended for use with slings, ropes, pulleys, or tightropes.                                        |                  0 |
+| Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                               | 1.6408053636550903 |
+| Shipped unassembled, requires common tools (including oversized hammer).                                                                                   |                  0 |
+| Customer complaint:
+Circular hole in safe floor can apparently be easily cut with handsaw.                                                                |                  0 |
+| Customer complaint:
+Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead.   |                  0 |
+| Call from individual trapped in safe plummeting to the ground, suggests an escape hatch be added.
+Comment forwarded to vendor.                            |                  0 |
++------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
+~~~
+
+#### 分析
+
+ranks列为全文本搜索计算出的**等级值**。等级由MySQL根据行中词的数目、唯一词的数目、整个索引中词的总数以及包含该次的行的数目计算出来。
+
+这个例子有助于说明全文本排序如何排除行（排除等级为0的行），如何排序结果（按等级降序排序）。
+
+
+
+### 18.2.3 使用查询扩展
+
+查询扩展用来设法放宽所返回的全文本搜索结果的范围。
+
+使用查询扩展时，MySQL对数据和索引进行两遍扫描来完成搜索。
+
+* 首先，进行一个基本的全文本搜索，找出与搜索条件匹配的所有行；
+* 其次，MySQL检查这些匹配行并选择所有有用的词；
+* 再其次，MySQL再次进行全文本搜索，这次不仅使用原来的条件，而且还是用所有有用的词。
+
+利用查询扩展，能找出可能相关的结果。
+
+例：不使用与使用查询扩展对比
+
+#### 输入
+
+~~~mysql
+SELECT note_text
+FROM productnotes
+WHERE Match(note_text) Against('anvils');
+~~~
+
+#### 输出
+
+~~~bash
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_text                                                                                                                                                |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Multiple customer returns, anvils failing to drop fast enough or falling backwards on purchaser. Recommend that customer considers using heavier anvils. |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+~~~
+
+#### 分析
+
+只有一行包含目标词，所以返回一行。
+
+#### 输入
+
+~~~mysql
+SELECT note_text
+FROM productnotes
+WHERE Match(note_text) Against('anvils' WITH QUERY EXPANSION);
+~~~
+
+#### 输出
+
+~~~bash
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_text                                                                                                                                                |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Multiple customer returns, anvils failing to drop fast enough or falling backwards on purchaser. Recommend that customer considers using heavier anvils. |
+| Customer complaint:
+Sticks not individually wrapped, too easy to mistakenly detonate all at once.
+Recommend individual wrapping.                       |
+| Customer complaint:
+Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead. |
+| Please note that no returns will be accepted if safe opened using explosives.                                                                            |
+| Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                             |
+| Customer complaint:
+Circular hole in safe floor can apparently be easily cut with handsaw.                                                              |
+| Matches not included, recommend purchase of matches or detonator (item DTNTR).                                                                           |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+7 rows in set (0.00 sec)
+~~~
+
+#### 分析
+
+包含了可能相关的行。
+
+> **行越多越好**	表中的行越多，使用查询扩展返回的结果越好。 
+
+
+
+### 18.2.4 布尔文本搜索
+
+MySQL支持全文本搜索的另外一种形式，称为**布尔方式（boolean mode）**。以布尔方式，可以提供关于如下内容的细节：
+
+* **要匹配的词**；
+* **要排斥的词**（如果某行包含了这个词，则不返回该行，即使它包含其他指定的词也是如此）；
+* **排列提示**（指定某些词比其他词更重要，更重要的词等级更高）；
+* **表达式分组**；
+* 其他内容。
+
+> **即使没有FULLTEXT索引也可以使用**	  布尔方式不同于迄今为止使用的全文本搜索语法的地方在于，即使没有定义FULLTEXT索引，也可以使用它。但这是一种非常缓慢的操作（其性能将随着数据量的增加而降低）。
+
+**例**：演示 **IN BOOLEAN MODE** 的作用。
+
+#### 输入
+
+~~~mysql
+SELECT note_text 
+FROM productnotes 
+WHERE Match(note_text) Against('heavy' IN BOOLEAN MODE);
+~~~
+
+#### 输出
+
+~~~bash
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_text                                                                                                                                                |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Item is extremely heavy. Designed for dropping, not recommended for use with slings, ropes, pulleys, or tightropes.                                      |
+| Customer complaint:
+Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead. |
++----------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+~~~
+
+#### 分析
+
+词全文本搜索检索包含词heavy的所有行（有两行）。其中使用了关键字 IN BOOLEAN MODE 但实际上没有指定布尔操作符，因此，其结果与没有指定布尔方式的结果相同。
+
+> **IN BOOLEAN MODE的行为差异**	虽然这个例子的结果与没有 IN BOOLEAN MODE 的相同，但其行为有一个重要差别（即使在这个特殊的例子没有表现出来）。将在18.2.5节指出。
+
+
+
+下表给出支持的所有**全文本布尔操作符**：
+
+| 布尔操作符 |                             说明                             |
+| :--------: | :----------------------------------------------------------: |
+|     +      |                       包含，词必须存在                       |
+|     -      |                      排除，词必须不出现                      |
+|     >      |                     包含，而且增加等级值                     |
+|     <      |                     包含，而且减少等级制                     |
+|     ()     | 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、排列等） |
+|     ~      |                      取消一个词的排序值                      |
+|     *      |                         词尾的通配符                         |
+|     ""     | 定义一个短语（与单个词的列表不一样，它匹配整个短语以便博阿寒或排除这个短语） |
+
+
+
+以下举例说明各操作符的使用样例：
+
+* 匹配**包含**heavy但**不包含**任意**以rope开始**的词的行【-】【*】
+
+  ~~~mysql
+  SELECT note_text 
+  FROM productnotes 
+  WHERE Match(note_text) Against('heavy -rope*' IN BOOLEAN MODE);
+  ~~~
+
+* 匹配**同时包含**词rabbit和词bait的行【+】
+
+  ~~~mysql
+  SELECT note_text 
+  FROM productnotes
+  WHERE Match(note_text) Against('+rabbit +bait' IN BOOLEAN MODE);
+  ~~~
+
+* **没有指定操作符**，该搜索匹配包含rabbit和bait中的至少一个词的行【无】
+
+  ~~~mysql
+  SELECT note_text 
+  FROM productnotes 
+  WHERE Match(note_text) Against('rabbit biat' IN BOOLEAN MODE);
+  ~~~
+
+* 匹配**短语**rabbit bait而不是匹配两个词rabbit和bait【""】
+
+  ~~~MYSQL
+  SELECT note_text
+  FROM productnotes
+  WHERE Match(note_text) Against('"rabbit bait"' IN BOOLEAN MODE);
+  ~~~
+
+* 匹配rabbit和carrot，增加前者的等级，降低后者的等级【>】【<】
+
+  ~~~mysql
+  SELECT note_text
+  FROM productnotes
+  WHERE Match(note_text) Against('>rabbit <bait' IN BOOLEAN MODE);
+  ~~~
+
+* 匹配词safe和combination，降低后者的等级【()】
+
+  ~~~mysql
+  SELECT note_text
+  FROM productnotes
+  WHERE Match(note_text) Against('+safe +(<combination)' IN BOOLEAN MODE);
+  ~~~
+
+
+
+> **排列而不排序**	在布尔方式中，不按等级值降序排序返回的行。
+
+
+
+### 18.2.5 全文本搜索的使用说明
+
+以下给出**全文本搜索**的**某些==重要的说明==**：
+
+* 在索引全文本数据时，**短词被忽略且从索引中排除**。短词定义为那些具有3个或3个以下字符的词（如果需要，这个数目可以更改）。
+* MySQL带有一个内建的**非用词（stopword）列表**，这些词在索引全文本数据时总是被忽略。如果需要，可以覆盖这个列表（请阅读MySQL文档以了解如何完成此工作）。
+* 许多词出现的频率很高，搜索它们没有用处（返回太多的结果）。因此，MySQL规定了一条**50%规则**：如果一个词出现在50%以上的行中，则将他作为一个非用词忽略。50%规则不用于 IN BOOLEAN MODE。
+* **忽略词中的单引号**。例如：don't索引为dont。
+* **不具有词分隔符**（包括日语和汉语）的语言**不能恰当地返回全文本搜索结果**。
+* 如前所述，仅在**MyISAM数据库引擎**中**支持全文本搜索**。
+
+
+
+
+
+## 18.3 小结
+
+* 为什么使用全文本搜索
+
+  * 性能、控制、智能化搜索结果
+
+* 如何使用全文本搜索
+
+  * 建表时启用全文本搜索
+
+    * ~~~mysql
+      FULLTEXT(目标列名)
+      ~~~
+
+  * 使用全文本搜索
+
+    * Match(目标列)：指定要搜索的列
+    * Against()：指定要使用的搜索表达式
+
+  * 使用查询扩展
+
+    * ~~~mysql
+      SELECT note_text
+      FROM productnotes
+      WHERE Match(note_text) Against('anvils' WITH QUERY EXPANSION);
+      ~~~
+
+  * 布尔文本搜索
+
+    * ~~~mysql
+      SELECT note_text 
+      FROM productnotes 
+      WHERE Match(note_text) Against('heavy -rope*' IN BOOLEAN MODE);
+      ~~~
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 19. 插入数据
+
+* 利用SQL的**INSERT**语句将数据插入表中
+
+
+
+
+
+## 19.1 数据插入
+
+INSERT是用来插入（或添加）行到数据库表的。插入可以用几种方式使用：
+
+* 插入完整的行；
+* 插入行的一部分；
+* 插入多行；
+* 插入某些查询的结果。
+
+> **插入及系统安全**	可针对每个表或每个用户，利用MySQL的安全机制禁止使用INSERT语句。（在28节涉及）
+
+
+
+
+
+## 19.2 插入完整的行
+
+要求指定表名和被插入到新行中的值。
+
+**例**：插入一个新客户到 customers 表。
+
+#### 输入
+
+~~~mysql
+INSERT INTO customers 
+VALUES(NULL, 
+      'Pep E. LaPew', 
+      '100 Main Street', 
+      'Los Angeles', 
+      'CA', 
+      '90046', 
+      'USA', 
+      NULL, 
+      NULL);
+~~~
+
+> **没有输出**	INSERT语句一般不会产生输出。
+
+#### 分析
+
+这种语法简单，但**不安全，应尽量避免使用**。该SQL语句高度依赖表中列的定义次序。
+
+更安全的方法如下：
+
+#### 输入
+
+~~~mysql
+INSERT INTO customers(cust_name, 
+                      cust_address, 
+                      cust_city, 
+                      cust_state, 
+                      cust_zip, 
+                      cust_country, 
+                      cust_contact, 
+                      cust_email)
+            VALUES('Pep E. LaPew', 
+                   '100 Main Street', 
+                   'Los Angeles', 
+                   'CA', 
+                   '90046', 
+                   'USA', 
+                   NULL, 
+                   NULL);
+~~~
+
+> **总是使用列的列表**	一般不要使用没有明确给出列的列表的INSERT语句。使用列的列表能使SQL代码继续发挥作用，即使表结构发生了变化。
+
+> **仔细地给出值**	不管使用哪种INSERT语法，都必须给出VALUES的正确数目。不提供列名时，必须给每个表列提供一个值；提供列名时，必须给每个列出的列给出一个值。
+
+> **省略列**	如果表的定义允许，可以在INSERT语句中省略某些列。省略的列必须满足以下某个条件
+>
+> * 该列定义为允许NULL值（无值或空值）。
+> * 在表定义中给出默认值。这表示如果不给出空值，将使用默认值。
+
+> **提高整体性能**	数据库经常被多个客户访问，对处理什么请求以及用什么次序处理进行管理时=是MySQL的任务。INSERT操作可能很耗时（特别是有很多索引需要更新时），而且它可能降低等待处理的SELECT语句的性能。
+>
+> 如果**数据检索**是最重要的（通常是这样）。则可以通过在**INSERT**和**INTO**之间添加关键字**LOW_PRIORITY**，指示MySQL**降低INSERT语句的优先级**。
+>
+> ~~~mysql
+> INSERT LOW_PRIORITY INTO
+> ~~~
+>
+> 这也适用于**UPDATE**和**DELETE**语句。
+
+
+
+## 19.3 插入多个行
+
+一次插入多个行有如下几种办法。
+
+**方法1**：使用多条SELECT语句，每条语句分号结束，一次提交
+
+#### 输入
+
+~~~mysql
+INSERT INTO customers(cust_name, 
+                      cust_address, 
+                      cust_city, 
+                      cust_state, 
+                      cust_zip, 
+                      cust_country)
+            VALUES('Pep E. LaPew', 
+                   '100 Main Street', 
+                   'Los Angeles', 
+                   'CA', 
+                   '90046', 
+                   'USA');
+INSERT INTO customers(cust_name, 
+                      cust_address, 
+                      cust_city, 
+                      cust_state, 
+                      cust_zip, 
+                      cust_country)
+            VALUES('M. Martian', 
+                   '42 Galaxy Way', 
+                   'New York', 
+                   'NY', 
+                   '11213', 
+                   'USA');
+~~~
+
+**方法2**：只要每条SELECT语句中的列名（和次序）相同，可以如下组合各语句：
+
+#### 输入
+
+~~~mysql
+INSERT INTO customers(cust_name, 
+                      cust_address, 
+                      cust_city, 
+                      cust_state, 
+                      cust_zip, 
+                      cust_country)
+            VALUES(
+                	'Pep E. LaPew', 
+                   '100 Main Street', 
+                   'Los Angeles', 
+                   'CA', 
+                   '90046', 
+                   'USA'),
+				(
+                    'M. Martian', 
+                   '42 Galaxy Way', 
+                   'New York', 
+                   'NY', 
+                   '11213', 
+                   'USA');
+~~~
+
+#### 分析
+
+其中单条语句有多组列名、次序一致的值，每组值用一对圆括号括起来，用逗号分隔。
+
+> **提高INSERT的性能**	这种方法可以提高数据库处理的性能，因为MySQL用单条INSERT语句处理多个插入比使用多条INSERT更快。
+
+
+
+
+
+## 19.4 插入检索出的数据
+
+* **适用场景**：要从另一表中合并客户到你的customers表。
+
+此时，不需要每次读取一行，再将它用INSERT插入。
+
+例：将custnew表中的数据导入customers表中。
+
+#### 输入
+
+~~~mysql
+INSERT INTO customers(cust_id, 
+                      cust_contact, 
+                      cust_email, 
+                      cust_name, 
+                      cust_address, 
+                      cust_city, 
+                      cust_state, 
+                      cust_zip, 
+                      cust_country)
+                 SELECT cust_id, 
+					cust_contact, 
+					cust_email, 
+					cust_name, 
+					cust_address, 
+					cust_city, 
+					cust_state, 
+					cust_zip, 
+                      cust_country
+                 FROM custnew
+                 WHERE cust_id IN (10010);
+~~~
+
+#### 分析
+
+该语句插入表customers多少行，取决于表custnew中的数据有多少行，没有则不会插入。
+
+> **INSERT SELECT中的列名**	为简单起见，上述示例中的INSERT和SELECT语句中使用了相同的列名。但是，**不一定要求列名匹配**。事实上，**MySQL不关心SELECT返回的列名**。**它使用的是==列的位置==**。因此SELECT中的第一列（不管其列名是什么）将用来填充INSERT表列中指定的第一个列，第二列将用来填充INSERT表列中指定的第二个列，依此类推。这对于使用不同列名的表中导入数据是非常有用的。
+
+
+
+INSERT SELECT语句中SELECT语句可包含WHERE子句以过滤插入的数据。
+
+#### 输入
+
+~~~mysql
+INSERT INTO customers(cust_id, 
+                      cust_contact, 
+                      cust_email, 
+                      cust_name, 
+                      cust_address, 
+                      cust_city, 
+                      cust_state, 
+                      cust_zip, 
+                      cust_country)
+                 SELECT cust_id, 
+					cust_contact, 
+					cust_email, 
+					cust_name, 
+					cust_address, 
+					cust_city, 
+					cust_state, 
+					cust_zip, 
+                      cust_country
+                 FROM custnew
+                 WHERE cust_id IN (10010);
+~~~
+
+
+
+
+
+## 19.5 小结
+
+* 使用INSERT INTO语句将数据插入表
+* 使用INSERT INTO SELECT语句从其他表导入数据
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 20. 更新和删除数据
+
+* 利用UPDATE和DELETE语句进一步操纵表数据。
+
+
+
+
+
+## 20.1 更新数据
+
+更新（修改）表中的数据，可使用**UPDATE**语句。可采用**两种方式**使用UPDATE：
+
+* 更新表中的特定行；
+* 更新表中的所有行。
+
+> **不要省略WHERE子句**	在使用UPDATE时一定要注意细心，因为稍不注意，就会更新表中的所有行。
+
+> **UPDATE与安全**	可以限制和控制UPDATE语句的使用，更多内容见28节。
+
+基本的UPDATE语句由3部分组成：
+
+1. 要更新的表；
+2. 列名和它们的新值
+3. 确定要更新行的过滤条件。
+
+
+
+例：客户10005有了电子邮件地址，因此他的记录需要更新。
+
+#### 输入
+
+~~~mysql
+UPDATE customers 
+SET cust_email = 'elmer@fudd.com'
+WHERE cust_id = 10005;
+~~~
+
+#### 分析
+
+UPDATE + 表名 指明要更新的表；SET + 列名 + ‘值’ 指明要更新的列和值；WHERE + 条件 筛选指定更新的行。
+
+如果没有WHERE子句，MySQL将更新列目标列的所有行。
+
+
+
+**更新多个列**的语法稍有不同。
+
+#### 输入
+
+~~~mysql
+UPDATE customers 
+SET cust_name = 'The Fudds', 
+	cust_email = 'elmer@fudd.com'
+WHERE cust_id = 10005;
+~~~
+
+更新多个列时，只需要使用单个SET命令，每个“列=值”对之间用逗号分隔（最后一列之后不用逗号。
+
+> **注**：**关键字SET和列名之间不能用制表TAB分隔**，可以使用空格作为分隔符。
+
+> **在UPDATE语句中使用子查询**	UPDATE语句中可以使用子查询，使得能**用SELECT语句检索出的数据更新列数据**。子查询内容详见14节。
+
+> **IGNORE关键字**	如果用UPDATE语句更新更多行，并且在**更新**这些行中的一行或多行时**出现**一个**错误**，则**整个UPDATE操作被取消**（错误发生前更新的所有行被恢复到它们原来的值）。**如果需要即使时发生错误，也继续进行更新，可以使用IGNORE关键字**，如下所示：
+>
+> ~~~mysql
+> UPDATE IGNORE customers ...
+> ~~~
+
+**删除某个列**的值，**可以将其置为NULL**。
+
+
+
+
+
+## 20.2 删除数据
+
+使用DELETE语句，有两种方式：
+
+* 从表中删除特定的行；
+* 从表中删除所有行。
+
+> **不要省略WHERE子句**	使用DELETE语句时，如果省略WHERE子句，将会删除所有行。
+
+> **DELTE与安全**	可以限制和控制DELTE语句的使用。详见28节，
+
+
+
+**例1**：从customers表中删除一行。
+
+#### 输入
+
+~~~mysql
+DELETE FROM customers 
+WHERE cust_id = 10010;
+~~~
+
+#### 分析
+
+DELETE FROM 指明要从中删除数据的表名；WHERE子句过滤要删除的行。如果没有WHERE子句，将删除表中的所有行。
+
+DELETE不需要列名或通配符，DELETE删除的是整行的数据。要删除指定的列，需使用UPDATE语句。
+
+> **删除表的内容而不是表**	DELETE语句从表中删除行，甚至是删除表中的所有行。但是，DELETE不删除表本身。
+
+> **更快的删除**	如果想**从表中删除所有行**，不要使用DELETE。可使用**TRANCATE TABLE**语句。该语句的速度更快。（TRANCATE TABLE实际上是删除原来的表并重建一个新表。而不是逐行删除原来表的数据）。
+
+
+
+
+
+## 20.3 更新和删除的指导原则
+
+* 除非确实打算更新或删除每一行，否则绝对**不要使用不带WHERE子句的UPDATE或DELETE子句**。
+* **保证每个表都有主键**（见15节），尽可能像WHERE子句那样使用它（可以指定各主键，多个值或值的范围）。
+* 在**对UPDATE或DELETE语句使用WHERE子句前**，应该**先用SELECT子句进行测试**，保证它过滤的是正确的记录，以防编写的WHERE子句不正确。
+* **使用强制实施引用完整性的数据库**（见15节），这样MySQL将不允许删除具有与其他表相关联的数据的行。
+
+> **小心使用**	MySQL没有撤销（undo）按钮，所以使用UPDATE和DELETE时，应小心慎重。
+
+
+
+
+
+## 20.4 小结
+
+* UPDATE语句
+* DELETE语句
+* WHERE子句在其中的重要性
+* 删改相关原则
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 21. 创建和操纵表
+
+* 创建表
+* 更改表
+* 删除表
+
+
+
+
+
+## 21.1 创建表
+
+
+
+### 21.1.1 表创建基础
+
+
+
+### 21.1.2 使用NULL值
+
+
+
+### 21.1.3 主键再介绍
+
+
+
+### 21.1.4 使用AUTO_INCREMENT
+
+
+
+### 21.1.5 使用默认值
+
+
+
+### 21.1.6 引擎类型
+
+
+
+
+
+## 21.2 更新表
+
+
+
+
+
+## 21.3 删除表
+
+
+
+
+
+### 21.4 重命名表
+
+
+
+
+
+## 21.5 小结
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+# 附0：Tables_in_crashcourse
+
+
+
+### customers
+
+~~~bash
++---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
+| cust_id | cust_name      | cust_address        | cust_city | cust_state | cust_zip | cust_country | cust_contact | cust_email          |
++---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
+|   10001 | Coyote Inc.    | 200 Maple Lane      | Detroit   | MI         | 44444    | USA          | Y Lee        | ylee@coyote.com     |
+|   10002 | Mouse House    | 333 Fromage Lane    | Columbus  | OH         | 43333    | USA          | Jerry Mouse  | NULL                |
+|   10003 | Wascals        | 1 Sunny Place       | Muncie    | IN         | 42222    | USA          | Jim Jones    | rabbit@wascally.com |
+|   10004 | Yosemite Place | 829 Riverside Drive | Phoenix   | AZ         | 88888    | USA          | Y Sam        | sam@yosemite.com    |
+|   10005 | E Fudd         | 4545 53rd Street    | Chicago   | IL         | 54545    | USA          | E Fudd       | NULL                |
++---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
+5 rows in set (0.00 sec)
+~~~
+
+### orderitems
+
+~~~bash
++-----------+------------+---------+----------+------------+
+| order_num | order_item | prod_id | quantity | item_price |
++-----------+------------+---------+----------+------------+
+|     20005 |          1 | ANV01   |       10 |       5.99 |
+|     20005 |          2 | ANV02   |        3 |       9.99 |
+|     20005 |          3 | TNT2    |        5 |      10.00 |
+|     20005 |          4 | FB      |        1 |      10.00 |
+|     20006 |          1 | JP2000  |        1 |      55.00 |
+|     20007 |          1 | TNT2    |      100 |      10.00 |
+|     20008 |          1 | FC      |       50 |       2.50 |
+|     20009 |          1 | FB      |        1 |      10.00 |
+|     20009 |          2 | OL1     |        1 |       8.99 |
+|     20009 |          3 | SLING   |        1 |       4.49 |
+|     20009 |          4 | ANV03   |        1 |      14.99 |
++-----------+------------+---------+----------+------------+
+11 rows in set (0.00 sec)
+~~~
+
+### orders
+
+~~~bash
++-----------+---------------------+---------+
+| order_num | order_date          | cust_id |
++-----------+---------------------+---------+
+|     20005 | 2005-09-01 00:00:00 |   10001 |
+|     20006 | 2005-09-12 00:00:00 |   10003 |
+|     20007 | 2005-09-30 00:00:00 |   10004 |
+|     20008 | 2005-10-03 00:00:00 |   10005 |
+|     20009 | 2005-10-08 00:00:00 |   10001 |
++-----------+---------------------+---------+
+5 rows in set (0.00 sec)
+~~~
+
+### products
+
+~~~bash
++---------+---------+----------------+------------+----------------------------------------------------------------+
+| prod_id | vend_id | prod_name      | prod_price | prod_desc                                                      |
++---------+---------+----------------+------------+----------------------------------------------------------------+
+| ANV01   |    1001 | .5 ton anvil   |       5.99 | .5 ton anvil, black, complete with handy hook                  |
+| ANV02   |    1001 | 1 ton anvil    |       9.99 | 1 ton anvil, black, complete with handy hook and carrying case |
+| ANV03   |    1001 | 2 ton anvil    |      14.99 | 2 ton anvil, black, complete with handy hook and carrying case |
+| DTNTR   |    1003 | Detonator      |      13.00 | Detonator (plunger powered), fuses not included                |
+| FB      |    1003 | Bird seed      |      10.00 | Large bag (suitable for road runners)                          |
+| FC      |    1003 | Carrots        |       2.50 | Carrots (rabbit hunting season only)                           |
+| FU1     |    1002 | Fuses          |       3.42 | 1 dozen, extra long                                            |
+| JP1000  |    1005 | JetPack 1000   |      35.00 | JetPack 1000, intended for single use                          |
+| JP2000  |    1005 | JetPack 2000   |      55.00 | JetPack 2000, multi-use                                        |
+| OL1     |    1002 | Oil can        |       8.99 | Oil can, red                                                   |
+| SAFE    |    1003 | Safe           |      50.00 | Safe with combination lock                                     |
+| SLING   |    1003 | Sling          |       4.49 | Sling, one size fits all                                       |
+| TNT1    |    1003 | TNT (1 stick)  |       2.50 | TNT, red, single stick                                         |
+| TNT2    |    1003 | TNT (5 sticks) |      10.00 | TNT, red, pack of 10 sticks                                    |
++---------+---------+----------------+------------+----------------------------------------------------------------+
+14 rows in set (0.00 sec)
+~~~
+
+### productnotes
+
+~~~bash
++---------+---------+---------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| note_id | prod_id | note_date           | note_text                                                                                                                                                  |
++---------+---------+---------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     101 | TNT2    | 2005-08-17 00:00:00 | Customer complaint:
+Sticks not individually wrapped, too easy to mistakenly detonate all at once.
+Recommend individual wrapping.                         |
+|     102 | OL1     | 2005-08-18 00:00:00 | Can shipped full, refills not available.
+Need to order new can if refill needed.                                                                          |
+|     103 | SAFE    | 2005-08-18 00:00:00 | Safe is combination locked, combination not provided with safe.
+This is rarely a problem as safes are typically blown up or dropped by customers.         |
+|     104 | FC      | 2005-08-19 00:00:00 | Quantity varies, sold by the sack load.
+All guaranteed to be bright and orange, and suitable for use as rabbit bait.                                      |
+|     105 | TNT2    | 2005-08-20 00:00:00 | Included fuses are short and have been known to detonate too quickly for some customers.
+Longer fuses are available (item FU1) and should be recommended. |
+|     106 | TNT2    | 2005-08-22 00:00:00 | Matches not included, recommend purchase of matches or detonator (item DTNTR).                                                                             |
+|     107 | SAFE    | 2005-08-23 00:00:00 | Please note that no returns will be accepted if safe opened using explosives.                                                                              |
+|     108 | ANV01   | 2005-08-25 00:00:00 | Multiple customer returns, anvils failing to drop fast enough or falling backwards on purchaser. Recommend that customer considers using heavier anvils.   |
+|     109 | ANV03   | 2005-09-01 00:00:00 | Item is extremely heavy. Designed for dropping, not recommended for use with slings, ropes, pulleys, or tightropes.                                        |
+|     110 | FC      | 2005-09-01 00:00:00 | Customer complaint: rabbit has been able to detect trap, food apparently less effective now.                                                               |
+|     111 | SLING   | 2005-09-02 00:00:00 | Shipped unassembled, requires common tools (including oversized hammer).                                                                                   |
+|     112 | SAFE    | 2005-09-02 00:00:00 | Customer complaint:
+Circular hole in safe floor can apparently be easily cut with handsaw.                                                                |
+|     113 | ANV01   | 2005-09-05 00:00:00 | Customer complaint:
+Not heavy enough to generate flying stars around head of victim. If being purchased for dropping, recommend ANV02 or ANV03 instead.   |
+|     114 | SAFE    | 2005-09-07 00:00:00 | Call from individual trapped in safe plummeting to the ground, suggests an escape hatch be added.
+Comment forwarded to vendor.                            |
++---------+---------+---------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------+
+14 rows in set (0.01 sec)
+~~~
+
+### vendors
+
+~~~bash
++---------+----------------+-----------------+-------------+------------+----------+--------------+
+| vend_id | vend_name      | vend_address    | vend_city   | vend_state | vend_zip | vend_country |
++---------+----------------+-----------------+-------------+------------+----------+--------------+
+|    1001 | Anvils R Us    | 123 Main Street | Southfield  | MI         | 48075    | USA          |
+|    1002 | LT Supplies    | 500 Park Street | Anytown     | OH         | 44333    | USA          |
+|    1003 | ACME           | 555 High Street | Los Angeles | CA         | 90046    | USA          |
+|    1004 | Furball Inc.   | 1000 5th Avenue | New York    | NY         | 11111    | USA          |
+|    1005 | Jet Set        | 42 Galaxy Road  | London      | NULL       | N16 6PS  | England      |
+|    1006 | Jouets Et Ours | 1 Rue Amusement | Paris       | NULL       | 45678    | France       |
++---------+----------------+-----------------+-------------+------------+----------+--------------+
+6 rows in set (0.00 sec)
+~~~
+
+
+
+
+
 
 
 
@@ -2937,7 +5432,7 @@ FROM products;
 (8)SELECT (9)DISTINCT <select_list>
 (1)FROM <left_table>
 (3) <join_type> JOIN <right_table>
-(2)       ON <join_condition>
+(2)ON <join_condition>
 (4)WHERE <where_condition>
 (5)GROUP BY <group_by_list>
 (6)WITH{CUBE|ROLLUP}
@@ -2953,14 +5448,14 @@ FROM products;
 1. **`FROM`** ： 对FROM左边的表和右边的表计算**笛卡尔积**，产生虚表VT1；
 2. **`ON`** ： 对虚拟表VT1进行ON筛选，只有那些符合条件的行才会被记录在虚拟表VT2中；
 3. **`JOIN`** ：如果是OUT JOIN，那么将保留表中（如左表或者右表）未匹配的行作为外部行添加到虚拟表VT2中，从而产生虚拟表VT3；
-4. **`WHERE`** ：对虚拟表VT3进行WHERE条件过滤，只有符合的记录才会被放入到虚拟表VT4；
-5. **`GROUP BY`**：根据GROUP BY子句中的列，对虚拟表VT4进行分组操作，产生虚拟表VT5；
+4. **`WHERE`** ：对虚拟表VT3进行 **WHERE 条件过滤**，只有符合的记录才会被放入到虚拟表VT4；
+5. **`GROUP BY`**：根据GROUP BY子句中的列，对虚拟表VT4进行**分组**操作，产生虚拟表VT5；
 6. **`CUBE|ROLLUP`**：对虚拟表VT5进行CUBE或者ROLLUP操作，产生虚拟表VT6；
-7. **`HAVING`** ：对虚拟表VT6进行 HAVING 条件过滤，只有符合的记录才会被插入到虚拟表VT7中；
-8. **`SELECT`** ：执行SELECT操作，选择指定的列，插入到虚拟表VT8中；
-9. **`DISTINCT`** ：对虚拟表VT8中的记录进行去重，产生虚拟表VT9；
-10. **`ORDER BY`** ：将虚拟表VT9中的记录按照进行排序操作，产生虚拟表VT10；
-11. **`LIMIT`** ：取出指定行的记录，产生虚拟表VT11，并将结果返回。
+7. **`HAVING`** ：对虚拟表VT6进行 **HAVING 条件过滤**，只有符合的记录才会被插入到虚拟表VT7中；
+8. **`SELECT`** ：执行SELECT操作，**选择指定的列**，插入到虚拟表VT8中；
+9. **`DISTINCT`** ：对虚拟表VT8中的记录进行**去重**，产生虚拟表VT9；
+10. **`ORDER BY`** ：将虚拟表VT9中的记录按照进行**排序**操作，产生虚拟表VT10；
+11. **`LIMIT`** ：取出指定行的记录，**限定行数**，产生虚拟表VT11，并将结果返回。
 
 
 
