@@ -6457,6 +6457,384 @@ SHOW CREATE PROCEDURE ordertotal;
 
 # 24. 使用游标
 
+* 什么是游标
+* 如何使用游标
+
+
+
+
+
+
+
+## 24.1 游标
+
+> **需要MySQL 5** 	MySQL 5添加了对游标的支持.
+
+有时，需要在检索出来的行中前进或后退一行或多行。这就是使用游标的原因。**游标（cursor）**是一个存储在MySQL服务器上的数据库查询，它不是一条`SELECT` 语句，而是被该语句检索出来的结果集。在存储了游标之后，应用程序可以根据需要滚动或浏览其中的数据。
+
+游标主要用于交互式应用，其中用户需要滚动屏幕上的数据，并对数据进行浏览或做出更改。
+
+> **只能用于存储过程** 	不像多数DBMS，MySQL游标只能用于存储过程（和函数）。
+
+
+
+
+
+
+
+## 24.2 使用游标
+
+使用游标的几个明确步骤：
+
+* 在能够使用游标前，必须**声明**（定义）它。这个过程实际上没有检索数据，它只是定义要使用的`SELECT` 语句。
+* 一旦声明后，必须**打开**游标以供使用。这个过程用前面定义的`SELECT` 语句把数据实际检索出来。
+* 对于填有数据的游标，根据需要取出（检索）各行。
+* 在结束游标使用时，必须**关闭**游标。
+
+在声明游标后，可根据需要频繁地打开和关闭游标。在游标打开后，可根据需要频繁地执行取操作。
+
+
+
+
+
+### 24.2.1 创建游标
+
+游标用`DECLARE` 语句创建。`DECLARE` 命名游标，并定义相应的`SELECT` 语句，根据需要带`WHERE` 和其他子句。
+
+**例：**下面的语句定义了名为`ordernumbers` 的游标，使用了可以检索所有订单的`SELECT` 语句。
+
+**输入**
+
+~~~mysql
+DELIMITER //
+
+CREATE PROCEDURE processorders()
+BEGIN
+	DECLARE ordernumbers CURSOR
+	FOR
+	SELECT ordernum FROM orders;
+END//
+
+DELIMITER ;
+~~~
+
+**分析**
+
+这个存储过程并没有做很多事情，`DECLARE` 语句用来定义和命名游标，这里为`ordernumbers` 。存储过程处理完成后，游标就消失（因为它局限于存储过程）。
+
+在定义游标之后，可以打开它。
+
+
+
+
+
+### 24.2.2 打开和关闭游标
+
+游标用`OPEN CURSOR` 语句来打开：
+
+**输入**
+
+~~~MYSQL
+OPEN ordernumbers;
+~~~
+
+**分析**
+
+在处理`OPEN` 语句时执行查询，存储检索出的数据以供浏览和滚动。
+
+游标处理完成后，应当使用如下语句关闭游标：
+
+**输入**
+
+~~~MYSQL
+CLOSE ordernumbers;
+~~~
+
+**分析**
+
+`CLOSE` 释放游标使用的所有内部内存和资源，因此在每个游标不再需要时都应该关闭。
+
+在一个游标关闭后，如果没有重新打开，则不能使用它。但是，使用声明过的游标不需要再次声明，用`OPEN` 语句打开它就可以了。
+
+> **隐含关闭** 	如果你不明确关闭游标，MySQL将会在到达`END` 语句时自动关闭它。
+
+
+
+下面是前面例子的修改版本：
+
+**输入**
+
+~~~mysql
+DELIMITER //
+
+CREATE PROCEDURE processorders()
+BEGIN
+   -- Declare the cursor
+   DECLARE ordernumbers CURSOR
+   FOR
+   SELECT order_num FROM orders;
+
+   -- Open the cursor
+   OPEN ordernumbers;
+
+   -- Close the cursor
+   CLOSE ordernumbers;
+
+END//
+
+DELIMITER ;
+~~~
+
+**分析**
+
+这个存储过程声明、打开和关闭一个游标。但对检索出的数据什么也没做。
+
+
+
+
+
+### 24.2.3 使用游标数据
+
+在一个游标被打开后，可以使用`FETCH` 语句分别访问它的每一行。`FETCH` 指定检索什么数据（所需的列），检索出来的数据存储在什么地方。它还向前移动游标中的内部行指针，使下一条`FETCH` 语句检索下一行（不重复读取同一行）。
+
+
+
+**例1：**从从游标中检索单个行（第一行）
+
+**输入**
+
+~~~mysql
+DELIMITER //
+
+CREATE PROCEDURE processorders()
+BEGIN 
+
+	-- Declare local variables
+	DECLARE o INT;
+	
+	-- Declare the cursor
+	DECLARE ordernumbers CURSOR
+	FOR
+	SELECT order_num FROM orders;
+	
+	-- Open the cursor
+	OPEN ordernumbers;
+	
+	-- Get order number
+	FETCH ordernumbers INTO o;
+	
+	-- Close the cursor
+	CLOSE ordernumbers;
+END//
+
+DELIMITER ;
+~~~
+
+**分析**
+
+其中`FETCH` 用来检索当前行的`order_num` 列（将自动从第一行开始）到一个名为`o` 的局部声明的变量中。对检索出的数据不做任何处理。
+
+
+
+**例2：**循环检索数据，从第一行到最后一行
+
+**输入**
+
+~~~mysql
+DELIMITER //
+
+CREATE PROCEDURE processorders()
+BEGIN
+
+	-- Declare local variables
+	DECLARE done BOOLEAN DEFAULT 0;
+	DECLARE o INT;
+	
+	-- Declare the cursor
+	DECLARE ordernumbers CURSOR
+	FOR
+	SELECT order_num FROM orders;
+	
+	-- Declare continue handler
+	DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done=1;
+	
+	-- Open the cursor
+	OPEN ordernumbers;
+	
+	-- Loop through all rows
+	REPEAT
+	
+		-- Get order number
+		FETCH ordernumbers INTO o;
+		
+	-- End of loop
+	UNTIL done END REPEAT;
+	
+	-- Close the cursor
+	CLOSE ordernumbers;
+	
+END//
+
+DELIMITER ;
+~~~
+
+**分析**
+
+与前一个例子一样，这个例子使用`FETCH` 检索当前`order_num` 到声明的名为`o` 的变量中。但与前一个例子不一样的是，这个例子中的`FETCH` 是在`REPEAT` 内，因此它反复执行直到`done` 为真（由`UNTIL done END REPEAT;` 规定）。为使它起作用，用一个`DEFAULT 0`（假，不结束）定义变量`done` 。那么，`done` 被设置为真的条件由以下语句定义：
+
+~~~mysql
+DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done=1;
+~~~
+
+这条语句定义了一个`CONTINUE HANDLER` ，它是在条件出现时被执行的代码。这里，它指出当`SQLSTATE '02000'` 出现时，`SET done=1` 。`SQLSTATE '02000'` 是一个未找到条件，当`REPEAT` 由于没有更多的行供循环而不能继续时，出现这个条件。
+
+> **MySQL的错误代码** 	关于MySQL5使用的MySQL错误代码列表，详见http://dev.mysql.com/doc/mysql/en/error-handling.html 。
+
+> **`DECLARE` 语句的次序** 	`DECLARE` 语句的发布存在特定的次序。用`DECLARE` 语句定义的==局部变量==必须在定义任意==游标或句柄之前==定义，而==句柄==必须在==游标之后==定义。不遵守此顺序将产生错误消息。
+
+如果调用这个存储过程，它将定义几个变量和一个`CONTINUE HANDLER` ，定义并打开一个游标，重复读取所有行，然后关闭游标。
+
+如果一切正常，可以在循环内放入任意需要的处理（在`FETCH` 语句之后，循环结束之前）。
+
+> **重复或循环？** 	除这里使用的`REPEAT` 语句外，MySQL还支持循环语句，它可用来重复执行代码，直到使用`LEAVE` 语句手动退出为止。通常`REPEAT` 语句的语法使它更适合于对游标进行循环。
+
+
+
+**例3**：游标存储过程样例的更进一步修改的版本，对取出的数据进行某种实际的处理
+
+**输入**
+
+~~~mysql
+DELIMITER //
+
+CREATE PROCEDURE processorders()
+BEGIN
+
+   -- Declare local variables
+   DECLARE done BOOLEAN DEFAULT 0;
+   DECLARE o INT;
+   DECLARE t DECIMAL(8,2);
+
+   -- Declare the cursor
+   DECLARE ordernumbers CURSOR
+   FOR
+   SELECT order_num FROM orders;
+   -- Declare continue handler
+   DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done=1;
+
+   -- Create a table to store the results
+   CREATE TABLE ordertotals
+      (order_num INT, total DECIMAL(8,2));
+
+   -- Open the cursor
+   OPEN ordernumbers;
+
+   -- Loop through all rows
+   REPEAT
+
+      -- Get order number
+      FETCH ordernumbers INTO o;
+
+      -- Get the total for this order
+      CALL ordertotal(o, 1, t);
+
+      -- Insert order and total into ordertotals
+      INSERT INTO ordertotals(order_num, total)
+      VALUES(o, t);
+
+   -- End of loop
+   UNTIL done END REPEAT;
+
+   -- Close the cursor
+   CLOSE ordernumbers;
+
+END//
+
+DELIMITER ;
+~~~
+
+**分析**
+
+在这个例子中，我们增加了另一个名为`t` 的变量（存储每个订单的合计）。此存储过程还在运行中创建了一个新表（如果它不存在的话），名为`ordertotals` 。这个表将保存存储过程生成的结果。`FETCH` 像以前一样取每个`order_num` ，然后用`CALL` 执行另一个存储过程（我们在前一章中创建）来计算每个订单的带税的合计（结果存储到`t` ）。最后，用`INSERT` 保存每个订单的订单号和合计。
+
+
+
+**执行该存储过程**
+
+~~~mysql
+CALL processorders();
+~~~
+
+此存储过程不返回数据，但它创建了表 ordertotals，并将结果填充在其中，可以用一条简单的`SELECT` 语句查看该表：
+
+**输入**
+
+~~~mysql
+SELECT *
+FROM ordertotals;
+~~~
+
+**输出**
+
+~~~bash
++-----------+---------+
+| order_num | total   |
++-----------+---------+
+|     20005 |  158.86 |
+|     20009 |   40.78 |
+|     20006 |   58.30 |
+|     20007 | 1060.00 |
+|     20008 |  132.50 |
+|     20008 |  132.50 |
++-----------+---------+
+~~~
+
+
+
+以上，为一个存储过程、游标、逐行处理以及存储过程调用其他存储过程的一个完整的工作样例。
+
+
+
+
+
+
+
+
+
+## 24.3 小结
+
+* 介绍了什么是游标以及为什么要使用游标；
+* 举了演示基本游标使用的例子;
+* 讲解了对游标结果进行循环以及逐行处理的技术。
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 25. 使用触发器
+
 
 
 
@@ -6705,25 +7083,25 @@ Comment forwarded to vendor.                            |
 # 附录2：SHOW命令用法
 
 ~~~mysql
-SHOW TABLES 或 SHOW TABLES FROM database_name; -- 显示当前数据库中所有表的名称。
-SHOW DATABASES; -- 显示mysql中所有数据库的名称。 
-SHOW COLUMNS FROM table_name FROM database_name; 
+1. SHOW TABLES 或 SHOW TABLES FROM database_name; -- 显示当前数据库中所有表的名称。
+2. SHOW DATABASES; -- 显示mysql中所有数据库的名称。 
+3. SHOW COLUMNS FROM table_name FROM database_name; 
 或 SHOW COLUMNS FROM database_name.table_name; -- 显示表中列名称。
-SHOW GRANTS FOR user_name; -- 显示一个用户的权限，显示结果类似于grant 命令。
-5. show index from table_name; -- 显示表的索引。
-6. show status; -- 显示一些系统特定资源的信息，例如，正在运行的线程数量。
-7. show variables; -- 显示系统变量的名称和值。
-8. show processlist; -- 显示系统中正在运行的所有进程，也就是当前正在执行的查询。大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，就可以查看所有人的进程，包括密码。
-9. show table status; -- 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间。
-10. show privileges; -- 显示服务器所支持的不同权限。
-11. show create database database_name; -- 显示create database 语句是否能够创建指定的数据库。
-12. show create table table_name; -- 显示create database 语句是否能够创建指定的数据库。
-13. show engines; -- 显示安装以后可用的存储引擎和默认引擎。
-14. show innodb status; -- 显示innoDB存储引擎的状态。
-15. show logs; -- 显示BDB存储引擎的日志。
-16. show warnings; -- 显示最后一个执行的语句所产生的错误、警告和通知。
-17. show errors; -- 只显示最后一个执行语句所产生的错误。
-18. show [storage] engines; --显示安装后的可用存储引擎和默认引擎。
+4. SHOW GRANTS FOR user_name; -- 显示一个用户的权限，显示结果类似于grant 命令。
+5. SHOW INDEX FROM table_name; -- 显示表的索引。
+6. SHOW STATUS; -- 显示一些系统特定资源的信息，例如，正在运行的线程数量。
+7. SHOW VARIABLES; -- 显示系统变量的名称和值。
+8. SHOW PROCESSLIST; -- 显示系统中正在运行的所有进程，也就是当前正在执行的查询。大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，就可以查看所有人的进程，包括密码。
+9. SHOW TABLE STATUS; -- 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间。
+10. SHOW PRIVILEGES; -- 显示服务器所支持的不同权限。
+11. SHOW CREATE DATABASE database_name; -- 显示create database 语句是否能够创建指定的数据库。
+12. SHOW CREATE TABLE table_name; -- 显示create database 语句是否能够创建指定的数据库。
+13. SHOW ENGINES; -- 显示安装以后可用的存储引擎和默认引擎。
+14. SHOW INNODB STATUS; -- 显示innoDB存储引擎的状态。
+15. SHOW LOGS; -- 显示BDB存储引擎的日志。
+16. SHOW WARNINGS; -- 显示最后一个执行的语句所产生的错误、警告和通知。
+17. SHOW ERRORS; -- 只显示最后一个执行语句所产生的错误。
+18. SHOW [STORAGE] ENGINES; --显示安装后的可用存储引擎和默认引擎。
 ~~~
 
 
