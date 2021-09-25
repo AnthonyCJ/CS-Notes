@@ -6157,10 +6157,12 @@ DROP PROCEDURE productpricing;
 **输入**
 
 ~~~mysql
+DELIMITER //
+
 CREATE PROCEDURE productpricing(
 	OUT pl DECIMAL(8,2),
     OUT ph DECIMAL(8,2),
-    OUT pa DECIMAL(8,2),
+    OUT pa DECIMAL(8,2)
 )
 BEGIN
 	SELECT Min(prod_price)
@@ -6172,7 +6174,9 @@ BEGIN
 	SELECT Avg(prod_price)
 	INTO pa
 	FROM products;
-END;
+END //
+
+DELIMITER ;
 ~~~
 
 **分析**
@@ -6190,6 +6194,272 @@ MySQL支持
 > **参数的数据类型** 	存储过程的参数允许的数据类型与表中使用的数据类型相同。**附录D**列出了这些类型。
 >
 > 注意，记录集不是允许的类型，因此，不能通过一个参数返回多个行和列。这就是前面的例子为什么要使用3个参数（和3条`SELECT` 语句）的原因。
+
+
+
+为了调用此存储过程，需要指定3个变量名。
+
+**输入**
+
+~~~mysql
+CALL productpricing(@pricelow,
+                    @pricehigh,
+                    @priceaverage);
+~~~
+
+**分析**
+
+由于此存储过程要求3个参数，因此必须正好传递3个参数，不多也不少。所以，这条`CALL` 语句给出3个参数。它们是存储过程将保存结果的3个变量的名字。
+
+> **变量名** 	所有MySQL变量都必须以`@` 开始。
+
+在调用时，这条语句并不显示任何数据。它返回以后可以显示（或在其他处理中使用）的变量。
+
+可以通过**SELECT**语句显示变量值：
+
+**输入**
+
+~~~mysql
+SELECT @priceaverage;
+~~~
+
+**输出**
+
+~~~bash
++---------------+
+| @priceaverage |
++---------------+
+|         16.13 |
++---------------+
+~~~
+
+同时获得三个值
+
+~~~mysql
+SELECT @pricelow, @pricehigh, @priceaverage;
+~~~
+
+~~~bash
++-----------+------------+---------------+
+| @pricelow | @pricehigh | @priceaverage |
++-----------+------------+---------------+
+|      2.50 |      55.00 |         16.13 |
++-----------+------------+---------------+
+~~~
+
+
+
+另一个例子：使用`IN` 和`OUT` 参数。`ordertotal` 接受订单号并返回该订单的合计：
+
+**创建存储过程**
+
+~~~mysql
+DELIMITER //
+
+CREATE PROCEDURE ordertotal(
+	IN onumber INT,
+    OUT ototal DECIMAL(8,2)
+)
+BEGIN
+	SELECT Sum(item_price*quantity)
+	FROM orderitems
+	WHERE order_num = onumber
+	INTO ototal;
+END//
+
+DELIMITER ;
+~~~
+
+**调用存储过程**
+
+~~~mysql
+CALL ordertotal(20005,@total);
+~~~
+
+**查看调用结果**
+
+~~~mysql
+SELECT @total;
+~~~
+
+~~~bash
++--------+
+| @total |
++--------+
+| 149.87 |
++--------+
+~~~
+
+
+
+为了得到另一个订单的合计显示，需要再次调用存储过程，然后重新显示变量：
+
+**输入**
+
+~~~mysql
+CALL ordertotal(20009,@total);
+SELECT @total;
+~~~
+
+
+
+
+
+### 23.3.5 建立智能存储过程
+
+考虑存储过程内包含业务规则和智能处理的情形：
+
+需要获得与以前一样的订单合计，但需要对合计增加营业税，不过只针对某些顾客（或许是你所在州中那些顾客）。那么，你需要做下面几件事情：
+
+* 获得合计（与以前一样）；
+* 把营业税有条件地添加到合计；
+* 返回合计（带或不带税）。
+
+存储过程的完整工作如下：
+
+~~~mysql
+DELIMITER //
+
+-- Name: ordertotal
+-- Parameters: onumber = order number
+-- 			   taxable = 0 if not taxable, 1 if taxable
+-- 			   ototal = order total variable
+
+CREATE PROCEDURE ordertotal(
+	IN onumber INT,
+    IN taxable BOOLEAN,
+    OUT ototal DECIMAL(8,2)
+) COMMENT 'Obtain order total, optionally adding tax'
+BEGIN
+
+	-- Declare variable for total
+	DECLARE total DECIMAL(8,2);
+	-- Declare tax percentage
+	DECLARE taxrate INT DEFAULT 6;
+	
+	-- Get the order total
+	SELECT Sum(item_price*quantity)
+	FROM orderitems
+	WHERE order_num = onumber
+	INTO total;
+	
+	-- Is this taxable?
+	IF taxable THEN
+		-- Yes, so add taxrate to the total
+		SELECT total+(total/100*taxrate) INTO total;
+	END IF;
+	
+	-- And finally, save to out variable
+	SELECT total INTO ototal;
+	
+END//
+
+DELIMITER ;
+~~~
+
+**分析**
+
+此存储过程有很大的变动。首先，增加了注释（前面放置`--` ）。在存储过程复杂性增加时，这样做特别重要。添加了另外一个参数`taxable` ，它是一个布尔值（如果要增加税则为真，否则为假）。在存储过程体中，用`DECLARE` 语句定义了两个局部变量。`DECLARE`要求指定变量名和数据类型，它也支持可选的默认值（这个例子中的`taxrate` 的默认被设置为`6%` ）。`SELECT` 语句已经改变，因此其结果存储到`total` （局部变量）而不是`ototal` 。`IF` 语句检查`taxable` 是否为真，如果为真，则用另一`SELECT` 语句增加营业税到局部变量`total` 。最后，用另一`SELECT` 语句将`total` （它增加或许不增加营业税）保存到`ototal` 。
+
+> **`COMMENT` 关键字** 	本例子中的存储过程在`CREATE PROCEDURE`语句中包含了一个`COMMENT` 值。它不是必需的，但如果给出，将在`SHOW PROCEDURE STATUS` 的结果中显示。
+
+以下输入测试该存储过程
+
+~~~mysql
+CALL ordertotal(20005,0,@total);
+SELECT @total;
+~~~
+
+~~~bash
++--------+
+| @total |
++--------+
+| 149.87 |
++--------+
+~~~
+
+~~~mysql
+CALL ordertotal(20005,1,@total);
+SELECT @total;
+~~~
+
+~~~bash
++--------+
+| @total |
++--------+
+| 158.86 |
++--------+
+~~~
+
+**分析**
+
+`BOOLEAN` 值指定为`1` 表示真，指定为`0` 表示假（实际上，非零值都考虑为真，只有`0` 被视为假）。通过给中间的参数指定`0` 或`1` ，可以有条件地将营业税加到订单合计上。
+
+> **`IF` 语句** 	这个例子给出了MySQL的`IF` 语句的基本用法。`IF` 语句还支持`ELSEIF` 和`ELSE` 子句（前者还使用`THEN` 子句，后者不使用）。在以后章节中将涉及`IF` 的其他用法（以及其他流控制语句）
+
+
+
+
+
+### 23.3.6 检查存储过程
+
+为显示用来创建一个存储过程的`CREATE` 语句，使用`SHOW CREATE PROCEDURE` 语句：
+
+~~~mysql
+SHOW CREATE PROCEDURE ordertotal;
+~~~
+
+为了获得包括何时、由谁创建等详细信息的存储过程列表，使用`SHOW PROCEDURE STATUS` 。
+
+> **限制过程状态结果** 	`SHOW PROCEDURE STATUS` 列出所有存储过程。为限制其输出，可使用`LIKE` 指定一个过滤模式，例如：
+>
+> ~~~mysql
+> SHOW PROCEDURE STATUS LIKE 'ordertotal';
+> ~~~
+
+
+
+
+
+
+
+
+
+## 23.4 小结
+
+本节介绍了什么是存储过程、存储过程的执行、创建、删除及一些方法。下一节将继续介绍存储过程。
+
+
+
+
+
+
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 24. 使用游标
+
+
+
+
 
 
 
@@ -6410,9 +6680,51 @@ Comment forwarded to vendor.                            |
 
 
 
-​	
 
 
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 附录2：SHOW命令用法
+
+~~~mysql
+SHOW TABLES 或 SHOW TABLES FROM database_name; -- 显示当前数据库中所有表的名称。
+SHOW DATABASES; -- 显示mysql中所有数据库的名称。 
+SHOW COLUMNS FROM table_name FROM database_name; 
+或 SHOW COLUMNS FROM database_name.table_name; -- 显示表中列名称。
+SHOW GRANTS FOR user_name; -- 显示一个用户的权限，显示结果类似于grant 命令。
+5. show index from table_name; -- 显示表的索引。
+6. show status; -- 显示一些系统特定资源的信息，例如，正在运行的线程数量。
+7. show variables; -- 显示系统变量的名称和值。
+8. show processlist; -- 显示系统中正在运行的所有进程，也就是当前正在执行的查询。大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，就可以查看所有人的进程，包括密码。
+9. show table status; -- 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间。
+10. show privileges; -- 显示服务器所支持的不同权限。
+11. show create database database_name; -- 显示create database 语句是否能够创建指定的数据库。
+12. show create table table_name; -- 显示create database 语句是否能够创建指定的数据库。
+13. show engines; -- 显示安装以后可用的存储引擎和默认引擎。
+14. show innodb status; -- 显示innoDB存储引擎的状态。
+15. show logs; -- 显示BDB存储引擎的日志。
+16. show warnings; -- 显示最后一个执行的语句所产生的错误、警告和通知。
+17. show errors; -- 只显示最后一个执行语句所产生的错误。
+18. show [storage] engines; --显示安装后的可用存储引擎和默认引擎。
+~~~
 
 
 
