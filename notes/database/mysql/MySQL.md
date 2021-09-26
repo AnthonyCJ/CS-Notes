@@ -42,11 +42,31 @@
 
 
 
+
+
+
+
 ---
+
+
+
+
+
+
+
+
+
+
+
+
 
 # 1. 了解SQL
 
 综述：介绍数据库和SQL。
+
+
+
+
 
 
 
@@ -6803,9 +6823,86 @@ FROM ordertotals;
 
 ## 24.3 小结
 
-* 介绍了什么是游标以及为什么要使用游标；
-* 举了演示基本游标使用的例子;
-* 讲解了对游标结果进行循环以及逐行处理的技术。
+* 什么是游标：**游标（cursor）**是一个存储在MySQL服务器上的数据库查询，它不是一条`SELECT` 语句，而是被该语句检索出来的结果集。在存储了游标之后，应用程序可以根据需要滚动或浏览其中的数据。
+
+* 什么要使用游标：有时，需要在检索出来的行中前进或后退一行或多行。
+
+* 创建游标
+
+  * 在存储过程中创建游标
+
+  * 语法：
+
+    ~~~mysql
+    DECLARE cursor_name CURSOR
+    FOR
+    SELECT column_name FROM a_table;
+    ~~~
+
+* 打开游标
+
+  * 语法：
+
+    ~~~mysql
+    OPEN cursor_name;
+    ~~~
+
+* 关闭游标
+
+  * 语法：
+
+    ~~~mysql
+    CLOSE cursor_name
+    ~~~
+
+* 一个完整的游标样例结构：
+
+  ~~~mysql
+  CREATE PROCEDURE procedure_name()
+  BEGIN
+  
+     -- Declare local variables
+     DECLARE done BOOLEAN DEFAULT 0;
+     DECLARE var1 INT;
+     DECLARE var2 DECIMAL(8,2);
+  
+     -- Declare the cursor
+     DECLARE cursor_name CURSOR
+     FOR
+     SELECT column_name FROM a_table;
+     -- Declare continue handler
+     DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done=1;
+  
+     -- Create a table to store the results
+     CREATE TABLE resulttable
+        (col1 INT, col2 DECIMAL(8,2));
+  
+     -- Open the cursor
+     OPEN cursor_name;
+  
+     -- Loop through all rows
+     REPEAT
+  
+        -- Get order number
+        FETCH ordernumbers INTO var1;
+  
+        -- Get the total for this order(call another procedure to assign value to variable o and t)
+        CALL ordertotal(var1, 1, var2);
+  
+        -- Insert order and total into ordertotals
+        INSERT INTO resulttable(col1, col2)
+        VALUES(var1, var2);
+  
+     -- End of loop
+     UNTIL done END REPEAT;
+  
+     -- Close the cursor
+     CLOSE cursor_name;
+  
+  END;
+  ~~~
+
+  
 
 
 
@@ -6834,6 +6931,267 @@ FROM ordertotals;
 
 
 # 25. 使用触发器
+
+* 什么是触发器
+* 为什么使用触发器
+* 如何使用触发器
+* 创建和使用触发器的语法
+
+
+
+
+
+
+
+
+
+## 25.1 触发器
+
+> **需要MySQL 5** 	对触发器的支持是在MySQL 5中增加的。因此，本章内容适用于MySQL 5或之后的版本。
+
+问题背景：MySQL语句在需要时被执行，存储过程也是如此。但是，如果你想要某条语句（或某些语句）在事件发生时自动执行，例如：
+
+* 每当增加一个顾客到某个数据库表时，都检查其电话号码格式是否正确，州的缩写是否为大写；
+* 每当订购一个产品时，都从库存数量中减去订购的数量；
+* 无论何时删除一行，都在某个存档表中保留一个副本。
+
+这些例子的共同之处是它们都需要在**==某个表发生更改时自动处理==**。这确切地说就是触发器。**触发器是MySQL响应以下任意语句而自动执行的一条MySQL语句**（或位于`BEGIN`和`END` 语句之间的一组语句）：
+
+- DELETE；
+- INSERT；
+- UPDATE。
+
+其他MySQL语句不支持触发器。
+
+
+
+
+
+
+
+
+
+## 25.2 创建触发器
+
+在创建触发器时，需给出4条信息：
+
+- 唯一的**触发器名**；
+- 触发器**关联的表**；
+- 触发器应该**响应的活动**（`DELETE` 、`INSERT` 或`UPDATE` ）；
+- 触发器**何时执行**（处理之前或之后）。
+
+> **保持每个数据库的触发器名唯一** 	在MySQL 5中，触发器名必须在每个表中唯一，但不是在每个数据库中唯一。这表示同一数据库中的两个表可具有相同名字的触发器。这在其他每个数据库触发器名必须唯一的DBMS中是不允许的，而且后序的MySQL版本很可能会使命名规则更为严格。因此，最好在数据库范围内使用唯一的触发器名。
+
+触发器用`CREATE TRIGGER` 语句创建。举例如下：
+
+~~~mysql
+CREATE TRIGGER newproduct AFTER INSERT ON products
+FOR EACH ROW SELECT 'Product added';
+~~~
+
+**分析**
+
+`CREATE TRIGGER` 用来创建名为`newproduct` 的新触发器。触发器可在一个操作发生之前或之后执行，这里给出了`AFTER INSERT` ，所以此触发器将在`INSERT` 语句成功执行后执行。这个触发器还指定`FOR EACH ROW` ，因此代码对每个插入行执行。在这个例子中，文本`Product added` 将对每个插入的行显示一次。
+
+> ==**注意**==：执行上述触发器定义代码会报错：
+>
+> ~~~bash
+> ERROR 1415 (0A000): Not allowed to return a result set from a trigger
+> ~~~
+>
+> ==**原因**==：我是用的是MySQL 8.0.25版本，新版本的MySQL不允许触发器返回一个结果集。
+>
+> ==**解决办法**==：使用 `INTO @var_name` ，将结果赋值到变量中。修改定义语句如下：
+>
+> ~~~mysql
+> CREATE TRIGGER newproduct AFTER INSERT ON products
+> FOR EACH ROW SELECT 'Product added' INTO @temp_var;
+> ~~~
+>
+> 修改后可成功执行。
+
+**测试触发器**
+
+使用`INSERT` 语句添加一行或多行到`products` 中，将看到对每个成功的插入，显示`Product added` 消息。
+
+~~~mysql
+INSERT INTO products
+VALUES('Test001', 1001, 'Anthony 2000', 100, 'Anthony 2000');	-- 插入一条语句
+SELECT @temp_var;	-- 查询结果
+~~~
+
+~~~bash
++---------------+
+| @temp_var     |
++---------------+
+| Product added |
++---------------+
+1 row in set (0.00 sec)	# 控制台输出查询结果
+~~~
+
+>  **仅支持表** 	只有表才支持触发器，视图不支持（临时表也不支持）。
+
+触发器按每个表每个事件每次地定义，每个表每个事件每次只允许一个触发器。因此，每个表最多支持6个触发器（每条`INSERT` 、`UPDATE` 和`DELETE` 的之前和之后）。单一触发器不能与多个事件或多个表关联，所以，如果你需要一个对`INSERT` 和`UPDATE` 操作执行的触发器，则应该定义两个触发器。
+
+> **触发器失败** 	如果`BEFORE` 触发器失败，则MySQL将不执行请求的操作。此外，如果`BEFORE` 触发器或语句本身失败，MySQL将不执行`AFTER` 触发器（如果有的话）。
+
+
+
+
+
+
+
+
+
+## 25.3 删除触发器
+
+删除一个触发器，可使用`DROP TRIGGER` 语句:
+
+**输入**
+
+~~~mysql
+DROP TRIGGER newproduct;
+~~~
+
+> ==**注意**==：	触发器不能更新或覆盖。为了修改一个触发器，必须先删除它，然后再重新创建。
+
+
+
+
+
+
+
+
+
+## 25.4 使用触发器
+
+涉及各种触发器类型及相关差异。
+
+
+
+
+
+### 25.4.1 INSERT触发器
+
+`NSERT` 触发器在`INSERT` 语句执行之前或之后执行。
+
+* 在`INSERT` 触发器代码内，可引用一个名为`NEW` 的虚拟表，访问被插入的行；
+* 在`BEFORE INSERT` 触发器中，`NEW` 中的值也可以被更新（允许更改被插入的值）；
+* 对于`AUTO_INCREMENT` 列，`NEW` 在`INSERT` 执行之前包含`0` ，在`INSERT` 执行之后包含新的自动生成值。
+
+**例**：创建一个触发器，返回 orders 表新的订单号
+
+**创建触发器**
+
+~~~mysql
+CREATE TRIGGER neworder AFTER INSERT ON orders
+FOR EACH ROW SELECT NEW.order_num INTO @new_order_num;
+~~~
+
+**测试触发器**
+
+~~~mysql
+INSERT INTO orders(order_num, order_date, cust_id)
+VALUES(20010, Now(), 10001);	-- 插入一条记录
+SELECT @new_order_num;	-- 查看触发器结果
+~~~
+
+**输出**
+
+~~~bash
++----------------+
+| @new_order_num |
++----------------+
+|          20010 |
++----------------+
+~~~
+
+**分析**
+
+`orders` 包含3个列。`order_date` 和`cust_id` 必须显示地给出，`order_num` 由MySQL自动生成，`order_num` 自动被返回，存入变量`new_order_num`。
+
+> **选择`BEFORE` 还是`AFTER`？ ** 	通常，将`BEFORE` 用于==数据验证和净化==（目的是保证插入表中的数据确实是需要的数据）。本提示也适用于`UPDATE` 触发器。
+
+
+
+
+
+### 25.4.2 DELETE触发器
+
+`DELETE` 触发器在`DELETE` 语句执行之前或之后执行。
+
+* 在`DELETE` 触发器代码内，你可以引用一个名为`OLD` 的虚拟表，访问被删除的行；
+* `OLD` 中的值全都是只读的，不能更新。
+
+
+
+**例**：使用`OLD` 保存表 orders 将要被删除的行到一个存档表 archive_orders 中
+
+> 需先创建一个与orders表结构相同的表 archive_orders
+>
+> ~~~mysql
+> #####################
+> # Create archive_orders table
+> #####################
+> CREATE TABLE archive_orders
+> (
+>   order_num  int      NOT NULL AUTO_INCREMENT,
+>   order_date datetime NOT NULL ,
+>   cust_id    int      NOT NULL ,
+>   PRIMARY KEY (order_num)
+> ) ENGINE=InnoDB;
+> ~~~
+>
+> 
+
+**创建触发器**
+
+~~~mysql
+DELIMITER //
+
+CREATE TRIGGER deleteorder BEFORE DELETE ON orders
+FOR EACH ROW
+BEGIN
+   INSERT INTO archive_orders(order_num, order_date, cust_id)
+   VALUES(OLD.order_num, OLD.order_date, OLD.cust_id);
+END//
+
+DELIMITER ;
+~~~
+
+**测试触发器**
+
+~~~mysql
+DELETE FROM orders WHERE order_num = 20010;	-- 删除一条记录
+SELECT * FROM archive_orders;	-- 从 archive_orders 表中查看触发器记录
+~~~
+
+~~~bash
+# 输出如下
++-----------+---------------------+---------+
+| order_num | order_date          | cust_id |
++-----------+---------------------+---------+
+|     20010 | 2021-09-26 08:43:25 |   10001 |
++-----------+---------------------+---------+
+~~~
+
+**分析**
+
+在任意订单被删除前将执行此触发器。它使用一条`INSERT` 语句将`OLD` 中的值（要被删除的订单）保存到一个名为`archive_orders` 的存档表中（为实际使用这个例子，你需要用与`orders` 相同的列创建一个名为`archive_orders` 的表）。
+
+* 使用`BEFORE DELETE` 触发器的**优点**（相对于`AFTER DELETE` 触发器来说）为：如果由于某种原因，订单不能存档，`DELETE` 本身将被放弃【如档案表 archive_orders 被删除，则此时无法删除表 orders 中的记录】。
+
+> **多语句触发器** 	正如所见，触发器`deleteorder` 使用`BEGIN` 和`END` 语句标记触发器体。这在此例子中并不是必需的，不过也没有害处。使用`BEGIN END` 块的好处是触发器能容纳多条SQL语句（在`BEGIN END` 块中一条挨着一条）。
+
+<br><br><br><br>
+
+### 25.4.3 UPDATE触发器
+
+<br><br><br><br>
+
+### 25.4.4 关于触发器的进一步介绍
+
+
 
 
 
