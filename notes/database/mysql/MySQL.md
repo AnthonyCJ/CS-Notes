@@ -1,28 +1,10 @@
 #MySQL 
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 
 
@@ -34,47 +16,21 @@
 
 [TOC]
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 1. 了解SQL
 
 综述：介绍数据库和SQL。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ##  1.1 数据库基础
 
-
+<br><br><br>
 
 ### 1.1.1 什么是数据库
 
@@ -87,7 +43,7 @@
 >   * 数据库软件（DBMS：Database Management System）是数据库管理系统。
 >   * **使用者**不直接访问数据库，而是**通过DBMS**访问和**操作数据库**。
 
-
+<br><br><br>
 
 ### 1.1.2 表
 
@@ -110,7 +66,7 @@
 >
 > 建表时应对数据类型给予特别关注。
 
-
+<br><br><br>
 
 ### 1.1.4 行
 
@@ -118,7 +74,7 @@
 
 > 很多时候，行（row）和记录（record）两个数据可以相互替代，但从技术上说，行是正确的术语。
 
-
+<br><br><br>
 
 ### 1.1.5 主键
 
@@ -150,7 +106,7 @@
 > * 不重用主键列的值
 > * 不在主键列中使用可能会该的值。
 
-
+<br><br><br>
 
 ### 1.1.6 外键
 
@@ -219,19 +175,17 @@ DROP FOREIGN KEY fk_class_id;
 * 删除外键约束并没有删除外键这一列。删除列是通过`DROP COLUMN ...`实现的。
 * **删除外键约束**命令使用的是**外键名**而不是字段名。
 
-
+<br><br><br>
 
 ### 1.1.7 索引
 
 * 参考连接：[索引 - 廖雪峰](https://www.liaoxuefeng.com/wiki/1177760294764384/1218728442198976)
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 1.2 什么是SQL
 
-
+<br><br><br>
 
 ### 1.2.1 相关概念
 
@@ -250,15 +204,15 @@ SQL语言定义了这么几种操作数据库的能力：
 * **DQL：Data Query Language**
   * DQL允许用户查询数据，这也是通常最频繁的数据库日常操作。
 
+<br><br><br>
+
 ### 1.2.2 语法特点
 
 SQL语言关键字不区分大小写！！！但是，针对不同的数据库，对于表名和列名，有的数据库区分大小写，有的数据库不区分大小写。同一个数据库，有的在Linux上区分大小写，有的在Windows上不区分大小写。
 
 * 个人习惯遵循的约定：==**SQL关键字**==总是==**大写**==，以示突出，==**表名和列名**==均使用==**小写**==。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 1.3 小结
 
@@ -274,29 +228,23 @@ SQL语言关键字不区分大小写！！！但是，针对不同的数据库�
   * 通过创建唯一索引，可以保证某一列的值具有唯一性。
   * 数据库索引对于用户和应用程序来说都是透明的。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 2. MySQL简介
 
 综述：介绍什么是MySQL，以及MySQL中可以应用什么工具。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 2.1 什么是MySQL
 
 * MySQL是一种DBMS，即它是一种数据库软件。
 
-
+<br><br><br>
 
 ### 2.1.1 客户机-服务器软件
 
@@ -313,7 +261,7 @@ MySQL、Oracle、Microsoft SQL Server 等数据库都是基于客户机-服务�
 * 服务器软件为MySQL DBMS。你可以在本地安装的副本上运行，也可以连接到运行在你具有访问权限的远程服务器上的一个副本。
 * 客户机可以是MySQL提供的工具、脚本语言（如Perl）、Web应用开发语言（如ASP、ColdFusion、JSP和PHP）、程序设计语言（如C、C++、Java）等。
 
-
+<br><br><br>
 
 ### 2.1.2 MySQL版本
 
@@ -323,13 +271,11 @@ MySQL、Oracle、Microsoft SQL Server 等数据库都是基于客户机-服务�
 * 4.1——对函数库、子查询、继承帮助等的重要增加。
 * 5——存储过程、触发器、游标、视图等。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 2.2 MySQL工具
 
-
+<br><br><br>
 
 ### 2.2.1 mysql命令行实用程序
 
@@ -337,40 +283,32 @@ MySQL、Oracle、Microsoft SQL Server 等数据库都是基于客户机-服务�
 * 命令用 ；或 \g 结束。仅按 Enter 不执行命令
 * 输入quit或exit推出命令行实用程序
 
-
+<br><br><br>
 
 ### 2.2.2 MySQL Administrator
 
-
+<br><br><br>
 
 ### 2.2.3 MySQL Query Brower
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 2.3 小结
 
 * 介绍了什么是MySQL。
 * 引入了几个客户机实用程序。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 #3. 使用MySQL
 
 本节内容为如何连接和登录到MySQL，如何执行MySQL语句，以及如何获得数据库和表的信息。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 3.1 连接
 
@@ -382,7 +320,7 @@ MySQL与所有客户机-服务器DBMS一样，要求在能之心工龄之前登�
   * 一个合法的用户名
   * 用户口令（如果需要）
 
-
+<br><br><br>
 
 ### MySQL数据库软件基本操作
 
@@ -426,9 +364,7 @@ MySQL与所有客户机-服务器DBMS一样，要求在能之心工龄之前登�
           * 表：文件
           * 数据：数据
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 3.2 选择数据库
 
@@ -452,13 +388,11 @@ Database changed
 
 USE 语句并不返回任何结果。依赖于使用的客户机，显示某种形式的通知。例如，这里显示出的 Database changed 消息是 mysql 命令行实用程序在数据库选择成功后显示的。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 3.3 查看数据库和表
 
-
+<br><br><br>
 
 ### 3.3.1查看所有数据库
 
@@ -493,7 +427,7 @@ SHOW DATABASES;	-- 返回可用数据库的一个列表
 
 **SHOW DATABASES;** 返回可用数据库的一个列表。列表中的数据库可能是 MySQL 内部使用的数据库（如例子中的 mysql 和 information_schema），也可能是用户自己创建的数据库。
 
-
+<br><br><br>
 
 ### 3.3.2 查看所有表
 
@@ -525,7 +459,7 @@ SHOW TABLES;	-- 查看所有表
 
 **SHOW TABLES;** 返回当前选择的数据库内可用表的列表。
 
-
+<br><br><br>
 
 ### 3.3.3 显示某表的所有列
 
@@ -558,9 +492,7 @@ SHOW COLUMNS FROM customers;	-- 显示 customers 表的所有列
 
 **SHOW COLUMNS;** 要求给出一个表名，它对每个字段返回一行，行中包含**字段名**、**数据类型**、**是否允许NULL**、**键信息**、**默认值**以及**其它信息**（如字段 cust_id 的 auto_increment）。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 3.4 小结
 
@@ -568,23 +500,17 @@ SHOW COLUMNS FROM customers;	-- 显示 customers 表的所有列
 * 如何用 USE 选择数据库
 * 如何用 SHOW 查看MySQL数据库、表和内部信息。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 4. 检索数据
 
 本节内容为使用SELECT语句从表中检索一个或多个数据列。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.1 SELECT 语句
 
@@ -596,9 +522,7 @@ SHOW COLUMNS FROM customers;	-- 显示 customers 表的所有列
 SELECT "what" FROM "where"
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.2 检索单个列
 
@@ -645,9 +569,7 @@ FROM products;
 >
 > 推荐**大小写**规范**应明确、固定、一致**。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.3 检索多个列
 
@@ -688,9 +610,7 @@ FROM products;
 
 > SQL语句一般返回原始的、无格式的数据。**数据的格式化是一个表示问题，而不是一个检索问题**。因此，**表示**（对齐和显示上面的价格值，用货币符号和逗号表示其金额）**一般在显示该数据的应用程序中规定**。一般很少使用实际检索出的原始数据（没有应用程序提供的格式）。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.4 检索所有列
 
@@ -724,9 +644,7 @@ SELECT * FROM products;
 14 rows in set (0.00 sec)
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.5 检索不同的行
 
@@ -769,9 +687,7 @@ DISTINCT 关键字必须直接放在列名的前面。SELECT DISTINCT vend_id �
 4 rows in set (0.00 sec)
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.6 限制结果
 
@@ -849,9 +765,7 @@ LIMIT 5, 5 表示MySQL返回从第5行开始的5行结果。第1个数为开始�
 LIMIT 4 OFFSET 3	-- 表示从行3开始取4行
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.7 使用完全限定的表名
 
@@ -859,34 +773,24 @@ LIMIT 4 OFFSET 3	-- 表示从行3开始取4行
 
 表名.列名
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 4.8 小结
 
 * 学使用 SQL 的 SELECT 语句**检索**单个表列、多个表列、所有表列。
 * 下节将学习**排序**检索的数据。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 5. 排序检索数据
 
 - 使用 SELECT 语句的 ORDER BY 子句，根据需要排序检索的数据。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 5.1 排序数据
 
@@ -930,9 +834,7 @@ ORDER BY prod_name;
 14 rows in set (0.00 sec)
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 5.2 按多个列排序
 
@@ -970,9 +872,7 @@ ORDER BY prod_price, prod_name;
 14 rows in set (0.00 sec)
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 5.3 指定排序方向
 
@@ -1046,9 +946,7 @@ LIMIT 1;	-- 查找降序第1个值【即最大值】
 1 row in set (0.01 sec)
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 5.4 ORDER BY 等关键字在语句中的位置
 
@@ -1058,7 +956,7 @@ LIMIT 1;	-- 查找降序第1个值【即最大值】
 >
 > **SELECT	columns	FROM	table	ORDER BY	columns	LIMIT	rows	**
 
-
+<br><br><br><br><br><br>
 
 ## 5.5 小结
 
@@ -1066,23 +964,17 @@ LIMIT 1;	-- 查找降序第1个值【即最大值】
 * ==**这个子句必须是 SELECT 语句中的最后一条子句**==。
 * 可根据需要，利用它在一个或多个列上对数据进行排序。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 6. 过滤数据
 
 * 使用 SELECT 语句的 **WHERE** 子句**指定搜索条件**。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 6.1 使用 WHERE 子句
 
@@ -1120,9 +1012,7 @@ WHERE prod_price = 2.50;
 
 在同时使用 ORDER BY 和 WHERE 子句时，应该让 ORDER BY 位于 WHERE 之后，否则将会产生错误。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 6.2 WHERE 子句操作符
 
@@ -1139,7 +1029,7 @@ WHERE prod_price = 2.50;
 | >=      | 大于等于           |
 | BETWEEN | 在指定的两个值之间 |
 
-
+<br><br><br>
 
 ### 6.2.1 检查单个值【=】
 
@@ -1164,7 +1054,7 @@ WHERE prod_name = 'fuses';
 1 row in set (0.00 sec)
 ~~~
 
-#### 
+<br><br><br>
 
 **例2**：列出价格小于10美元的所有产品【的产品名和价格】
 
@@ -1193,7 +1083,7 @@ WHERE prod_price < 10;
 7 rows in set (0.00 sec)
 ~~~
 
-
+<br><br><br>
 
 ### 6.2.2 不匹配检查【!=】
 
@@ -1230,7 +1120,7 @@ WHERE vend_id <> 1003;	-- 等价子句 WHERE vend_id != 1003
 >
 > 如果**将值与串类型的列进行比较**，则**需要限定引号**。用来与数值列进行比较的值不用引号。
 
-
+<br><br><br>
 
 ### 6.2.3 范围值检查【BETWEEN AND】
 
@@ -1265,7 +1155,7 @@ WHERE prod_price BETWEEN  5 AND 10;
 
 **BETWEEN AND 匹配范围**中**包括**指定的**开始值**和**结束值**。
 
-
+<br><br><br>
 
 ### 6.2.4 空值检查【IS NULL】
 
@@ -1295,9 +1185,7 @@ WHERE cust_email IS NULL;
 2 rows in set (0.00 sec)
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 6.3 小结
 
@@ -1305,32 +1193,26 @@ WHERE cust_email IS NULL;
 * 相等、不等、大于、小于、范围区间。
 * NULL 值。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 7. 数据过滤
 
 * 使用**组合 WHERE 子句**以建立功能更强的更高级的搜索条件。
 *  **NOT** 和 **IN** 操作符。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 7.1 组合 WHERE 子句
 
 MySQL允许给出**多个 WHERE 子句**。这些子句可以**两种**方式使用：**以 AND 子句的方式**或 **OR 子句的方式**使用。
 
 * **操作符（operator）**：用来联结或改变 WHERE 子句中的子句的**关键字**。也成为**逻辑操作符（logical operator）**。
+
+<br><br><br>
 
 ### 7.1.1 AND 操作符
 
@@ -1367,7 +1249,7 @@ WHERE vend_id = 1003 AND prod_price <= 10;
 5 rows in set (0.00 sec)
 ~~~
 
-
+<br><br><br>
 
 ### 7.1.2 OR 操作符
 
@@ -1400,15 +1282,13 @@ WHERE vend_id = 1002 OR vend_id = 1003;
 9 rows in set (0.00 sec)
 ~~~
 
-
+<br><br><br>
 
 ### 7.1.3 计算次序
 
 * 注意：SQL 中，==**AND 操作符的优先级高于 OR 操作符**==。所以涉及业务逻辑时，推荐使用（）保证业务逻辑正确，**尽量避免受运算优先级影响**。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 7.2 IN 操作符
 
@@ -1454,9 +1334,7 @@ IN 操作符与 OR 关键字实现几乎相同的功能。
   * IN操作符一般比OR操作符清单执行更快。
   * IN的最大优点是可以包含其它 SELECT 语句，使得能够更动态地建立 WHERE 子句。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 7.3 NOT 操作符
 
@@ -1502,9 +1380,7 @@ ORDER BY prod_name;
 >
 > **MySQL支持**使用 NOT 对 **IN**、**BETWEEN** 和 **EXISTS** 子句取反，这与多数其他DBMS允许使用 NOT 对各种条件取反有很大的差别。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 7.4 小结
 
@@ -1515,17 +1391,11 @@ ORDER BY prod_name;
 * 使用 IN 操作符
 * 使用 NOT 操作符
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 8. 用通配符进行过滤
 
@@ -1534,9 +1404,7 @@ ORDER BY prod_name;
 * **通配符（wildcard）**：用来**匹配值的一部分**的特殊字符。
 * **搜索模式（search pattern）**：由字面值、通配符或两者组合构成的搜索条件。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 8.1 LIKE 操作符
 
@@ -1552,7 +1420,7 @@ ORDER BY prod_name;
 >
 > 操作符何时不是操作符？答案是它**作为谓词（predicate）时**。从技术上说，LIKE 是为此而不是操作符。虽然最终的结果是相同的，但应该对此术语有所了解。在 SQL 文档中会出现此术语。
 
-
+<br><br><br>
 
 ### 8.1.1 百分号（%）通配符
 
@@ -1588,7 +1456,7 @@ WHERE prod_name LIKE 'jet%';
 >
 > 注意：根据MySQL的配置方式，搜索可以是区分大小写的。区分大小写时，大小写不一致将不匹配。
 
-
+<br><br>
 
 **例2**：检索任何位置包含文本 anvil 的值
 
@@ -1617,7 +1485,7 @@ WHERE prod_name LIKE '%anvil%';
 
 搜索模式 **'%anvil%'** 表示匹配任何位置包含文本 anvil 的值。
 
-
+<br><br>
 
 通配符也可以出现在搜索模式中间。
 
@@ -1657,7 +1525,7 @@ WHERE prod_name LIKE 's%e';
 >
 > %通配符无法匹配 NULL 值。
 
-
+<br><br>
 
 ### 8.1.2 下划线（_）通配符
 
@@ -1687,9 +1555,7 @@ WHERE prod_name LIKE '_ ton anvil';
 
 与上方 % 检索结果对比更清晰。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 8.2 使用通配符的技巧
 
@@ -1699,9 +1565,7 @@ MySQL的通配符很有用，但功能是有代价的——通配符搜索的处
 * 在确实需要使用通配符时，除非绝对有必要，否则**不要把通配符用在搜索模式的开始处**。把通配符置于搜素模式的开始处，搜索起来是最慢的。
 * 仔细**注意通配符的位置**，如果放错地方，可能不会返回想要的数据。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 8.3 小结
 
@@ -1709,25 +1573,17 @@ MySQL的通配符很有用，但功能是有代价的——通配符搜索的处
 * 如何在 WHERE 子句中使用 SQL 通配符。
 * 通配符应细心使用，不要过度使用。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 9. 用正则表达式进行搜索
 
 * 如何在MySQL  WHERE 子句内使用正则表达式来更好地控制数据过滤
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 9.1 正则表达式介绍
 
@@ -1745,9 +1601,7 @@ MySQL的通配符很有用，但功能是有代价的——通配符搜索的处
 
 正则表达式用正则表达式语言建立，正则表达式语言是用来完成上述及更多工作的一种特殊语言，具有自身的语法和指令。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 9.2 使用 MySQL 正则表达式
 
@@ -1757,7 +1611,7 @@ MySQL的通配符很有用，但功能是有代价的——通配符搜索的处
 
 > 注：MySQL仅支持正则表达式语言的一个很小的子集。
 
-
+<br><br><br>
 
 ### 9.2.1 基本字符匹配
 
@@ -1789,7 +1643,7 @@ ORDER BY prod_name;
 
 从格式上看，仅仅是关键字 **LIKE** 被 **REGEXP** 替代。该语句告诉MySQL：**REGEXP** 后所跟的东西作为**正则表达式**（与文字正文1000匹配的一个正则表达式）处理。
 
-
+<br><br>
 
 **例2**：
 
@@ -1865,7 +1719,7 @@ ORDER BY prod_name;
 > WHERE prod_name REGEXP BINARY 'JetPack .000'
 > ~~~
 
-
+<br><br><br>
 
 ### 9.2.2 进行 OR 匹配
 
@@ -1902,7 +1756,7 @@ ORDER BY prod_name;
 > WHERE prod_name REGEXP '1000|2000|3000';	-- 将匹配1000或2000或3000
 > ~~~
 
-
+<br><br><br>
 
 ### 9.2.3 匹配几个字符之一
 
@@ -1943,7 +1797,7 @@ ORDER BY prod_name;
 WHERE prod_name REGEXP '[^123] Ton'	-- 匹配除这些字符外的任何东西
 ~~~
 
-
+<br><br><br>
 
 ### 9.2.4 匹配范围
 
@@ -1975,7 +1829,7 @@ ORDER BY prod_name;
 
 此处 **[1-5]** 定义了一个范围。**'[1-5] Ton'** 作为正则表达式进行匹配。
 
-
+<br><br><br>
 
 ### 9.2.5 匹配特殊字符
 
@@ -2025,7 +1879,7 @@ ORDER BY vend_name;
 >
 > 多数正则表达式实现用单个反斜杠转义特殊字符。但MySQL要求两个反斜杠（MySQL自己解释一个，正则表达式库解释另外一个）。
 
-
+<br><br><br>
 
 ### 9.2.6 匹配字符类
 
@@ -2046,7 +1900,7 @@ ORDER BY vend_name;
 | [:upper:]  |              任意大写字母（同 [A-Z] ）               |
 | [:xdigit:] |          任意十六进制数字（同 [a-fA-F0-9]）          |
 
-
+<br><br><br>
 
 ### 9.2.7 匹配多个实例 
 
@@ -2067,9 +1921,7 @@ ORDER BY vend_name;
 | `{n,}`  |      不少于指定数目的匹配      |
 | `{n,m}` |  匹配数目的范围（m不超过255）  |
 
-
-
-
+<br><br>
 
 **例1**：
 
@@ -2098,7 +1950,7 @@ ORDER BY prod_name;
 
 正则表达式 `\\([0-9] sticks?\\)` 说明：`\\(匹配(,[0-9]匹配任意数字（这个例子中为1和5）, sticks?匹配stick和sticks（s后的?使s可选，因为?匹配它前面的任何字符的0次或1次出现），\\)匹配)。` 如果没有？，就匹配stick和sticks会非常困难。
 
-
+<br><br>
 
 **例2**：匹配连在一起的4位数字
 
@@ -2138,7 +1990,7 @@ WHERE prod_name REGEXP '[0-9][0-9][0-9][0-9]'
 ORDER BY prod_name;
 ~~~
 
-
+<br><br><br>
 
 ### 9.2.8 定位符
 
@@ -2154,7 +2006,7 @@ ORDER BY prod_name;
 | `[[:<:]]` |  词的开始  |
 | `[[:>:]]` |  词的结尾  |
 
-
+<br><br>
 
 **例**：找出以一个数（或小数点）**开始**的所有产品。
 
@@ -2184,7 +2036,7 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 
 ^ 匹配串的开始。因此，`^[0-9\\.]`只在 **.** 或任意数字为串中第1个字符时才匹配它们。没有 ^ 将会检索出串中间有数字的行。
 
-
+<br><br>
 
 #### 附1：^ 的双重用途
 
@@ -2261,26 +2113,18 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 >
 > 因为文本'hello'中没有数字，所以返回0。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 9.3 小结
 
 * 正则表达式的基础知识
 * 在MySQL的SELECT语句中使用REGEXP关键字
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 10. 创建计算字段
 
@@ -2288,9 +2132,7 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 * 如何创建计算字段
 * 怎样从应用程序中使用别名引用它们
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 10.1 计算字段
 
@@ -2309,9 +2151,7 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 
 > 注：只有数据库知道 SELECT 语句中哪些列是实际的表列，哪些列是计算字段。从客户机（如应用程序）的角度来看，计算字段的数据是以与其他列的数据相同的方式返回的。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 10.2 拼接字段
 
@@ -2351,7 +2191,7 @@ ORDER BY vend_name;
 
 Concat()方法：用于拼接串，子串用逗号分隔，拼接后作为单个长串。
 
-
+<br><br>
 
 ### 删除数据多余空格
 
@@ -2374,7 +2214,7 @@ ORDER BY vend_name;
 
 * RTrim() 函数去掉值右边的所有空格。通过使用RTrim() 函数， 各个列都进行了整理。
 
-
+<br><br>
 
 ### 使用别名
 
@@ -2424,9 +2264,7 @@ ORDER BY vend_name;
 
 > **别名**有时候**也称为导出列（derived column）**，不管称为什么，它们都是相同的东西。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 10.3 执行算术计算
 
@@ -2487,7 +2325,7 @@ WHERE order_num = 20005;
 
 客户机应用现在可以正常使用新计算列 expanded_price。
 
-
+<br><br>
 
 MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以用来区分优先顺序。
 
@@ -2498,7 +2336,7 @@ MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以�
 |   *    |    乘    |
 |   /    |    除    |
 
-
+<br><br>
 
 #### 测试计算
 
@@ -2508,9 +2346,7 @@ MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以�
 > * SELECT Trim('abc') 将返回abc
 > * SELECT Now() 利用Now()函数返回当前日期和时间。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 10.4 小结
 
@@ -2523,17 +2359,11 @@ MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以�
 * 使用别名
 * 测试计算
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 11. 使用数据处理函数
 
@@ -2541,17 +2371,13 @@ MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以�
 * MySQL支持何种函数
 * 如何使用这些函数
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 11.1 函数
 
 函数的可移植性相较 SQL 来说要低一些。所以**使用函数**时，要保证**做好代码注释**，以便自己或去其他人能够确切知道所编写的 SQL 代码含义。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 11.2 使用函数
 
@@ -2562,9 +2388,7 @@ MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以�
 * 处理日期和时间值并从这些值中提取特定成分（如，返回两个日期之差，检查日期有效性等）的**日期和时间函数**。
 * 返回 DBMS 正使用的特殊信息（如返回用户登录信息，检查版本细节）的**系统函数**。
 
-
-
-
+<br><br><br>
 
 ### 11.2.1 文本处理函数
 
@@ -2594,7 +2418,7 @@ ORDER BY vend_name;
 6 rows in set (0.01 sec)
 ~~~
 
-
+<br><br>
 
 下表列出了部分**常用的文本处理函数**
 
@@ -2611,7 +2435,7 @@ ORDER BY vend_name;
 | SubString() |  返回子串的字符   |
 |   Upper()   |  将串转换为大写   |
 
-
+<br><br><br>
 
 ### 11.2.2 日期和时间处理函数
 
@@ -2641,7 +2465,7 @@ ORDER BY vend_name;
 |    Time()     |   返回一个日期时间的时间部分   |
 |    Year()     |     返回一个日期的年份部分     |
 
-
+<br><br>
 
 * 注意：
 
@@ -2651,7 +2475,7 @@ ORDER BY vend_name;
     2005-09-01	-- 格式举例
     ~~~
 
-
+<br><br>
 
 **例1**：基本日期
 
@@ -2686,7 +2510,7 @@ FROM orders
 WHERE Date(order_date) = '2005-09-01';
 ~~~
 
-
+<br><br>
 
 > 如果只要日期，使用 **Date()**
 >
@@ -2694,7 +2518,7 @@ WHERE Date(order_date) = '2005-09-01';
 >
 > Date() 和 Time() 都是MySQL4.1.1中第一次引入的。
 
-
+<br><br>
 
 **例2**：检索2005年9月下的所有订单。
 
@@ -2735,7 +2559,7 @@ WHERE Year(order_date) = 2005 AND Month(order_date) = 9;
 
 Year() 从日期中返回年份，Month() 从日期中返回月份。
 
-
+<br><br>
 
 ### 11.2.3 数值处理函数
 
@@ -2755,35 +2579,25 @@ Year() 从日期中返回年份，Month() 从日期中返回月份。
 | Sqrt() | 返回一个数的平方根 |
 |  Tan   | 返回一个角度的正切 |
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 11.3 小结
 
 * 使用 SQL  的数据处理函数
 * 着重介绍了日期处理函数
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 12. 汇总数据
 
 * 什么是SQL的聚集函数。
 * 如何利用它们汇总表的数据。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 12.1 聚集函数
 
@@ -2809,7 +2623,7 @@ Year() 从日期中返回年份，Month() 从日期中返回月份。
 
 > MySQL还支持一系列的标准偏差聚集函数，这里并未涉及。
 
-
+<br><br><br>
 
 ### 12.1.1 AVG()函数
 
@@ -2835,7 +2649,7 @@ FROM products;
 1 row in set (0.00 sec)
 ~~~
 
-
+<br><br>
 
 **例2**：确定特定行或列的平均值
 
@@ -2858,13 +2672,13 @@ WHERE vend_id = 1003;
 1 row in set (0.00 sec)
 ~~~
 
-
+<br><br>
 
 > **只能用于单个列**	AVG()只用于单个列数值的平均值计算，而且列名必须作为函数参数给出。为了获得多个列的平均值，必须使用多个AVG()函数。
 
 > **NULL值**	AVG()函数忽略值为NULL的行。
 
-
+<br><br><br>
 
 ### 12.1.2 COUNT()函数
 
@@ -2875,7 +2689,7 @@ COUNT()函数有两种使用方式：
 * 使用 **COUNT(*)** 对表中的行的数目进行技术，不管表列中包含的是控制（NULL）还是非空值。
 * 使用 **COUNT(column)** 对特定列中具有值的行进行计数，忽略NULL值。
 
-
+<br><br>
 
 **例1**：返回 customers 表中客户的总数
 
@@ -2927,7 +2741,7 @@ FROM customers;
 
 > **COUNT() 函数与NULL值**	如果**指定列名**，则指定列的值为空的行（即NULL值）被 COUNT() 函数**忽略**。但如果 COUNT() 函数中使用的是  **(*)** ，则 NULL 值也参与计数。
 
-
+<br><br><br>
 
 ### 12.1.3 MAX()函数
 
@@ -2955,7 +2769,7 @@ FROM products;
 
 > **NULL值**	MAX()函数
 
-
+<br><br><br>
 
 #### 12.1.4 MIN()函数
 
@@ -2981,13 +2795,13 @@ FROM products;
 1 row in set (0.00 sec)
 ~~~
 
-
+<br><br>
 
 > **对非数值数据使用MIN()**	与MAX()类似，对于文本数据，如果数据按相应的列排序，MIN() 返回最前面的行。
 
 > **NULL值**	MIN()函数忽略列值为NULL的行。
 
-
+<br><br><br>
 
 ### 12.1.5 SUM()函数
 
@@ -3035,15 +2849,13 @@ WHERE order_num = 2005;
 1 row in set (0.00 sec)
 ~~~
 
-
+<br><br>
 
 > **在多个列上进行计算**	如本例所示，利用标准的算术操作符，所有聚集函数都可用来执行多个列上的计算。
 
 > **NULL值**	SUM()忽略列值为NULL的行。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 12.2 聚集不同值
 
@@ -3052,7 +2864,7 @@ WHERE order_num = 2005;
 * 对所有的行执行计算，指定ALL参数或不给参数（ALL时默认行为）；
 * 只包含不同的值，指定 **DISTINCT** 参数。
 
-
+<br><br>
 
 **例**：使用AVG()函数 + DISTINCT 参数，只考虑不同的的价格
 
@@ -3075,15 +2887,13 @@ WHERE vend_id = 1003;
 1 row in set (0.01 sec)
 ~~~
 
-
+<br><br>
 
 #### DISTINCT 只能用于列名
 
 > 注意：如果指定列名，则DISTINCT只能用于COUNT(列名)。DISTINCT不能用于COUNT(*)，因此**不允许使用** **`COUNT(DISTINCT)`** ,否则会产生错误。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 12.3 组合聚集函数
 
@@ -3116,31 +2926,23 @@ FROM products;
 
 **注意**：不同聚合函数调用之间要用**逗号分隔**。
 
-
+<br>
 
 ### 取别名
 
 > **取别名**	在指定别名以包含某个聚集函数的结果时，推荐使用 **AS 别名**。这样易于理解和使用（容易定位和排除故障）。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 12.4 小结
 
 使用聚集函数比客户机应用程序计算效率更高。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 13.分组数据
 
@@ -3148,17 +2950,13 @@ FROM products;
   * **GROUP BY** 子句
   * **HAVING**  子句
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 13.1 数据分组
 
 分组允许把数据分为多个逻辑组，以便能对每个组进行聚集运算。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 13.2 创建分组
 
@@ -3192,7 +2990,7 @@ GROUP BY vend_id;
 
 GROUP BY 子句指示MySQL按vend_id排序并分组数据。这导致对每个 vend_id 而不是整个表计算 num_prods 一次。
 
-
+<br>
 
 **有关 GROUP BY 的重要规定**：
 
@@ -3202,9 +3000,7 @@ GROUP BY 子句指示MySQL按vend_id排序并分组数据。这导致对每个 v
 * 除聚集计算语句之外，**SELECT语句中的每个列**都**必须在 GROUP BY 子句中给出**。
 * 如果分组列中具有NULL值，则NULL将作为一个分组返回。如果列中有多行NULL值，它们将分为一组。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 13.3 过滤分组
 
@@ -3239,13 +3035,15 @@ HAVING COUNT(*) >= 2;
 
 该语句前3行与上一个例子一致。最后一行为 HAVING 子句，过滤出两个以上订单的分组。
 
-
+<br>
 
 #### HAVING 和 WHERE 的重要差别
 
 > WHERE 在数据分组前进行过滤，HAVING 在数据分组后进行过滤。
 >
 > WHERE 排除的行不包括在分组中，
+
+<br><br>
 
 例2：WHERE 和 HAVING 同时使用的例子——列出具有2个及以上、价格为10及以上的产品的供应商
 
@@ -3275,9 +3073,7 @@ HAVING COUNT(*) >= 2;
 
 分组的目的往往在于对目标组的数据进行运算或整合，所以 GROUP BY 经常与聚合函数联用。WHERE 子句初步过滤一些行，HAVING 子句进一步过滤一些组。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 13.4 分组和排序
 
@@ -3330,11 +3126,7 @@ ORDER BY ordertotal;
 4 rows in set (0.06 sec)
 ~~~
 
-
-
- 
-
-
+<br><br><br><br><br><br>
 
 ## 13.5 SELECT子句书写顺序
 
@@ -3350,9 +3142,7 @@ ORDER BY ordertotal;
 | ORDERE BY |    输出排序顺序    |           否           |
 |   LIMIT   |    要检索的行数    |           否           |
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 13.6 小结
 
@@ -3362,26 +3152,18 @@ ORDER BY ordertotal;
   * ORDER BY和GROUP BY 的差异
   * WHERE 和 HAVING 的差异
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 14. 使用子查询
 
 * 什么是子查询
 * 如何使用它们
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 14.1 子查询
 
@@ -3390,9 +3172,7 @@ ORDER BY ordertotal;
 * **查询（query）**：任何SQL语句都是查询。此术语一般是指SELECT语句。
 * **子查询（subquery）**：即嵌套在其他查询中的查询。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 14.2 利用子查询进行过滤
 
@@ -3430,7 +3210,7 @@ ORDER BY ordertotal;
      2 rows in set (0.01 sec)
      ~~~
 
-     
+     <br>
 
 2. 检索具有前一步骤列出的订单编号的所有客户的ID。
 
@@ -3454,7 +3234,7 @@ ORDER BY ordertotal;
      2 rows in set (0.00 sec)
      ~~~
 
-     
+     <br>
 
 3. 检索前一步骤返回的所有客户ID的客户信息。
 
@@ -3478,7 +3258,7 @@ ORDER BY ordertotal;
      2 rows in set (0.00 sec)
      ~~~
 
-
+<br>
 
 现在，将三个查询合并：
 
@@ -3510,7 +3290,7 @@ WHERE cust_id IN (SELECT cust_id
 
 在SELECT语句中，子查询总是从内向外处理。最里面的子查询返回订单号列表，中间的子查询返回客户ID列表，最外层的SELECT语句根据客户ID列表查询客户信息。
 
-
+<br>
 
 在实际使用时，由于性能的限制，不能嵌套太多的子查询。
 
@@ -3520,9 +3300,7 @@ WHERE cust_id IN (SELECT cust_id
 
 > **子查询和性能**	之里给出的代码有效并能够获取所需结果。但使用子查询并不总是执行该种数据检索的最有效办法。15节将给出更多论述。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 14.3 作为计算字段使用子查询
 
@@ -3561,26 +3339,18 @@ ORDER BY cust_name;
 
 orders是一个计算字段，它是由圆括号中的子查询建立的。该子查询对检索出的每个客户执行一次。在此例子中，该子查询执行了5次，因为检索出了5个客户。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 14.4 小结
 
 * 子查询最常见的使用是在WHERE子句的IN操作符中，以及用来填充计算列。
 * 推荐先建立最内层的查询，然后逐步用硬编码数据建立和测试外层查询，确认正确后再嵌入子查询，并再次测试它。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 15. 联结表
 
@@ -3588,18 +3358,14 @@ orders是一个计算字段，它是由圆括号中的子查询建立的。该�
 * 为什么要使用联结
 * 如何编写使用联结的SELECT语句
 
-
+<br><br><br>
 
 联结：就是把两张表通过两个字段一一对应的关系按行联系起来，使之从一个表的数据查询到另外一张表的数据。JOIN 概念包括内联（**INNER JOIN**）、外联（**LEFT OUTER JOIN**, **RIGHT OUTER JOIN**, **FULL OUTER JOIN**）
 
 * 内联：涉及**两张表相关联字段一一对应**的关系，即**每一对相联结的属性均有值**。
 * 外联：两张表内联的部分 + **附表**所“附加”的，**还没有与主表构成对应关系的记录**。这种情况所查询出来的**附表字段均有值**，而**主表对应属性可能为NULL**。
 
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 15.1 联结
 
@@ -3607,7 +3373,7 @@ SQL最**强大的功能之一**就是能在数据检索查询的执行中**联�
 
 使用联结前，需要了解关系表以及关系数据库的一些基础知识。
 
-
+<br><br><br>
 
 ### 15.1.1 关系表
 
@@ -3619,7 +3385,7 @@ SQL最**强大的功能之一**就是能在数据检索查询的执行中**联�
 
 * **可伸缩性（scale）**：能够适应不断增加的工作量而不失败。设计良好的数据库或应用程序称之为可伸缩性好（scale well）。
 
-
+<br><br><br>
 
 ### 15.1.2 为什么要使用联结
 
@@ -3637,9 +3403,7 @@ SQL最**强大的功能之一**就是能在数据检索查询的执行中**联�
 >
 > 为防止这种情况发生，可指示MySQL只允许在某表的外键列中出现合法值（即出现在另一张表主键中的值）。这就是**维护引用完整性**。它是**通过在表的定义中指定主键和外键来实现的**。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 15.2 创建联结
 
@@ -3688,7 +3452,7 @@ FROM子句列出了两个表。这两个表用WHERE子句正确联结，WHERE子
 
 > 注：在引用的列可能出现二义性时，必须使用**完全限定列名**（用一个点分隔的表名和列名）。
 
-
+<br><br><br>
 
 ### 15.2.1 WHERE子句的重要性
 
@@ -3800,11 +3564,11 @@ ORDER BY vend_name, prod_name;
 84 rows in set (0.01 sec)
 ~~~
 
-
+<br>
 
 > **不要忘记WHERE子句**	应该保证所有联结都有WHERE子句。同时应该保证WHERE子句的正确性。
 
-
+<br><br><br>
 
 ### 15.2.2 内部联结
 
@@ -3826,7 +3590,7 @@ ON vendors.vend_id = products.vend_id;
 
 > **使用哪种语法**	ANSI SQL规范首选INNER JOIN语法。
 
-
+<br><br><br>
 
 ### 15.2.3 联结多个表
 
@@ -3860,9 +3624,9 @@ WHERE products.vend_id = vendors.vend_id
 
 > **性能考虑**	联结的表越多，性能下降越厉害，所以不要联结不必要的表。
 
+<br><br>
 
-
-例2：14章的例子使用联结重写。
+**例2**：14章的例子使用联结重写。
 
 使用**IN关键字**的**原解法**：
 
@@ -3906,35 +3670,25 @@ WHERE customers.cust_id = orders.cust_id
 
 这里没有使用嵌套子查询，而是使用两个联结。这里有3个WHERE子句条件。前面两个关联联结中的表，后一个过滤产品TNT2的数据。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 15.3 小结
 
 * 联结的概念
 * 等值联结（内部联结）。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 16. 创建高级联结
 
 * 另外一些联结类型（包括含义和使用方法）。
 * 介绍如何对被联结的表使用表别名和聚集函数。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 16.1 使用表别名
 
@@ -3961,15 +3715,13 @@ WHERE c.cust_id = o.cust_id
 
 ==**注意**==：**表别名只在查询执行中使用**。与列别名不一样，**表别名不返回到客户机**。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 16.2 使用不同类型的联结
 
 四种联结：等值联结、自联结、自然联结、外部联结
 
-
+<br><br><br>
 
 ### 16.2.1 自联结
 
@@ -4021,13 +3773,13 @@ WHERE p1.vend_id = p1.vend_id
 
 > **用自联结而不是子查询**	自联结通常作为外部语句用来替代从相同表中检索数据时使用的子查询语句。虽然最终的结果是相同的，但有时候处理联结远比处理子查询快得多。应该尝试并比较一下二者的性能哪个更好。
 
-
+<br><br><br>
 
 ### 16.2.2 自然联结
 
 在自然联结中，你只能选择哪些唯一的列。这一般要求通过对表使用通配符（SELECT *），对所有其他表的列使用明确的子集来完成。
 
-
+<br><br><br>
 
 ### 16.2.3 外部联结
 
@@ -4089,15 +3841,13 @@ ON customers.cust_id = orders.cust_id;
 +---------+-----------+
 ~~~
 
-
+<br>
 
 在使用OUTER JOIN语法时，必须使用 RIGHT 或 LEFT 关键字指定包括其所有行的表。（RIGHT指出的是OUTER JOIN右边的表，而LEFT 指出的是 OUTER JOIN 左边的表。
 
 > **联结语法的顺序可自由调整**，可由不同顺序实现相同的联结关系。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 16.3 使用带聚集函数的联结
 
@@ -4138,7 +3888,7 @@ GROUP BY customers.cust_id;
 
 INNER JOIN将customers和orders表互相关联。GROUP BY 按客户分组数据；COUNT()对每个客户的订单计数，将它作为num_ord返回。
 
-
+<br>
 
 聚集函数也可以和其他联结一起使用。
 
@@ -4167,9 +3917,7 @@ GROUP BY customers.cust_id;
 +----------------+---------+---------+
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 16.4 使用联结和联结条件
 
@@ -4180,9 +3928,7 @@ GROUP BY customers.cust_id;
 * 应该总是==**提供连接条件**==，否则会得出笛卡尔积。
 * 在一个联结中可以包含多个表，甚至对于每个联结可以采用不同的联结类型。注意分别测试每个联结，简化故障排除过程。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 16.5 小结
 
@@ -4224,25 +3970,17 @@ ON tableA.column1 = tableB.column2;
 
 * JOIN查询仍然可以使用`WHERE`条件和`ORDER BY`排序。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 17. 组合查询
 
 * 利用 UNION 操作符将多条SELECT语句组合成一个结果集。
 
-
-
-
+<br><br><br>
 
 ## 17.1 组合查询
 
@@ -4254,17 +3992,13 @@ ON tableA.column1 = tableB.column2;
 
 > **组合查询和多个WHERE条件**	多数情况下，组合相同表的两个查询完成的工作与具有多个WHERE子句的SELECT语句完成的工作相同。但二者的性能可能会不同。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 17.2 创建组合查询
 
 可用UNION操作符来组合数条SQL查询。利用UNION，可给出多条SELECT语句，将它们的结果组合成单个结果集。
 
-
-
-
+<br><br><br>
 
 ### 17.2.1 使用UNION
 
@@ -4305,7 +4039,7 @@ WHERE vend_id IN (1001,1002);
 
 这条语句由两条SELECT语句组成，语句中的UNION关键字分隔。UNION指示MySQL执行两条SELECT语句，并把输出组合成单个查询结果集。
 
-
+<br>
 
 作为参考，在这里给出使用多条WHERE子句而不是使用UNION的相同查询语句。
 
@@ -4322,7 +4056,7 @@ WHERE prod_price <=5
 
 在这里，使用UNION比WHERE子句更复杂。但对于更复杂的过滤条件，或从多个表中检索数据时，使用UNION可能会使处理更简单。
 
-
+<br><br><br>
 
 ### 17.2.2 UNION规则
 
@@ -4334,7 +4068,7 @@ UNION有几条规则需要注意。
 
 遵守这些基本规则或限制，则可以将UNION用于任何数据检索的任务。
 
-
+<br><br><br>
 
 ### 17.2.3 包含或取消重复的行
 
@@ -4374,7 +4108,7 @@ WHERE vend_id IN (1001,1002);
 +---------+---------+------------+	#共9条结果
 ~~~
 
-
+<br><br><br>
 
 ### 17.2.4 对组合查询结果排序
 
@@ -4412,11 +4146,11 @@ ORDER BY vend_id, prod_price;	-- 指明排序标准
 +---------+---------+------------+
 ~~~
 
-
+<br>
 
 > **组合不同的表**	使用UNION可以应用于不同的表。
 
-
+<br><br><br><br><br><br>
 
 
 ## 17.3 小结
@@ -4424,25 +4158,17 @@ ORDER BY vend_id, prod_price;	-- 指明排序标准
 * 利用UNION，可以把多条查询结果作为一条组合查询返回，不管它们的结果是否包含重复。
 * 使用**UNION**可极大地**简化复杂的WHERE子句**，**简化从多个表中检索数据的工作**。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 18. 全文本搜索
 
 * 使用MySQL的全文本搜索功能进行高级的数据查询和选择
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 18.1 理解全文本搜索
 
@@ -4459,9 +4185,7 @@ ORDER BY vend_id, prod_price;	-- 指明排序标准
 
 这些限制都可用MySQL的全文本搜索来解决。使用MySQL的全文本搜索时，MySQL不需要分别查看每个行，不需要分别分析和处理每个词。**MySQL创建指定列中各词的一个索引**，搜索可以针对这些词进行。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 18.2 使用全文本搜索
 
@@ -4469,7 +4193,7 @@ ORDER BY vend_id, prod_price;	-- 指明排序标准
 
 在索引之后，SELECT可与Match()和Against()一起使用以实际执行搜索。
 
-
+<br><br><br>
 
 ### 18.2.1 启用全文本搜索支持
 
@@ -4501,7 +4225,7 @@ CREATE TABLE productnotes
 
 > **不要在导入数据时使用FULLTEXT**	应该先导入所有数据，然后再定义FULLTEXT。哟主语更快地导入数据。
 
-
+<br><br><br>
 
 ### 18.2.2 进行全文本搜索
 
@@ -4541,7 +4265,7 @@ All guaranteed to be bright and orange, and suitable for use as rabbit bait. |
 
 > **搜索不分大小写**	除非使用BINARY方式，否则全文本搜索不区分大小写。
 
-
+<br>
 
 全文本搜索不仅返回包含目标的行，还会按文本匹配的良好程度排序。
 
@@ -4593,7 +4317,7 @@ ranks列为全文本搜索计算出的**等级值**。等级由MySQL根据行中
 
 这个例子有助于说明全文本排序如何排除行（排除等级为0的行），如何排序结果（按等级降序排序）。
 
-
+<br><br><br>
 
 ### 18.2.3 使用查询扩展
 
@@ -4667,7 +4391,7 @@ Circular hole in safe floor can apparently be easily cut with handsaw.          
 
 > **行越多越好**	表中的行越多，使用查询扩展返回的结果越好。 
 
-
+<br><br><br>
 
 ### 18.2.4 布尔文本搜索
 
@@ -4710,7 +4434,7 @@ Not heavy enough to generate flying stars around head of victim. If being purcha
 
 > **IN BOOLEAN MODE的行为差异**	虽然这个例子的结果与没有 IN BOOLEAN MODE 的相同，但其行为有一个重要差别（即使在这个特殊的例子没有表现出来）。将在18.2.5节指出。
 
-
+<br>
 
 下表给出支持的所有**全文本布尔操作符**：
 
@@ -4725,7 +4449,7 @@ Not heavy enough to generate flying stars around head of victim. If being purcha
 |     *      |                         词尾的通配符                         |
 |     ""     | 定义一个短语（与单个词的列表不一样，它匹配整个短语以便博阿寒或排除这个短语） |
 
-
+<br>
 
 以下举例说明各操作符的使用样例：
 
@@ -4777,11 +4501,11 @@ Not heavy enough to generate flying stars around head of victim. If being purcha
   WHERE Match(note_text) Against('+safe +(<combination)' IN BOOLEAN MODE);
   ~~~
 
-
+<br>
 
 > **排列而不排序**	在布尔方式中，不按等级值降序排序返回的行。
 
-
+<br><br><br>
 
 ### 18.2.5 全文本搜索的使用说明
 
@@ -4794,9 +4518,7 @@ Not heavy enough to generate flying stars around head of victim. If being purcha
 * **不具有词分隔符**（包括日语和汉语）的语言**不能恰当地返回全文本搜索结果**。
 * 如前所述，仅在**MyISAM数据库引擎**中**支持全文本搜索**。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 18.3 小结
 
@@ -4833,25 +4555,17 @@ Not heavy enough to generate flying stars around head of victim. If being purcha
       WHERE Match(note_text) Against('heavy -rope*' IN BOOLEAN MODE);
       ~~~
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 19. 插入数据
 
 * 利用SQL的**INSERT**语句将数据插入表中
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 19.1 数据插入
 
@@ -4864,9 +4578,7 @@ INSERT是用来插入（或添加）行到数据库表的。插入可以用几�
 
 > **插入及系统安全**	可针对每个表或每个用户，利用MySQL的安全机制禁止使用INSERT语句。（在28节涉及）
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 19.2 插入完整的行
 
@@ -4937,7 +4649,7 @@ INSERT INTO customers(cust_name,
 >
 > 这也适用于**UPDATE**和**DELETE**语句。
 
-
+<br><br><br><br><br><br>
 
 ## 19.3 插入多个行
 
@@ -5007,9 +4719,7 @@ INSERT INTO customers(cust_name,
 
 > **提高INSERT的性能**	这种方法可以提高数据库处理的性能，因为MySQL用单条INSERT语句处理多个插入比使用多条INSERT更快。
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 19.4 插入检索出的数据
 
@@ -5050,7 +4760,7 @@ INSERT INTO customers(cust_id,
 
 > **INSERT SELECT中的列名**	为简单起见，上述示例中的INSERT和SELECT语句中使用了相同的列名。但是，**不一定要求列名匹配**。事实上，**MySQL不关心SELECT返回的列名**。**它使用的是==列的位置==**。因此SELECT中的第一列（不管其列名是什么）将用来填充INSERT表列中指定的第一个列，第二列将用来填充INSERT表列中指定的第二个列，依此类推。这对于使用不同列名的表中导入数据是非常有用的。
 
-
+<br><br>
 
 INSERT SELECT语句中SELECT语句可包含WHERE子句以过滤插入的数据。
 
@@ -5079,52 +4789,24 @@ INSERT INTO customers(cust_id,
                  WHERE cust_id IN (10010);
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ## 19.5 小结
 
 * 使用INSERT INTO语句将数据插入表
 * 使用INSERT INTO SELECT语句从其他表导入数据
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 20. 更新和删除数据
 
 * 利用UPDATE和DELETE语句进一步操纵表数据。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 20.1 更新数据
 
@@ -5143,7 +4825,7 @@ INSERT INTO customers(cust_id,
 2. 列名和它们的新值
 3. 确定要更新行的过滤条件。
 
-
+<br>
 
 例：客户10005有了电子邮件地址，因此他的记录需要更新。
 
@@ -5161,7 +4843,7 @@ UPDATE + 表名 指明要更新的表；SET + 列名 + ‘值’ 指明要更新
 
 如果没有WHERE子句，MySQL将更新列目标列的所有行。
 
-
+<br>
 
 **更新多个列**的语法稍有不同。
 
@@ -5188,13 +4870,7 @@ WHERE cust_id = 10005;
 
 **删除某个列**的值，**可以将其置为NULL**。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 20.2 删除数据
 
@@ -5207,9 +4883,7 @@ WHERE cust_id = 10005;
 
 > **DELTE与安全**	可以限制和控制DELTE语句的使用。详见28节，
 
-
-
-**例1**：从customers表中删除一行。
+<br>**例1**：从customers表中删除一行。
 
 **输入**
 
@@ -5228,13 +4902,7 @@ DELETE不需要列名或通配符，DELETE删除的是整行的数据。要删�
 
 > **更快的删除**	如果想**从表中删除所有行**，不要使用DELETE。可使用**TRANCATE TABLE**语句。该语句的速度更快。（TRANCATE TABLE实际上是删除原来的表并重建一个新表。而不是逐行删除原来表的数据）。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 20.3 更新和删除的指导原则
 
@@ -5245,13 +4913,7 @@ DELETE不需要列名或通配符，DELETE删除的是整行的数据。要删�
 
 > **小心使用**	MySQL没有撤销（undo）按钮，所以使用UPDATE和DELETE时，应小心慎重。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 20.4 小结
 
@@ -5260,31 +4922,11 @@ DELETE不需要列名或通配符，DELETE删除的是整行的数据。要删�
 * WHERE子句在其中的重要性
 * 删改相关原则
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 21. 创建和操纵表
 
@@ -5292,25 +4934,17 @@ DELETE不需要列名或通配符，DELETE删除的是整行的数据。要删�
 * 更改表
 * 删除表
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 21.1 创建表
 
-
-
-
+<br><br><br>
 
 ### 21.1.1 表创建基础
 
 使用CREATE TABLE创建表，必须包含表的
 
-
+<br><br>
 
 示例1：
 
@@ -5359,17 +4993,13 @@ CREATE TABLE IF NOT EXISTS `mf_fd_cache` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=gbk;
 ~~~
 
-
-
-
+<br><br><br>
 
 ### 21.1.2 使用NULL值
 
 > **理解NULL**	不要把NULL与空串相混淆。NULL值是没有值，不是空串。如果指定`''`（两个单引号，中间无字符），这在NOT NULL列中是允许的。空串是一个有效的值，不是无值。NULL值用NULL关键字指定。
 
-
-
-
+<br><br><br>
 
 ### 21.1.3 主键再介绍
 
@@ -5392,9 +5022,7 @@ CREATE TABLE orderitems
 
 > 主键只能使用不允许NULL值的列。允许NULL值得列不能作为唯一标识。
 
-
-
-
+<br><br><br>
 
 ### 21.1.4 使用AUTO_INCREMENT
 
@@ -5414,9 +5042,7 @@ AUTL_INCREMENT告诉MySQL，本列每当增加一行时自动增量。每次执�
 >
 > 可将它用于后续的MySQL语句。
 
-
-
-
+<br><br><br>
 
 ### 21.1.5 使用默认值
 
@@ -5443,9 +5069,7 @@ CREATE TABLE orderitems
 
 > **使用默认值而不是NULL值**	对用于**计算**或**数据分组**的列**应使用默认值**而不是NULL。
 
-
-
-
+<br><br><br>
 
 ### 21.1.6 引擎类型
 
@@ -5457,13 +5081,7 @@ CREATE TABLE orderitems
 
 > **外键不能跨引擎**	混用引擎类型有一个大缺陷。外键）用于强制实施引用完整性（见第1节），不能跨引擎，即使使用一个引擎的表不能引用具有使用不同引擎的表的外键。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 21.2 更新表
 
@@ -5488,7 +5106,7 @@ ALTER TABLE Vendors
 DROP COLUMN vend_phone;
 ~~~
 
-
+<br>
 
 `ALTER TABLE` 的一种常见用途是定义外键。
 
@@ -5515,13 +5133,7 @@ REFERENCES products (prod_id);
 
 > **小心使用`ALTER TABLE`** 	数据库表的更改不能撤销，应该在进行改动前做一个完整的备份（模式和数据的备份）。如果增加了不需要的列，可能不能删除；如果删除了不应该删除的列，可能会丢失该列中的所有数据。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 21.3 删除表
 
@@ -5533,15 +5145,9 @@ DROP TABLE customers2;
 
 删除表没有确认，也不能撤销，执行这条语句将永久删除该表。
 
+<br><br><br><br><br><br>
 
-
-
-
-
-
-
-
-### 21.4 重命名表
+## 21.4 重命名表
 
 使用`RENAME TABLE` 语句可以重命名一个表：
 
@@ -5555,13 +5161,7 @@ RENAME TABLE backup_customers TO customers,
              backup_products TO products;
 ~~~
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 21.5 小结
 
@@ -5571,31 +5171,11 @@ RENAME TABLE backup_customers TO customers,
 * 数据库引擎、定义主键和外键，以及其他重要的表和列选项
 * 这些语句必须小心使用，并且应在做了**备份**后使用。
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 22. 使用视图
 
@@ -5604,13 +5184,7 @@ RENAME TABLE backup_customers TO customers,
 * 何时使用视图
 * 利用视图简化某些SQL操作
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 22.1 视图
 
@@ -5642,9 +5216,7 @@ WHERE prod_id = 'TNT2';
 
 这就是视图的作用。`productcustomers` 是一个视图，作为==**视图**==，它不包含表中应该有的任何列或数据，它**==包含的是一个SQL查询==（与上面用以正确联结表的相同的查询）**。
 
-
-
-
+<br><br><br>
 
 ### 22.1.1 为什么使用视图
 
@@ -5662,9 +5234,7 @@ WHERE prod_id = 'TNT2';
 
 > **性能问题** 	因为视图不包含数据，所以每次使用视图时，都必须处理查询执行时所需的任一个检索。如果你用多个联结和过滤创建了复杂的视图或者嵌套了视图，可能会发现性能下降得很厉害。因此，在部署使用了大量视图的应用前，应该进行测试。
 
-
-
-
+<br><br><br>
 
 ### 22.1.2 视图的规则和限制
 
@@ -5678,17 +5248,11 @@ WHERE prod_id = 'TNT2';
 * ==视图不能索引==，也不能有关联的触发器或默认值。
 * 视图可以和表一起使用。例如，编写一条联结表和视图的`SELECT` 语句。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 22.2 使用视图
 
-
+<br>
 
 视图的创建：
 
@@ -5697,9 +5261,7 @@ WHERE prod_id = 'TNT2';
 * 用`DROP` 删除视图，其语法为`DROP VIEW viewname;` 。
 * 更新视图时，可以先用`DROP` 再用`CREATE` ，也可以直接用`CREATE OR REPLACE VIEW` 。如果要更新的视图不存在，则第2条更新语句会创建一个视图；如果要更新的视图存在，则第2条更新语句会替换原有视图。
 
-
-
-
+<br><br><br><br><br><br>
 
 ### 22.2.1 利用视图简化复杂的联结
 
@@ -5750,13 +5312,11 @@ WHERE prod_id = 'TNT2';
 
 > **创建可重用的视图**	创建不受特定数据限制的视图是一种好办法。例如，上面创建的视图返回生产所有产品的客户而不仅仅是生产`TNT2` 的客户。扩展视图的范围不仅使得它能被重用，而且甚至更有用。这样做不需要创建和维护多个类似视图。
 
-
-
-
+<br><br><br>
 
 ### **22.2.2** 用视图重新格式化检索出的数据
 
-
+<br>
 
 下面的`SELECT` 语句（第10节）在单个组合计算列中返回供应商名和位置：
 
@@ -5805,9 +5365,7 @@ FROM vendorlocations;
 +-------------------------+
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ### 22.2.3 用视图过滤不想要的数据
 
@@ -5847,9 +5405,7 @@ FROM customeremaillist;
 +---------+----------------+---------------------+
 ~~~
 
-
-
-
+<br><br><br><br><br><br>
 
 ### 22.2.4 使用视图与计算字段
 
@@ -5905,9 +5461,7 @@ WHERE order_num = 20005;
 +-----------+---------+----------+------------+----------------+
 ~~~
 
-
-
-
+<br><br><br>
 
 ### 22.2.5 更新视图
 
@@ -5925,17 +5479,11 @@ WHERE order_num = 20005;
 * `DISTINCT` ；
 * 导出（计算）列。
 
-
+<br>
 
 > **将视图用于检索** 	一般，应该将视图用于检索（`SELECT` 语句）而不用于更新（`INSERT` 、`UPDATE` 和`DELETE` )。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 22.3 小结
 
@@ -5947,31 +5495,11 @@ WHERE order_num = 20005;
   * 重新格式化基础数据
   * 保护基础数据
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 23. 使用存储过程
 
@@ -5980,11 +5508,7 @@ WHERE order_num = 20005;
 * 如何使用存储过程
 * 创建和使用存储过程的基本语法
 
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 23.1 存储过程
 
@@ -5999,13 +5523,7 @@ WHERE order_num = 20005;
 
 可以创建存储过程。==**存储过程**==简单来说，就是==**为以后的使用而保存的一条或多条MySQL语句的集合**==。**可将其视为==批文件==，虽然它们的作用==不仅限于批处理==**。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 23.2 为什么使用存储过程
 
@@ -6027,28 +5545,20 @@ WHERE order_num = 20005;
 
 使用存储过程有3个主要的好处，即==简单、安全、高性能==。
 
-
+<br>
 
 它的一些缺陷：
 
 - 一般来说，存储过程的编写比基本SQL语句复杂，编写存储过程需要更高的技能，更丰富的经验。
 - 你可能没有创建存储过程的安全访问权限。许多数据库管理员限制存储过程的创建权限，允许用户使用存储过程，但不允许他们创建存储过程。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 23.3 使用存储过程
 
 分为执行、创建等内容。
 
-
-
-
+<br><br><br>
 
 ### 23.3.1 执行存储过程
 
@@ -6068,9 +5578,7 @@ CALL productpricing(@pricelow,
 
 存储过程可以显示结果，也可以不显示结果，如稍后所述。
 
-
-
-
+<br><br><br>
 
 ### 23.3.2 创建存储过程
 
@@ -6116,7 +5624,7 @@ END;
 >
 > 如果你使用的是`mysql` 命令行实用程序，在阅读本章时请记住这里的内容。
 
-
+<br><br>
 
 使用这个存储过程方法如下所示：
 
@@ -6140,9 +5648,7 @@ CALL productpricing();
 
 `CALL productpricing();` 执行刚创建的存储过程并显示返回的结果。因为==**存储过程实际上是一种函数**==，所以存储过程名后需要有`()`符号（即使不传递参数也需要）。
 
-
-
-
+<br><br><br>
 
 ### 23.3.3 删除存储过程
 
@@ -6162,9 +5668,7 @@ DROP PROCEDURE productpricing;
 
 > **仅当存在时删除**	如果指定的过程不存在，则`DROP PROCEDURE` 将产生一个错误。当过程存在想删除它时（如果过程不存在也不产生错误）可使用`DROP PROCEDURE IF EXISTS` 。
 
-
-
-
+<br><br><br>
 
 ### 23.2.4 使用参数
 
@@ -6215,7 +5719,7 @@ MySQL支持
 >
 > 注意，记录集不是允许的类型，因此，不能通过一个参数返回多个行和列。这就是前面的例子为什么要使用3个参数（和3条`SELECT` 语句）的原因。
 
-
+<br><br>
 
 为了调用此存储过程，需要指定3个变量名。
 
@@ -6267,7 +5771,7 @@ SELECT @pricelow, @pricehigh, @priceaverage;
 +-----------+------------+---------------+
 ~~~
 
-
+<br><br>
 
 另一个例子：使用`IN` 和`OUT` 参数。`ordertotal` 接受订单号并返回该订单的合计：
 
@@ -6310,7 +5814,7 @@ SELECT @total;
 +--------+
 ~~~
 
-
+<br>
 
 为了得到另一个订单的合计显示，需要再次调用存储过程，然后重新显示变量：
 
@@ -6321,9 +5825,7 @@ CALL ordertotal(20009,@total);
 SELECT @total;
 ~~~
 
-
-
-
+<br><br><br>
 
 ### 23.3.5 建立智能存储过程
 
@@ -6417,9 +5919,7 @@ SELECT @total;
 
 > **`IF` 语句** 	这个例子给出了MySQL的`IF` 语句的基本用法。`IF` 语句还支持`ELSEIF` 和`ELSE` 子句（前者还使用`THEN` 子句，后者不使用）。在以后章节中将涉及`IF` 的其他用法（以及其他流控制语句）
 
-
-
-
+<br><br><br>
 
 ### 23.3.6 检查存储过程
 
@@ -6437,54 +5937,24 @@ SHOW CREATE PROCEDURE ordertotal;
 > SHOW PROCEDURE STATUS LIKE 'ordertotal';
 > ~~~
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 23.4 小结
 
 本节介绍了什么是存储过程、存储过程的执行、创建、删除及一些方法。下一节将继续介绍存储过程。
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 24. 使用游标
 
 * 什么是游标
 * 如何使用游标
 
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 24.1 游标
 
@@ -6496,11 +5966,7 @@ SHOW CREATE PROCEDURE ordertotal;
 
 > **只能用于存储过程** 	不像多数DBMS，MySQL游标只能用于存储过程（和函数）。
 
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 24.2 使用游标
 
@@ -6513,9 +5979,7 @@ SHOW CREATE PROCEDURE ordertotal;
 
 在声明游标后，可根据需要频繁地打开和关闭游标。在游标打开后，可根据需要频繁地执行取操作。
 
-
-
-
+<br><br><br>
 
 ### 24.2.1 创建游标
 
@@ -6544,9 +6008,7 @@ DELIMITER ;
 
 在定义游标之后，可以打开它。
 
-
-
-
+<br><br><br>
 
 ### 24.2.2 打开和关闭游标
 
@@ -6578,7 +6040,7 @@ CLOSE ordernumbers;
 
 > **隐含关闭** 	如果你不明确关闭游标，MySQL将会在到达`END` 语句时自动关闭它。
 
-
+<br><br>
 
 下面是前面例子的修改版本：
 
@@ -6609,15 +6071,13 @@ DELIMITER ;
 
 这个存储过程声明、打开和关闭一个游标。但对检索出的数据什么也没做。
 
-
-
-
+<br><br><br>
 
 ### 24.2.3 使用游标数据
 
 在一个游标被打开后，可以使用`FETCH` 语句分别访问它的每一行。`FETCH` 指定检索什么数据（所需的列），检索出来的数据存储在什么地方。它还向前移动游标中的内部行指针，使下一条`FETCH` 语句检索下一行（不重复读取同一行）。
 
-
+<br><br>
 
 **例1：**从从游标中检索单个行（第一行）
 
@@ -6654,7 +6114,7 @@ DELIMITER ;
 
 其中`FETCH` 用来检索当前行的`order_num` 列（将自动从第一行开始）到一个名为`o` 的局部声明的变量中。对检索出的数据不做任何处理。
 
-
+<br>
 
 **例2：**循环检索数据，从第一行到最后一行
 
@@ -6718,7 +6178,7 @@ DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done=1;
 
 > **重复或循环？** 	除这里使用的`REPEAT` 语句外，MySQL还支持循环语句，它可用来重复执行代码，直到使用`LEAVE` 语句手动退出为止。通常`REPEAT` 语句的语法使它更适合于对游标进行循环。
 
-
+<br><br>
 
 **例3**：游标存储过程样例的更进一步修改的版本，对取出的数据进行某种实际的处理
 
@@ -6777,7 +6237,7 @@ DELIMITER ;
 
 在这个例子中，我们增加了另一个名为`t` 的变量（存储每个订单的合计）。此存储过程还在运行中创建了一个新表（如果它不存在的话），名为`ordertotals` 。这个表将保存存储过程生成的结果。`FETCH` 像以前一样取每个`order_num` ，然后用`CALL` 执行另一个存储过程（我们在前一章中创建）来计算每个订单的带税的合计（结果存储到`t` ）。最后，用`INSERT` 保存每个订单的订单号和合计。
 
-
+<br><br>
 
 **执行该存储过程**
 
@@ -6809,17 +6269,11 @@ FROM ordertotals;
 +-----------+---------+
 ~~~
 
-
+<br><br>
 
 以上，为一个存储过程、游标、逐行处理以及存储过程调用其他存储过程的一个完整的工作样例。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br>
 
 ## 24.3 小结
 
@@ -6902,33 +6356,12 @@ FROM ordertotals;
   END;
   ~~~
 
-  
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 25. 使用触发器
 
@@ -6937,13 +6370,7 @@ FROM ordertotals;
 * 如何使用触发器
 * 创建和使用触发器的语法
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 25.1 触发器
 
@@ -6963,13 +6390,7 @@ FROM ordertotals;
 
 其他MySQL语句不支持触发器。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 25.2 创建触发器
 
@@ -7035,13 +6456,7 @@ SELECT @temp_var;	-- 查询结果
 
 > **触发器失败** 	如果`BEFORE` 触发器失败，则MySQL将不执行请求的操作。此外，如果`BEFORE` 触发器或语句本身失败，MySQL将不执行`AFTER` 触发器（如果有的话）。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 25.3 删除触发器
 
@@ -7055,21 +6470,13 @@ DROP TRIGGER newproduct;
 
 > ==**注意**==：	触发器不能更新或覆盖。为了修改一个触发器，必须先删除它，然后再重新创建。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br>
 
 ## 25.4 使用触发器
 
 涉及各种触发器类型及相关差异。
 
-
-
-
+<br><br><br>
 
 ### 25.4.1 INSERT触发器
 
@@ -7112,9 +6519,7 @@ SELECT @new_order_num;	-- 查看触发器结果
 
 > **选择`BEFORE` 还是`AFTER`？ ** 	通常，将`BEFORE` 用于==数据验证和净化==（目的是保证插入表中的数据确实是需要的数据）。本提示也适用于`UPDATE` 触发器。
 
-
-
-
+<br><br><br>
 
 ### 25.4.2 DELETE触发器
 
