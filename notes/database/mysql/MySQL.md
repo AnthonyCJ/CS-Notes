@@ -837,6 +837,15 @@ LIMIT 4 OFFSET 3	-- 表示从行3开始取4行
 
 - 使用 `SELECT` 语句的 `ORDER BY` 子句，根据需要排序检索的数据。
 
+- 标准语法格式
+
+  - ~~~mysql
+    SELECT col1, col2 	-- 指定返回哪几列
+    FROM 'table' 		-- 查询的表
+    ORDER BY cola DESC, colb 	-- 指定按什么排序、排序方向
+    LIMIT numofrows;	-- 限制行数
+    ~~~
+
 <br><br><br><br><br><br>
 
 ## 5.1 排序数据
@@ -845,7 +854,7 @@ LIMIT 4 OFFSET 3	-- 表示从行3开始取4行
 
 ORDER BY 子句取一个或多个列的名字，据此对输出进行排序。
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name
@@ -853,11 +862,11 @@ FROM products
 ORDER BY prod_name;
 ~~~
 
-### 分析
+**分析**
 
-此句指示MySQL对 prod_name 查询结果列以 prod_name 列**字母顺序**排序数据。
+此句指示MySQL对 `prod_name` 查询结果列以 `prod_name` 列**字母顺序**排序数据。
 
-### 输出
+**输出**
 
 ~~~bash
 +----------------+
@@ -887,7 +896,7 @@ ORDER BY prod_name;
 
 **注意**：按多个列排序时，排序按照所规定的顺序进行。仅当第一个排序条件无法判断先后时才会按第二个排序条件排序，以此类推。
 
-###  输入
+**输入**
 
 ~~~mysql
 SELECT prod_id, prod_price, prod_name 
@@ -895,7 +904,7 @@ FROM products
 ORDER BY prod_price, prod_name;
 ~~~
 
-### 输出
+**输出**
 
 ~~~bash
 +---------+------------+----------------+
@@ -927,7 +936,7 @@ MySQL**默认按升序**排列。如果想要按==**降序**==排列，需要在
 
 举例如下：按价格降序排列产品。
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_id, prod_price, prod_name 
@@ -935,7 +944,7 @@ FROM products
 ORDER BY prod_price DESC, prod_name;	-- 按价格降序排列
 ~~~
 
-### 输出
+**输出**
 
 ~~~bash
 +---------+------------+----------------+
@@ -973,7 +982,7 @@ ORDER BY prod_price DESC, prod_name;	-- 按价格降序排列
 
 * 例：查找  products 表中最贵物品的值
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_price
@@ -982,7 +991,7 @@ ORDER BY prod_price DESC
 LIMIT 1;	-- 查找降序第1个值【即最大值】
 ~~~
 
-### 输出
+**输出**
 
 ~~~bash
 +------------+
@@ -1001,14 +1010,19 @@ LIMIT 1;	-- 查找降序第1个值【即最大值】
 >
 > 几个子句【如果都有】的合法顺序为
 >
-> **SELECT	columns	FROM	table	ORDER BY	columns	LIMIT	rows	**
+> ~~~mysql
+> SELECT col1, col2 	-- 指定返回哪几列
+> FROM 'table' 		-- 查询的表
+> ORDER BY cola DESC, colb 	-- 指定按什么排序、排序方向
+> LIMIT numofrows;	-- 限制行数
+> ~~~
 
 <br><br><br><br><br><br>
 
 ## 5.5 小结
 
-* 用 SELECT 语句的 ORDER BY 子句对检索出的数据进行排序。
-* ==**这个子句必须是 SELECT 语句中的最后一条子句**==。
+* 用 SELECT 语句的 `ORDER BY` 子句对检索出的数据进行排序。
+*  `ORDER BY` **子句必须是 SELECT 语句中的==最后一条==子句**。
 * 可根据需要，利用它在一个或多个列上对数据进行排序。
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
@@ -1019,7 +1033,54 @@ LIMIT 1;	-- 查找降序第1个值【即最大值】
 
 # 6. 过滤数据
 
-* 使用 SELECT 语句的 **WHERE** 子句**指定搜索条件**。
+* 使用 SELECT 语句的 **`WHERE`** 子句**指定搜索条件**。
+
+  * 使用`WHERE`子句操作符进行数据过滤
+
+    * 检查单个值【=、<】
+
+      * ~~~mysql
+        SELECT prod_name, prod_price 
+        FROM products 
+        WHERE prod_name = 'fuses';
+        ~~~
+
+      * ~~~mysql
+        SELECT prod_name, prod_price 
+        FROM products 
+        WHERE prod_price < 10;
+        ~~~
+
+    * 不匹配检查【<>】
+
+      * ~~~mysql
+        SELECT vend_id, prod_name
+        FROM products 
+        WHERE vend_id <> 1003;	-- 等价子句 WHERE vend_id != 1003
+        ~~~
+
+    * 范围值检查【BETWEEN AND】
+
+      * ~~~mysql
+        SELECT prod_name, prod_price
+        FROM products 
+        WHERE prod_price BETWEEN 5 AND 10;
+        ~~~
+
+    * 空值检查【IS NULL】
+
+      * ~~~mysql
+        SELECT  cust_id
+        FROM customers
+        WHERE cust_email IS NULL;
+        ~~~
+
+<br>
+
+> **何时使用引号**		
+>
+> 单引号用来限定字符串。
+> 如果**将值与串类型的列进行比较**，则**需要限定引号**。用来与数值列进行比较的值不用引号。
 
 <br><br><br><br><br><br>
 
@@ -1031,7 +1092,7 @@ LIMIT 1;	-- 查找降序第1个值【即最大值】
 
 在 SELECT 语句中，数据根据 WHERE 子句中指定的搜索条件进行过滤。WHERE 子句在表名（FROM 子句）之后给出，如下所示：
 
-### 输入
+**输入**
 
 ~~~MYSQL
 SELECT prod_name, prod_price
@@ -1039,11 +1100,11 @@ FROM products
 WHERE prod_price = 2.50;
 ~~~
 
-### 分析
+**分析**
 
-该语句从 products 表中检索两个列，返回 prod_price 值为 2.50 的行。
+该语句从 `products` 表中检索两个列，返回 `prod_price` 值为 2.50 的行。
 
-### 输出
+**输出**
 
 ~~~bash
 +---------------+------------+
@@ -1057,32 +1118,32 @@ WHERE prod_price = 2.50;
 
 ### WHERE 子句的位置
 
-在同时使用 ORDER BY 和 WHERE 子句时，应该让 ORDER BY 位于 WHERE 之后，否则将会产生错误。
+在同时使用 `ORDER BY` 和 `WHERE` 子句时，应该让 `ORDER BY` 位于 `WHERE` 之后，否则将会产生错误。
 
 <br><br><br><br><br><br>
 
 ## 6.2 WHERE 子句操作符
 
-下标列出 MySQL 支持的所有条件操作符。
+**表6-1 `WHERE` 子句操作符**
 
-| 操作符  | 说明               |
-| ------- | ------------------ |
-| =       | 等于               |
-| <>      | 不等于             |
-| !=      | 不等于             |
-| <       | 小于               |
-| <=      | 小于等于           |
-| >       | 大于               |
-| >=      | 大于等于           |
-| BETWEEN | 在指定的两个值之间 |
+| 操 作 符  |       说 明        |
+| :-------: | :----------------: |
+|    `=`    |        等于        |
+|   `<>`    |       不等于       |
+|   `!=`    |       不等于       |
+|    `<`    |        小于        |
+|   `<=`    |      小于等于      |
+|    `>`    |        大于        |
+|   `>=`    |      大于等于      |
+| `BETWEEN` | 在指定的两个值之间 |
 
 <br><br><br>
 
-### 6.2.1 检查单个值【=】
+### 6.2.1 检查单个值【=、<】
 
 **例1**：测试相等
 
-#### 输入
+**输入**
 
 ~~~MYSQL
 SELECT prod_name, prod_price 
@@ -1090,7 +1151,7 @@ FROM products
 WHERE prod_name = 'fuses';
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------+------------+
@@ -1105,7 +1166,7 @@ WHERE prod_name = 'fuses';
 
 **例2**：列出价格小于10美元的所有产品【的产品名和价格】
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name, prod_price 
@@ -1113,7 +1174,7 @@ FROM products
 WHERE prod_price < 10;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------------+------------+
@@ -1136,7 +1197,7 @@ WHERE prod_price < 10;
 
 **例1**：列出不是由供应商1003制造的所有产品【的供应商id和产品名】
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_id, prod_name
@@ -1144,7 +1205,7 @@ FROM products
 WHERE vend_id <> 1003;	-- 等价子句 WHERE vend_id != 1003
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+--------------+
@@ -1163,25 +1224,26 @@ WHERE vend_id <> 1003;	-- 等价子句 WHERE vend_id != 1003
 
 #### 附：何时使用引号
 
-> 单引号用来限定字符串。
+> **何时使用引号**		
 >
+> 单引号用来限定字符串。
 > 如果**将值与串类型的列进行比较**，则**需要限定引号**。用来与数值列进行比较的值不用引号。
 
 <br><br><br>
 
 ### 6.2.3 范围值检查【BETWEEN AND】
 
-例：使用 BETWEEN 操作符，检索价格在5美元和10美元之间的产品【返回产品名和产品价格】
+例：使用 `BETWEEN` 操作符，检索价格在5美元和10美元之间的产品【返回产品名和产品价格】
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name, prod_price
 FROM products 
-WHERE prod_price BETWEEN  5 AND 10;
+WHERE prod_price BETWEEN 5 AND 10;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+------------+
@@ -1196,23 +1258,23 @@ WHERE prod_price BETWEEN  5 AND 10;
 5 rows in set (0.01 sec)
 ~~~
 
-#### 分析
+**分析**
 
-使用 BETWEEN 关键字时，必须指定所需范围的**低端值**和**高端值**，必须**用 AND 分隔**。
+使用 `BETWEEN` 关键字时，必须指定所需范围的**低端值**和**高端值**，必须**用 `AND` 分隔**。
 
-**BETWEEN AND 匹配范围**中**包括**指定的**开始值**和**结束值**。
+**`BETWEEN AND` 匹配范围**中**==包括==**指定的**开始值**和**结束值**。
 
 <br><br><br>
 
 ### 6.2.4 空值检查【IS NULL】
 
-建表时，表设计人员可以指定其中的列是否可以不包含值。在一个列不包含值时，称其为包含空值 NULL。
+建表时，表设计人员可以指定其中的列是否可以不包含值。在一个列不包含值时，称其为包含空值 `NULL`。
 
 * **NULL	无值（no value）**：它与字段包含0、空字符串或仅仅包含空格不同。
 
-例：通过 IS NULL 子句检查具有 NULL 值的列
+例：通过 `IS NULL` 子句检查具有 `NULL` 值的列
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT  cust_id
@@ -1220,7 +1282,7 @@ FROM customers
 WHERE cust_email IS NULL;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~BASH
 +---------+
@@ -1232,14 +1294,6 @@ WHERE cust_email IS NULL;
 2 rows in set (0.00 sec)
 ~~~
 
-<br><br><br><br><br><br>
-
-## 6.3 小结
-
-* 用 SELECT 语句的 WHERE 子句 过滤返回的数据。
-* 相等、不等、大于、小于、范围区间。
-* NULL 值。
-
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
@@ -1248,28 +1302,70 @@ WHERE cust_email IS NULL;
 
 # 7. 数据过滤
 
-* 使用**组合 WHERE 子句**以建立功能更强的更高级的搜索条件。
-*  **NOT** 和 **IN** 操作符。
+* 使用**组合 `WHERE` 子句**以建立功能更强的更高级的搜索条件。
+*  **`NOT`** 和 **`IN`** 操作符。
+
+<br>
+
+* 使用`AND`操作符
+
+  * ~~~mysql
+    SELECT prod_id, prod_price, prod_name 
+    FROM products
+    WHERE vend_id = 1003 AND prod_price <= 10;
+    ~~~
+
+* 使用`OR`操作符
+
+  * ~~~mysql
+    SELECT prod_name, prod_price 
+    FROM products
+    WHERE vend_id = 1002 OR vend_id = 1003;
+    ~~~
+
+* 使用`IN `操作符
+
+  * ~~~mysql
+    SELECT prod_name, prod_price 
+    FROM products 
+    WHERE vend_id IN (1002, 1003)
+    ORDER BY prod_name;
+    ~~~
+
+* 使用`NOT`操作符
+
+  * ~~~mysql
+    SELECT prod_name, prod_price 
+    FROM products 
+    WHERE vend_id NOT IN (1002, 1003) 
+    ORDER BY prod_name;
+    ~~~
+
+  * `NOT` 可以看成是一个集合运算中的**取补集**或**取反**的操作。
+
+<br>
+
+> **注意优先级**	SQL 中，**AND 操作符的优先级高于 OR 操作符**。所以涉及业务逻辑时，==**要使用（）保证业务逻辑正确**==，**尽量避免受运算优先级影响**。
 
 <br><br><br><br><br><br>
 
 ## 7.1 组合 WHERE 子句
 
-MySQL允许给出**多个 WHERE 子句**。这些子句可以**两种**方式使用：**以 AND 子句的方式**或 **OR 子句的方式**使用。
+MySQL允许给出**多个 `WHERE` 子句**。这些子句可以**两种**方式使用：**以 `AND` 子句的方式**或 **`OR` 子句的方式**使用。
 
-* **操作符（operator）**：用来联结或改变 WHERE 子句中的子句的**关键字**。也成为**逻辑操作符（logical operator）**。
+* **操作符（operator）**：用来联结或改变 `WHERE` 子句中的子句的**关键字**。也成为**逻辑操作符（logical operator）**。
 
 <br><br><br>
 
 ### 7.1.1 AND 操作符
 
-* AND：用在 WHERE 子句中的关键字，用来指示检索满足所有给定条件的行。
+* `AND`：用在 `WHERE` 子句中的关键字，用来指示检索满足所有给定条件的行。
 
-> 可以添加多个过滤条件，没添加一条就要使用一个 AND。
+> 可以添加多个过滤条件，没添加一条就要使用一个 `AND`。
 
-为了通过不止一个列进行过滤，可以使用 AND 操作符给 WHERE 子句附加条件。举例如下：
+为了通过不止一个列进行过滤，可以使用 `AND` 操作符给 `WHERE` 子句附加条件。举例如下：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_id, prod_price, prod_name 
@@ -1277,11 +1373,11 @@ FROM products
 WHERE vend_id = 1003 AND prod_price <= 10;
 ~~~
 
-#### 分析
+**分析**
 
-该语句检索【有供应商1003制造】**且**【价格小于等于10美元】的产品id、价格和名称。这条 SELECT 语句中的 WHERE 子句包含两个条件，且用 AND 关键字联结它们。AND 指示 DBMS 返回**满足所有给定条件**的行。
+该语句检索【有供应商1003制造】**且**【价格小于等于10美元】的产品id、价格和名称。这条 SELECT 语句中的 WHERE 子句包含两个条件，且用 `AND` 关键字联结它们。AND 指示 DBMS 返回**满足所有给定条件**的行。
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+------------+----------------+
@@ -1300,9 +1396,9 @@ WHERE vend_id = 1003 AND prod_price <= 10;
 
 ### 7.1.2 OR 操作符
 
-OR 操作符指示 MySQL 检索匹配任一条件的行。示例如下：
+`OR` 操作符指示 MySQL 检索匹配任一条件的行。示例如下：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name, prod_price 
@@ -1310,7 +1406,7 @@ FROM products
 WHERE vend_id = 1002 OR vend_id = 1003;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~BASH
 +----------------+------------+
@@ -1333,17 +1429,17 @@ WHERE vend_id = 1002 OR vend_id = 1003;
 
 ### 7.1.3 计算次序
 
-* 注意：SQL 中，==**AND 操作符的优先级高于 OR 操作符**==。所以涉及业务逻辑时，推荐使用（）保证业务逻辑正确，**尽量避免受运算优先级影响**。
+* **注意**：SQL 中，==**AND 操作符的优先级高于 OR 操作符**==。所以涉及业务逻辑时，推荐使用（）保证业务逻辑正确，**尽量避免受运算优先级影响**。
 
 <br><br><br><br><br><br>
 
 ## 7.2 IN 操作符
 
-* **IN**：WHERE 子句中用来指定要匹配值的清单的关键字，功能与 **OR** 相当。
+* **`IN`**：WHERE 子句中用来指定要匹配值的清单的关键字，功能与 **`OR`** 相当。
 
-IN 操作符用来指定条件范围，范围中的每个条件都可以进行匹配。IN 取和法值清单由圆括号包裹，逗号分隔。示例如下：
+`IN` 操作符用来指定条件范围，范围中的每个条件都可以进行匹配。`IN` 取合法值清单由圆括号包裹，逗号分隔。示例如下：
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name, prod_price 
@@ -1352,7 +1448,7 @@ WHERE vend_id IN (1002, 1003)
 ORDER BY prod_name;
 ~~~
 
-### 输出
+**输出**
 
 ~~~bash
 +----------------+------------+
@@ -1371,27 +1467,27 @@ ORDER BY prod_name;
 9 rows in set (0.01 sec)
 ~~~
 
-### 分析
+**分析**
 
-IN 操作符与 OR 关键字实现几乎相同的功能。
+`IN` 操作符与 `OR` 关键字实现几乎相同的功能。
 
-* 使用 IN 操作符有以下几条优点：
+* 使用 `IN` 操作符有以下几条优点：
   * 在使用长的合法选项清单时，IN操作符的**语法更清楚**且**更直观**。
-  * 使用IN时，计算的次序更容易管理（因为使用的操作符更少）。
+  * 使用`IN`时，计算的次序更容易管理（因为使用的操作符更少）。
   * IN操作符一般比OR操作符清单执行更快。
-  * IN的最大优点是可以包含其它 SELECT 语句，使得能够更动态地建立 WHERE 子句。
+  * IN的最大优点是可以包含其它 `SELECT` 语句，使得能够更动态地建立 `WHERE` 子句。
 
 <br><br><br><br><br><br>
 
 ## 7.3 NOT 操作符
 
-* **NOT**：WHERE 子句中用来否定后跟条件的关键字。
+* **`NOT`**：WHERE 子句中用来否定后跟条件的关键字。
 
 WHERE 子句的 NOT 操作符有且仅有一个功能——否定它之后所跟的任何条件。
 
-例：列出除了【vend_id为】1002和1003之外的所有供应商制造的产品。
+例：列出除了【`vend_id`为】1002和1003之外的所有供应商制造的产品。
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name, prod_price 
@@ -1400,7 +1496,7 @@ WHERE vend_id NOT IN (1002, 1003)
 ORDER BY prod_name;
 ~~~
 
-### 输出
+**输出**
 
 ~~~bash
 +--------------+------------+
@@ -1412,31 +1508,19 @@ ORDER BY prod_name;
 | JetPack 1000 |      35.00 |
 | JetPack 2000 |      55.00 |
 +--------------+------------+
-5 rows in set (0.00 sec)
 ~~~
 
-### 分析
+**分析**
 
 为什么使用NOT？对于简单的 WHERE 子句，使用 NOT 确实么有什么优势，但在复杂的子句中，NOT 非常有用。
 
 例如：在与 IN 操作符联合使用时，NOT 使找出与条件列表不匹配的行非常简单。
 
-> 个人理解：NOT 可以看成是一个集合运算中的**取补集**或**取反**的操作。
+> 个人理解：`NOT` 可以看成是一个集合运算中的**取补集**或**取反**的操作。
 >
 > **MySQL 中的 NOT**
 >
 > **MySQL支持**使用 NOT 对 **IN**、**BETWEEN** 和 **EXISTS** 子句取反，这与多数其他DBMS允许使用 NOT 对各种条件取反有很大的差别。
-
-<br><br><br><br><br><br>
-
-## 7.4 小结
-
-本节涉及
-
-* 使用 AND 和 OR 操作符组合成 WHERE 子句，
-* 如何明确的管理计算的次序【使用圆括号（）】
-* 使用 IN 操作符
-* 使用 NOT 操作符
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -1446,7 +1530,7 @@ ORDER BY prod_name;
 
 # 8. 用通配符进行过滤
 
-本节介绍什么是通配符、如何使用通配符以及怎样使用 LIKE 操作符进行通配搜索，以便对数据进行复杂过滤。
+本节介绍什么是通配符、如何使用通配符以及怎样使用 `LIKE` 操作符进行通配搜索，以便对数据进行复杂过滤。
 
 * **通配符（wildcard）**：用来**匹配值的一部分**的特殊字符。
 * **搜索模式（search pattern）**：由字面值、通配符或两者组合构成的搜索条件。
@@ -1475,7 +1559,7 @@ ORDER BY prod_name;
 
 **例1**：找出所有以词 jet 起头的产品。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_id, prod_name 
@@ -1483,7 +1567,7 @@ FROM products
 WHERE prod_name LIKE 'jet%';
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+--------------+
@@ -1495,7 +1579,7 @@ WHERE prod_name LIKE 'jet%';
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 此例子使用了**搜索模式 ‘jet%’**。在执行这条子句时，将检索任意以 jet 起头的词。%告诉MySQL接受 jet 之后的任意字符，不管有多少字符。
 
@@ -1505,9 +1589,9 @@ WHERE prod_name LIKE 'jet%';
 
 <br><br>
 
-**例2**：检索任何位置包含文本 anvil 的值
+**例2**：检索任何位置包含文本【anvil】的值
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_id, prod_name 
@@ -1515,7 +1599,7 @@ FROM products
 WHERE prod_name LIKE '%anvil%';
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+--------------+
@@ -1528,9 +1612,9 @@ WHERE prod_name LIKE '%anvil%';
 3 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
-搜索模式 **'%anvil%'** 表示匹配任何位置包含文本 anvil 的值。
+搜索模式 `'%anvil%'` 表示匹配任何位置包含文本 anvil 的值。
 
 <br><br>
 
@@ -1538,7 +1622,7 @@ WHERE prod_name LIKE '%anvil%';
 
 **例**：在好处以 s 开头以 e 结尾的所有产品
 
-#### 输入
+输入
 
 ~~~mysql
 SELECT prod_id, prod_name 
@@ -1546,7 +1630,7 @@ FROM products
 WHERE prod_name LIKE 's%e';
 ~~~
 
-#### 输出
+输出
 
 ~~~bash
 +---------+-----------+
@@ -1557,7 +1641,7 @@ WHERE prod_name LIKE 's%e';
 1 row in set (0.00 sec)
 ~~~
 
-* **注意**：% 可以匹配 **0个**，1个或多个字符。
+* **注意**：`%` 可以匹配 **0个**，1个或多个字符。
 
 > **注意尾空格**
 >
@@ -1576,9 +1660,9 @@ WHERE prod_name LIKE 's%e';
 
 ### 8.1.2 下划线（_）通配符
 
-下划线 _ 的用途与 % 一样，但只能匹配单个字符而不是多个字符。举例如下：
+下划线 `_` 的用途与 `%` 一样，但只能匹配单个字符而不是多个字符。举例如下：
 
-#### 输入
+输入
 
 ~~~mysql
 SELECT prod_id, prod_name 
@@ -1586,7 +1670,7 @@ FROM products
 WHERE prod_name LIKE '_ ton anvil';
 ~~~
 
-#### 输出
+输出
 
 ~~~bash
 +---------+-------------+
@@ -1598,9 +1682,9 @@ WHERE prod_name LIKE '_ ton anvil';
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+分析
 
-与上方 % 检索结果对比更清晰。
+与上方 `%` 检索结果对比更清晰。
 
 <br><br><br><br><br><br>
 
@@ -1666,7 +1750,7 @@ MySQL的通配符很有用，但功能是有代价的——通配符搜索的处
 
 **例1**：检索列 prod_name 包含文本 '1000' 的所有行
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name 
@@ -1675,7 +1759,7 @@ WHERE prod_name REGEXP '1000'
 ORDER BY prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -1686,7 +1770,7 @@ ORDER BY prod_name;
 1 row in set (0.01 sec)
 ~~~
 
-#### 分析
+**分析**
 
 从格式上看，仅仅是关键字 **LIKE** 被 **REGEXP** 替代。该语句告诉MySQL：**REGEXP** 后所跟的东西作为**正则表达式**（与文字正文1000匹配的一个正则表达式）处理。
 
@@ -1694,7 +1778,7 @@ ORDER BY prod_name;
 
 **例2**：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name 
@@ -1703,7 +1787,7 @@ WHERE prod_name REGEXP '.000'
 ORDER BY prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -1715,9 +1799,9 @@ ORDER BY prod_name;
 2 rows in set (0.01 sec)
 ~~~
 
-#### 分析
+**分析**
 
-这里使用了正则表达式 **.000** 。==**.**== 是正则表达式语言中一个特殊的字符，==表示匹配任意一个字符==，因此，1000 和 2000 都匹配且返回。
+这里使用了正则表达式 **.000** 。**`.`** 是正则表达式语言中一个特殊的字符，==表示匹配任意一个字符==，因此，1000 和 2000 都匹配且返回。
 
 当然，例2也可以用 LIKE 和通配符来完成。语句如下
 
@@ -1728,11 +1812,11 @@ WHERE prod_name LIKE '%000'
 ORDER BY prod_name;
 ~~~
 
-
+<br>
 
 #### LIKE 与 REGEXP
 
-> **LIKE 与 REGEXP** 之间有一个重要差别。以如下两条语句为例。
+> **`LIKE` 与 `REGEXP`** 之间有一个重要差别。以如下两条语句为例。
 >
 > ~~~mysql
 > SELECT prod_name 
@@ -1751,16 +1835,16 @@ ORDER BY prod_name;
 > 如果执行上述两条语句，会发现第一条语句不返回数据，而第二条语句返回一行。
 >
 > * 原因：
->   * **LIKE 匹配整个列**。如果被匹配的文本在列值中作为部分出现，LIKE 将不会找到它，相应的行也不被返回（除非使用通配符）。
->   * **而 REGEXP 在列值内进行匹配**，如果匹配的文本在列值中出现，REGEXP 将会找到它，相应的行被返回。这是一个重要的差别。
+>   * **`LIKE` 匹配整个列**。如果被匹配的文本在列值中作为部分出现，`LIKE` 将不会找到它，相应的行也不被返回（除非使用通配符）。
+>   * **而 `REGEXP` 在列值内进行匹配**，如果匹配的文本在列值中出现，`REGEXP` 将会找到它，相应的行被返回。这是一个重要的差别。
 >
-> REGEXP 也能用来匹配整个列值（从而起与 LIKE 相同的作用），需要使用 **^** 和 **$** 定位符（anchor）即可。
+> `REGEXP` 也能用来匹配整个列值（从而起与 LIKE 相同的作用），需要使用 **`^`** 和 **`$`** 定位符（anchor）即可。
 
 #### 匹配不区分大小写
 
 > MySQL中的正则表达式匹配（自版本3.23.4后）不区分大小写。
 >
-> 为区分大小写，可使用 BINARY 关键字。如
+> 为区分大小写，可使用 `BINARY` 关键字。如
 >
 > ~~~mysql
 > WHERE prod_name REGEXP BINARY 'JetPack .000'
@@ -1770,9 +1854,9 @@ ORDER BY prod_name;
 
 ### 9.2.2 进行 OR 匹配
 
-为搜索两个串之一（或为一个串，或为另一个串），使用 **|** ，举例如下。
+为搜索两个串之一（或为一个串，或为另一个串），使用 **`|`** ，举例如下。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name
@@ -1781,7 +1865,7 @@ WHERE prod_name REGEXP '1000|2000'
 ORDER BY prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -1793,11 +1877,11 @@ ORDER BY prod_name;
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
-语句使用了正则表达式 **1000|2000**。**|** 为正则表达式的 OR 操作符。它表示匹配其中之一。
+语句使用了正则表达式 **`1000|2000`**。**`|`** 为正则表达式的 `OR` 操作符。它表示匹配其中之一。
 
-> **两个以上的 OR 条件**
+> **两个以上的 `OR` 条件**
 >
 > ~~~mysql
 > WHERE prod_name REGEXP '1000|2000|3000';	-- 将匹配1000或2000或3000
@@ -1809,7 +1893,7 @@ ORDER BY prod_name;
 
 要匹配某一组字符中的任何单一字符没通过 **[]** 实现。
 
-#### 输入
+输入
 
 ~~~mysql
 SELECT prod_name 
@@ -1818,7 +1902,7 @@ WHERE prod_name REGEXP '[123] Ton'
 ORDER BY prod_name;
 ~~~
 
-#### 输出
+输出
 
 ~~~bash
 +-------------+
@@ -1830,15 +1914,15 @@ ORDER BY prod_name;
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+分析
 
-这里使用了正则表达式 **[123] Ton**。**[123]** 定义一组字符，它的意思是匹配1或2或3，因此，1 ton 和 2 ton 都匹配且返回。
+这里使用了正则表达式 `[123] Ton`。`[123]` 定义一组字符，它的意思是匹配1或2或3，因此，1 ton 和 2 ton 都匹配且返回。
 
-**[] **是另一种形式的 OR 语句。事实上，正则表达式 **[123] Ton** 是 **[1|2|3] Ton** 的缩写。也可以使用后者。
+`[]`是另一种形式的 `OR` 语句。事实上，正则表达式 **`[123] Ton`** 是 **`[1|2|3] Ton`** 的缩写。也可以使用后者。
 
-**[]** 规定了内部 **|** 字符（如果有的话）的作用域。
+**`[]`** 规定了内部 **`|`** 字符（如果有的话）的作用域。
 
-字符集合也可以被否定，及匹配时排除指定的字符。使用方法：在集合开始处加一个 **^** 即可。例如：
+字符集合也可以被否定，及匹配时排除指定的字符。使用方法：在集合开始处加一个 **`^`** 即可。例如：
 
 ~~~mysql
 WHERE prod_name REGEXP '[^123] Ton'	-- 匹配除这些字符外的任何东西
@@ -1850,7 +1934,7 @@ WHERE prod_name REGEXP '[^123] Ton'	-- 匹配除这些字符外的任何东西
 
 可以用 **-** 来定义一个范围。举例如下
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name 
@@ -1859,7 +1943,7 @@ WHERE prod_name REGEXP '[1-5] Ton'
 ORDER BY prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -1872,7 +1956,7 @@ ORDER BY prod_name;
 3 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 此处 **[1-5]** 定义了一个范围。**'[1-5] Ton'** 作为正则表达式进行匹配。
 
@@ -1884,7 +1968,7 @@ ORDER BY prod_name;
 
 **例**：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_name 
@@ -1893,7 +1977,7 @@ WHERE vend_name REGEXP '\\.'
 ORDER BY vend_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -1904,7 +1988,7 @@ ORDER BY vend_name;
 1 row in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 原理为**转义（escaping）**。
 
@@ -1930,22 +2014,24 @@ ORDER BY vend_name;
 
 ### 9.2.6 匹配字符类
 
-为了方便工作，可以使用预定义的字符集，称为字符类（character class）。下标列出字符类及它们的含义。
+为了方便工作，可以使用预定义的字符集，称为字符类（character class）。表9-2列出字符类及它们的含义。
 
-|     类     |                         说明                         |
-| :--------: | :--------------------------------------------------: |
-| [:alnum:]  |          任意字母和数字（同 [a-zA-Z0-9] ）           |
-| [:alpha:]  |               任意字符（同 [a-zA-Z] ）               |
-| [:blank:]  |                空格和制表（同 `\\t`）                |
-| [:cntrl:]  |          ASCII控制字符（ASCII 0到31和127）           |
-| [:digit:]  |                任意数字（同 [0-9] ）                 |
-| [:graph:]  |           与 [:print:] 相同，但不包括空格            |
-| [:lower:]  |              任意小写字母（同 [a-z] ）               |
-| [:print:]  |                    任意可打印字符                    |
-| [:punct:]  |    即不在 [:alnum:] 又不在 [:cntrl:] 中的任意字符    |
-| [:space:]  | 包括空格在内的任意空白字符（同 `[\\f\\n\\r\\t\\v]`） |
-| [:upper:]  |              任意大写字母（同 [A-Z] ）               |
-| [:xdigit:] |          任意十六进制数字（同 [a-fA-F0-9]）          |
+**表9-2 字符类**
+
+|      类      |                        说 明                         |
+| :----------: | :--------------------------------------------------: |
+| `[:alnum:]`  |          任意字母和数字（同`[a-zA-Z0-9]` ）          |
+| `[:alpha:]`  |              任意字符（同`[a-zA-Z]` ）               |
+| `[:blank:]`  |               空格和制表（同`[\\t]` ）               |
+| `[:cntrl:]`  |      ASCII控制字符（ASCII `0` 到`31` 和`127` ）      |
+| `[:digit:]`  |                任意数字（同`[0-9]` ）                |
+| `[:graph:]`  |           与`[:print:]` 相同，但不包括空格           |
+| `[:lower:]`  |              任意小写字母（同`[a-z]` ）              |
+| `[:print:]`  |                    任意可打印字符                    |
+| `[:punct:]`  |   既不在`[:alnum:]` 又不在`[:cntrl:]` 中的任意字符   |
+| `[:space:]`  | 包括空格在内的任意空白字符（同`[\\f\\n\\r\\t\\v]` ） |
+| `[:upper:]`  |              任意大写字母（同`[A-Z]` ）              |
+| `[:xdigit:]` |         任意十六进制数字（同`[a-fA-F0-9]` ）         |
 
 <br><br><br>
 
@@ -1972,7 +2058,7 @@ ORDER BY vend_name;
 
 **例1**：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name 
@@ -1981,7 +2067,7 @@ WHERE prod_name REGEXP '\\([0-9] sticks?\\)'
 ORDER BY prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+
@@ -1993,15 +2079,15 @@ ORDER BY prod_name;
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
-正则表达式 `\\([0-9] sticks?\\)` 说明：`\\(匹配(,[0-9]匹配任意数字（这个例子中为1和5）, sticks?匹配stick和sticks（s后的?使s可选，因为?匹配它前面的任何字符的0次或1次出现），\\)匹配)。` 如果没有？，就匹配stick和sticks会非常困难。
+正则表达式`\\([0-9]sticks?\\)` 需要解说一下。`\\(` 匹配(，`[0-9]` 匹配任意数字（这个例子中为1和5），`sticks?` 匹配`stick` 和`sticks` （`s` 后的`?` 使`s` 可选，因为`?` 匹配它前面的任何字符的0次或1次出现），`\\)` 匹配`)` 。没有`?` ，匹配`stick` 和`sticks` 会非常困难。
 
-<br><br>
+<br>
 
 **例2**：匹配连在一起的4位数字
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name 
@@ -2010,7 +2096,7 @@ WHERE prod_name REGEXP '[[:digit:]]{4}'
 ORDER BY prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -2022,13 +2108,13 @@ ORDER BY prod_name;
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 **`[[:digit:]]`**匹配任意数字，因为它为数字的一个集合。**`{4}`**要求它**前面的字符**（这里即任意数字）**出现4次**，所以`[[:digit:]]{4}`匹配连在一起的任意4位数字。
 
 注：上面的例子也可以用如下语句实现
 
-#### 输入
+输入
 
 ~~~mysql
 SELECT prod_name 
@@ -2057,7 +2143,7 @@ ORDER BY prod_name;
 
 **例**：找出以一个数（或小数点）**开始**的所有产品。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name 
@@ -2066,7 +2152,7 @@ WHERE prod_name REGEXP '^[0-9\\.]'
 ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -2079,13 +2165,13 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 3 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
-^ 匹配串的开始。因此，`^[0-9\\.]`只在 **.** 或任意数字为串中第1个字符时才匹配它们。没有 ^ 将会检索出串中间有数字的行。
+`^` 匹配串的开始。因此，`^[0-9\\.]` 只在.或任意数字为串中第一个字符时才匹配它们。没有`^` ，则还要多检索出4个别的行（那些中间有数字的行）。
 
 <br><br>
 
-#### 附1：^ 的双重用途
+#### 附1：`^` 的双重用途
 
 > **^ 的双重用途**：^ 有两种用法。在集合中（用`[和]`定义），用它来**否定该集合**
 >
@@ -2099,13 +2185,13 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 > WHERE prod_name REGEXP '^[0-9\\.]'	-- 匹配以数字或点开始的所有串
 > ~~~
 
-#### 附2：使REGEXP起类似LIKE的作用
+#### 附2：使`REGEXP`起类似`LIKE`的作用
 
-> LIKE和REGEXP不同之处在于：LIKE匹配整个串而REGEXP匹配字串。
+> `LIKE`和`REGEXP`不同之处在于：`LIKE`匹配整个串而`REGEXP`匹配子串。
 >
-> 利用定位符，通过**^开始**每个表达式，用**$结束**每个表达式，可以是REGEXP与LIKE一样。
+> 利用定位符，通过**`^`开始**每个表达式，用**`$`结束**每个表达式，可以使`REGEXP`与`LIKE`一样。
 >
-> #### 输入
+> **输入**
 >
 > ~~~MYSQL
 > SELECT prod_id, prod_name 
@@ -2127,7 +2213,7 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 > ORDER BY prod_id;
 > ~~~
 >
-> #### 输出（一致）
+> **输出（一致）**
 >
 > ~~~baash
 > +---------+-------------+
@@ -2147,7 +2233,7 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 > SELECT 'hello' REGEXP '[0-9]';
 > ~~~
 >
-> #### 输出
+> **输出**
 >
 > ~~~bash
 > +------------------------+
@@ -2210,7 +2296,7 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 
 > **MySQL的不同之处**：许多DBMS使用+或 || 实现拼接，MySQL使用Concat()函数实现。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT Concat(vend_name, ' (', vend_country, ')') 
@@ -2218,7 +2304,7 @@ FROM vendors
 ORDER BY vend_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------------------------------------+
@@ -2234,7 +2320,7 @@ ORDER BY vend_name;
 6 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 Concat()方法：用于拼接串，子串用逗号分隔，拼接后作为单个长串。
 
@@ -2249,7 +2335,7 @@ Concat()方法：用于拼接串，子串用逗号分隔，拼接后作为单个
 
 在第8节中提到通过**删除数据右侧多余的空格**来整理数据，可以使用MySQL的 **RTrim()** 函数来实现。如下所示：
 
-#### 输入
+**输入**
 
 ~~~MySQL
 SELECT Concat(RTrim(vend_name), ' (', RTrim(vend_country), ')') 
@@ -2257,7 +2343,7 @@ FROM vendors
 ORDER BY vend_name;
 ~~~
 
-#### 分析
+**分析**
 
 * RTrim() 函数去掉值右边的所有空格。通过使用RTrim() 函数， 各个列都进行了整理。
 
@@ -2271,7 +2357,7 @@ ORDER BY vend_name;
 
 **例**：对上一个搜索结果使用别名
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT Concat(RTrim(vend_name), ' (', RTrim(vend_country), ')')  AS vend_title 
@@ -2279,7 +2365,7 @@ FROM vendors
 ORDER BY vend_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-------------------------+
@@ -2295,7 +2381,7 @@ ORDER BY vend_name;
 6 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 `AS 别名` 指示 SQL 创建一个包含指定计算的名为 `别名` 的计算字段。任何客户机应用都可以按名引用这个列，就像它是一个实际的表列一样。
 
@@ -2319,7 +2405,7 @@ ORDER BY vend_name;
 
 例：orders 表中包含收到的所有订单，orderitems表包含每个订单的各项物品。下面语句检索订单号 2005 中的所有物品
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_id, quantity, item_price 
@@ -2327,7 +2413,7 @@ FROM orderitems
 WHERE order_num = 20005;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+----------+------------+
@@ -2343,7 +2429,7 @@ WHERE order_num = 20005;
 
 在后面增加一列汇总物品价格（单价乘以订购数量）
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT 	prod_id, 
@@ -2354,7 +2440,7 @@ FROM orderitems
 WHERE order_num = 20005;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+----------+------------+----------------+
@@ -2368,20 +2454,22 @@ WHERE order_num = 20005;
 4 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 客户机应用现在可以正常使用新计算列 expanded_price。
 
 <br><br>
 
-MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以用来区分优先顺序。
+MySQL支持表10-1中列出的基本算术操作符。此外，圆括号可用来区分优先顺序。关于优先顺序的介绍，请参阅第7章。
 
-| 操作符 | 说    明 |
-| :----: | :------: |
-|   +    |    加    |
-|   -    |    减    |
-|   *    |    乘    |
-|   /    |    除    |
+**表10-1 MySQL算术操作符**
+
+| 操 作 符 | 说 明 |
+| :------: | :---: |
+|   `+`    |  加   |
+|   `-`    |  减   |
+|   `*`    |  乘   |
+|   `/`    |  除   |
 
 <br><br>
 
@@ -2441,7 +2529,7 @@ MySQL支持下表列出的**基本算术操作符**。此外，圆括号可以�
 
 例：使用Upper() 函数转大写。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_name, Upper(vend_name) AS vend_name_upcase 
@@ -2449,7 +2537,7 @@ FROM vendors
 ORDER BY vend_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+------------------+
@@ -2467,20 +2555,20 @@ ORDER BY vend_name;
 
 <br><br>
 
-下表列出了部分**常用的文本处理函数**
+**表11-1 常用的文本处理函数**
 
-|    函数     |       说明        |
-| :---------: | :---------------: |
-|   Left()    | 返回串左边的字符  |
-|  Length()   |   返回串的长度    |
-|  Locate()   | 找出串的一个子串  |
-|   Lower()   |  将串转换为小写   |
-|   LTrim()   | 去掉串左边的空格  |
-|   Right()   | 去掉串右边的字符  |
-|   RTrim()   | 去掉串右边的空格  |
-|  Soundex()  | 返回串的SOUNDEX值 |
-| SubString() |  返回子串的字符   |
-|   Upper()   |  将串转换为大写   |
+|     函 数     |        说 明         |
+| :-----------: | :------------------: |
+|   `Left()`    |   返回串左边的字符   |
+|  `Length()`   |     返回串的长度     |
+|  `Locate()`   |   找出串的一个子串   |
+|   `Lower()`   |    将串转换为小写    |
+|   `LTrim()`   |   去掉串左边的空格   |
+|   `Right()`   |   返回串右边的字符   |
+|   `RTrim()`   |   去掉串右边的空格   |
+|  `Soundex()`  | 返回串的`SOUNDEX` 值 |
+| `SubString()` |    返回子串的字符    |
+|   `Upper()`   |    将串转换为大写    |
 
 <br><br><br>
 
@@ -2490,27 +2578,27 @@ ORDER BY vend_name;
 
 一般应用程序不能使用用来存储日期和时间地格式，所以使用十日起和时间函数来读取、统计和处理这些值。
 
-下表为部分常用的日期和时间处理函数
+**表11-2 常用日期和时间处理函数**
 
-|     函数      |              说明              |
-| :-----------: | :----------------------------: |
-|   AddDate()   |    增加一个日期（天、周等）    |
-|   AddTime()   |    增加一个时间（时、分等）    |
-|   CurDate()   |          返回当前日期          |
-|   CurTime()   |          返回当前时间          |
-|    Date()     |     返回日期时间的日期部分     |
-|  DateDiff()   |        计算两个日期之差        |
-|  Date_Add()   |     高度灵活的日期运算函数     |
-| Date_Format() |  返回一个格式化的日期或时间串  |
-|     Day()     |     返回一个日期的天数部分     |
-|  DayOfWeek()  | 对于一个日期，返回对应的星期几 |
-|    Hour()     |     返回一个时间的小时部分     |
-|   Minute()    |     返回一个时间的分钟部分     |
-|    Month()    |     返回一个时间的月份部分     |
-|     Now()     |       返回当前日期和时间       |
-|   Second()    |      返回一个时间的秒部分      |
-|    Time()     |   返回一个日期时间的时间部分   |
-|    Year()     |     返回一个日期的年份部分     |
+|      函 数      |             说 明              |
+| :-------------: | :----------------------------: |
+|   `AddDate()`   |    增加一个日期（天、周等）    |
+|   `AddTime()`   |    增加一个时间（时、分等）    |
+|   `CurDate()`   |          返回当前日期          |
+|   `CurTime()`   |          返回当前时间          |
+|    `Date()`     |     返回日期时间的日期部分     |
+|  `DateDiff()`   |        计算两个日期之差        |
+|  `Date_Add()`   |     高度灵活的日期运算函数     |
+| `Date_Format()` |  返回一个格式化的日期或时间串  |
+|     `Day()`     |     返回一个日期的天数部分     |
+|  `DayOfWeek()`  | 对于一个日期，返回对应的星期几 |
+|    `Hour()`     |     返回一个时间的小时部分     |
+|   `Minute()`    |     返回一个时间的分钟部分     |
+|    `Month()`    |     返回一个日期的月份部分     |
+|     `Now()`     |       返回当前日期和时间       |
+|   `Second()`    |      返回一个时间的秒部分      |
+|    `Time()`     |   返回一个日期时间的时间部分   |
+|    `Year()`     |     返回一个日期的年份部分     |
 
 <br><br>
 
@@ -2526,7 +2614,7 @@ ORDER BY vend_name;
 
 **例1**：基本日期
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_id, order_num 
@@ -2534,7 +2622,7 @@ FROM orders
 WHERE order_date = '2005-09-01';
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+-----------+
@@ -2545,11 +2633,11 @@ WHERE order_date = '2005-09-01';
 1 row in set (0.01 sec)
 ~~~
 
-#### 分析
+**分析**
 
 使用字符串比较并不可靠【因为不清楚列 order_date 的格式是否仅为 yyyy-mm--dd 】，更可靠的办法是使用 **Date(order_date)** 函数指示MySQL**仅提取 order_date 列的日期部分**，并**进行比较**。修改如下
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_id, order_num 
@@ -2571,7 +2659,7 @@ WHERE Date(order_date) = '2005-09-01';
 
 方法1：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_id, order_num 
@@ -2579,7 +2667,7 @@ FROM orders
 WHERE Date(order_date) BETWEEN '2005-09-01' AND '2005-09-30';
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+-----------+
@@ -2594,7 +2682,7 @@ WHERE Date(order_date) BETWEEN '2005-09-01' AND '2005-09-30';
 
 方法2：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_id, order_num 
@@ -2602,7 +2690,7 @@ FROM orders
 WHERE Year(order_date) = 2005 AND Month(order_date) = 9;
 ~~~
 
-#### 分析
+**分析**
 
 Year() 从日期中返回年份，Month() 从日期中返回月份。
 
@@ -2612,19 +2700,19 @@ Year() 从日期中返回年份，Month() 从日期中返回月份。
 
 数字处理函数用于处理数值或数据，这些函数一般用于处理代数、三角或几何运算，因此没有串或日期-时间处理函数使用的那么频繁。
 
-下表为常用**数值处理函数**。
+**表11-3 常用数值处理函数**
 
-|  函数  |        说明        |
-| :----: | :----------------: |
-| Abs()  | 返回一个数的绝对值 |
-| Cos()  | 返回一个角度的预先 |
-| Exp()  | 返回一个数的指数值 |
-| Mod()  |  返回除操作的余数  |
-|  Pi()  |     返回圆周率     |
-| Rand() |   返回一个随机数   |
-| Sin()  | 返回一个角度的正弦 |
-| Sqrt() | 返回一个数的平方根 |
-|  Tan   | 返回一个角度的正切 |
+|  函 数   |       说 明        |
+| :------: | :----------------: |
+| `Abs()`  | 返回一个数的绝对值 |
+| `Cos()`  | 返回一个角度的余弦 |
+| `Exp()`  | 返回一个数的指数值 |
+| `Mod()`  |  返回除操作的余数  |
+|  `Pi()`  |     返回圆周率     |
+| `Rand()` |   返回一个随机数   |
+| `Sin()`  | 返回一个角度的正弦 |
+| `Sqrt()` | 返回一个数的平方根 |
+| `Tan()`  | 返回一个角度的正切 |
 
 <br><br><br><br><br><br>
 
@@ -2658,15 +2746,15 @@ Year() 从日期中返回年份，Month() 从日期中返回月份。
 
 * **聚集函数（aggregate function）**：运行在行组上，计算和返回单个值的函数。
 
-下表给出聚集函数。
+**表12-1 SQL聚集函数**
 
-|  函数   |       说明       |
-| :-----: | :--------------: |
-|  AVG()  | 返回某列的平均值 |
-| COUNT() |  返回某列的行数  |
-|  MAX()  | 返回某列的最大值 |
-|  MIN()  | 返回某列的最小值 |
-|  SUM()  |  返回某列值之和  |
+|   函 数   |      说 明       |
+| :-------: | :--------------: |
+|  `AVG()`  | 返回某列的平均值 |
+| `COUNT()` |  返回某列的行数  |
+|  `MAX()`  | 返回某列的最大值 |
+|  `MIN()`  | 返回某列的最小值 |
+|  `SUM()`  |  返回某列值之和  |
 
 > MySQL还支持一系列的标准偏差聚集函数，这里并未涉及。
 
@@ -2678,14 +2766,14 @@ AVG()可用来返回所有列的平均值，也可用来返回特定列或行的
 
 **例1**：使用AVG()返回products表中所有产品的平均价格
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT AVG(prod_price) AS avg_price 
 FROM products;
 ~~~
 
-#### 输出
+输出
 
 ~~~bash
 +-----------+
@@ -2700,7 +2788,7 @@ FROM products;
 
 **例2**：确定特定行或列的平均值
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT AVG(prod_price) AS avg_price 
@@ -2708,7 +2796,7 @@ FROM products
 WHERE vend_id = 1003; 
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------+
@@ -2740,14 +2828,14 @@ COUNT()函数有两种使用方式：
 
 **例1**：返回 customers 表中客户的总数
 
-#### 输入
+**输入**
 
 ~~~MySQL
 SELECT COUNT(*) AS num_cust
 FROM customers;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------+
@@ -2758,20 +2846,20 @@ FROM customers;
 1 row in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 利用COUNT(*)计数，不管行中各列有什么值。
 
 **例2**：对表中具有电子邮件地址的客户计数
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT COUNT(cust_email) AS num_cust 
 FROM customers;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------+
@@ -2782,7 +2870,7 @@ FROM customers;
 1 row in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 此语句中，COUNT()函数指定了列名，则会忽略NULL值的列。
 
@@ -2794,14 +2882,14 @@ FROM customers;
 
 MAX返回指定列中的最大值。MAX()要求指定列名
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT MAX(prod_price) AS max_price 
 FROM products;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------+
@@ -2824,14 +2912,14 @@ FROM products;
 
 **例**：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT MIN(prod_price) AS min_price 
 FROM products;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------+
@@ -2856,7 +2944,7 @@ FROM products;
 
 **例1**：检索 orderitems 表订单号 order_num 为20005的 quantity 列总数。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT SUM(quantity) AS items_quantity 
@@ -2864,7 +2952,7 @@ FROM orderitems
 WHERE order_num = 20005;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+
@@ -2877,7 +2965,7 @@ WHERE order_num = 20005;
 
 **例2**：合计计算数值
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT SUM(item_price*quantity) AS total_price 
@@ -2885,7 +2973,7 @@ FROM orderitems
 WHERE order_num = 2005;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-------------+
@@ -2915,7 +3003,7 @@ WHERE order_num = 2005;
 
 **例**：使用AVG()函数 + DISTINCT 参数，只考虑不同的的价格
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT AVG(DISTINCT prod_price) AS avg_price 
@@ -2923,7 +3011,7 @@ FROM products
 WHERE vend_id = 1003;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------+
@@ -2948,7 +3036,7 @@ SELECT 语句可根据需要包含多个聚集函数
 
 例：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT COUNT(*) AS num_items,
@@ -2958,7 +3046,7 @@ SELECT COUNT(*) AS num_items,
 FROM products;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------+-----------+-----------+-----------+
@@ -2969,7 +3057,7 @@ FROM products;
 1 row in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 **注意**：不同聚合函数调用之间要用**逗号分隔**。
 
@@ -2993,9 +3081,9 @@ FROM products;
 
 # 13.分组数据
 
-* 分组数据，以汇总表内容的子集。涉及如下两个SELECT语句子句：
-  * **GROUP BY** 子句
-  * **HAVING**  子句
+* 分组数据，以汇总表内容的子集。涉及如下两个`SELECT`语句子句：
+  * **`GROUP BY`** 子句
+  * **`HAVING`**  子句
 
 <br><br><br><br><br><br>
 
@@ -3011,7 +3099,7 @@ FROM products;
 
 **例**：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_id, COUNT(*) AS num_prods
@@ -3019,7 +3107,7 @@ FROM products
 GROUP BY vend_id;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+-----------+
@@ -3033,7 +3121,7 @@ GROUP BY vend_id;
 4 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 GROUP BY 子句指示MySQL按vend_id排序并分组数据。这导致对每个 vend_id 而不是整个表计算 num_prods 一次。
 
@@ -3058,7 +3146,7 @@ GROUP BY 子句指示MySQL按vend_id排序并分组数据。这导致对每个 v
 
 例1：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_id, COUNT(*) AS orders 
@@ -3067,7 +3155,7 @@ GROUP BY cust_id
 HAVING COUNT(*) >= 2;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+--------+
@@ -3078,7 +3166,7 @@ HAVING COUNT(*) >= 2;
 1 row in set (0.02 sec)
 ~~~
 
-#### 分析
+**分析**
 
 该语句前3行与上一个例子一致。最后一行为 HAVING 子句，过滤出两个以上订单的分组。
 
@@ -3094,7 +3182,7 @@ HAVING COUNT(*) >= 2;
 
 例2：WHERE 和 HAVING 同时使用的例子——列出具有2个及以上、价格为10及以上的产品的供应商
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_id, COUNT(*) AS num_prods 
@@ -3104,7 +3192,7 @@ GROUP BY vend_id
 HAVING COUNT(*) >= 2;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+-----------+
@@ -3116,7 +3204,7 @@ HAVING COUNT(*) >= 2;
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 分组的目的往往在于对目标组的数据进行运算或整合，所以 GROUP BY 经常与聚合函数联用。WHERE 子句初步过滤一些行，HAVING 子句进一步过滤一些组。
 
@@ -3126,19 +3214,19 @@ HAVING COUNT(*) >= 2;
 
 GROUP BY 和 ORDER BY 经常完成相同的工作，但它们是非常不同的。
 
-下表汇总了它们之间的差别。
+**表13-1 `ORDER BY` 与`GROUP BY`**
 
-|                   ORDER BY                   |                           GROUP BY                           |
-| :------------------------------------------: | :----------------------------------------------------------: |
-|                  排序产生的                  |               分组行。但输出可能不是分组的顺序               |
-| 任意列都可以使用（甚至非选择的列也可以使用） | 只可能使用选择列或表达式列，而且**必须使用每个选择列表达式** |
-|                  不一定需要                  |       如果与聚集函数一起使用列（或表达式），则必须使用       |
+|                  `ORDER BY`                  |                        `GROUP BY`                        |
+| :------------------------------------------: | :------------------------------------------------------: |
+|                排序产生的输出                |              分组行。但输出可能不是分组的顺              |
+| 任意列都可以使用（甚至非选择的列也可以使用） | 只可能使用选择列或表达式列，而且必须使用每个选择列表达式 |
+|                  不一定需要                  |     如果与聚集函数一起使用列（或表达式），则必须使用     |
 
-注意表中的第一项差别。一般在使用 GROUP BY 子句时，应该也给出 ORDER BY 子句。这是保证数据正确排序的唯一方法。不要仅依赖GROUP BY排序数据。
+注意表中的第一项差别。一般在使用 `GROUP BY` 子句时，应该也给出 `ORDER BY` 子句。这是保证数据正确排序的唯一方法。不要仅依赖`GROUP BY`排序数据。
 
 **例**：检索总计订单价格大于等于50的订单的**订单号**和**总计订单价格**，并**按总计订单价格排序**。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT order_num, SUM(quantity*item_price) AS ordertotal 
@@ -3148,7 +3236,7 @@ HAVING SUM(quantity*item_price) >= 50
 ORDER BY ordertotal;
 ~~~
 
-#### 分析
+**分析**
 
 执行步骤：
 
@@ -3159,7 +3247,7 @@ ORDER BY ordertotal;
 * SELECT选择指定的列
 * ORDER BY对分组排序
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------+------------+
@@ -3177,17 +3265,17 @@ ORDER BY ordertotal;
 
 ## 13.5 SELECT子句书写顺序
 
-目前为止涉及到的**SELECT子句书写顺序**如下表
+**表13-2 `SELECT` 子句及其顺序**
 
-|   子句    |        说明        |      是否必须使用      |
-| :-------: | :----------------: | :--------------------: |
-|  SELECT   | 要返回的列或表达式 |           是           |
-|   FROM    |  从中检索数据的表  | 仅在从表选择数据时使用 |
-|   WHERE   |      行级过滤      |           否           |
-| GROUP BY  |      分组说明      | 仅在按组计算聚集时使用 |
-|  HAVING   |      组级过滤      |           否           |
-| ORDERE BY |    输出排序顺序    |           否           |
-|   LIMIT   |    要检索的行数    |           否           |
+|   子 句    |       说 明        |      是否必须使用      |
+| :--------: | :----------------: | :--------------------: |
+|  `SELECT`  | 要返回的列或表达式 |           是           |
+|   `FROM`   |  从中检索数据的表  | 仅在从表选择数据时使用 |
+|  `WHERE`   |      行级过滤      |           否           |
+| `GROUP BY` |      分组说明      | 仅在按组计算聚集时使用 |
+|  `HAVING`  |      组级过滤      |           否           |
+| `ORDER BY` |    输出排序顺序    |           否           |
+|  `LIMIT`   |    要检索的行数    |           否           |
 
 <br><br><br><br><br><br>
 
@@ -3309,7 +3397,7 @@ ORDER BY ordertotal;
 
 现在，将三个查询合并：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_name, cust_contact 
@@ -3321,7 +3409,7 @@ WHERE cust_id IN (SELECT cust_id
                                       WHERE prod_id = 'TNT2'));
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+--------------+
@@ -3333,7 +3421,7 @@ WHERE cust_id IN (SELECT cust_id
 2 rows in set (0.01 sec)
 ~~~
 
-#### 分析
+**分析**
 
 在SELECT语句中，子查询总是从内向外处理。最里面的子查询返回订单号列表，中间的子查询返回客户ID列表，最外层的SELECT语句根据客户ID列表查询客户信息。
 
@@ -3458,7 +3546,7 @@ SQL最**强大的功能之一**就是能在数据检索查询的执行中**联�
 
 例：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_name, prod_name, prod_price 
@@ -3467,7 +3555,7 @@ WHERE vendors.vend_id = products.vend_id
 ORDER BY vend_name, prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-------------+----------------+------------+
@@ -3491,7 +3579,7 @@ ORDER BY vend_name, prod_name;
 14 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 SELECT语句最大的差别是所指定的两个列（prod_name和prod_price）在一个表中，而另一个列（vend_name）在另一个表中。
 
@@ -3509,7 +3597,7 @@ FROM子句列出了两个表。这两个表用WHERE子句正确联结，WHERE子
 
 例：笛卡尔积举例
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_name, prod_name, prod_price 
@@ -3517,7 +3605,7 @@ FROM vendors, products
 ORDER BY vend_name, prod_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+----------------+------------+
@@ -3623,7 +3711,7 @@ ORDER BY vend_name, prod_name;
 
 例：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_name, prod_name, prod_price 
@@ -3631,7 +3719,7 @@ FROM vendors INNER JOIN products
 ON vendors.vend_id = products.vend_id;
 ~~~
 
-#### 分析
+**分析**
 
 这里，两个表之间的关系是FROM子句的组成部分，以INNER JOIN指定。在使用这种语法时，联结条件用特定的ON子句而不是WHERE子句给出。传递给ON的实际条件与传递给WHERE的相同。
 
@@ -3645,7 +3733,7 @@ ON vendors.vend_id = products.vend_id;
 
 例1：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name, vend_name, prod_price, quantity
@@ -3655,7 +3743,7 @@ WHERE products.vend_id = vendors.vend_id
     AND order_num = 20005;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+-------------+------------+----------+
@@ -3677,7 +3765,7 @@ WHERE products.vend_id = vendors.vend_id
 
 使用**IN关键字**的**原解法**：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_name, cust_contact 
@@ -3691,7 +3779,7 @@ WHERE cust_id IN (SELECT cust_id
 
 使用**联结**的**新解法**
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_name, cust_contact 
@@ -3701,7 +3789,7 @@ WHERE customers.cust_id = orders.cust_id
     AND orderitems.prod_id = 'TNT2';
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+--------------+
@@ -3713,7 +3801,7 @@ WHERE customers.cust_id = orders.cust_id
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 这里没有使用嵌套子查询，而是使用两个联结。这里有3个WHERE子句条件。前面两个关联联结中的表，后一个过滤产品TNT2的数据。
 
@@ -3746,7 +3834,7 @@ WHERE customers.cust_id = orders.cust_id
 
 例：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_name, cust_contact
@@ -3756,7 +3844,7 @@ WHERE c.cust_id = o.cust_id
 	AND prod_id = 'TNT2';
 ~~~
 
-#### 分析
+**分析**
 
 表别名还可以用于SELECT的列表，ORDER BY子句以及语句的其他部分。
 
@@ -3774,7 +3862,7 @@ WHERE c.cust_id = o.cust_id
 
 例：假如某物品（ID为DTNTR）存在问题，想知道生产该物品的供应商生产的其他物品是否也存在这些问题。次查询要求首先找到生产ID（prod_id）为DTNTR的物品的供应商 vend_id，然后找出这个供应商生产的其他物品 （prod_id, prod_name）。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT p1.prod_id, p1.prod_name 
@@ -3788,7 +3876,7 @@ WHERE p1.vend_id = p1.vend_id
 	AND p1.prod_id = 'DTNTR';	-- 错误输入
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+----------------+
@@ -3812,7 +3900,7 @@ WHERE p1.vend_id = p1.vend_id
 1 row in set (0.00 sec)		-- 错误输出（只查询到了自己）
 ~~~
 
-#### 分析
+**分析**
 
 此查询中需要的两个表实际上是相同的表，因此products表在FROM子句中出现两次。虽然是合法的，但对products的引用具有二义性。
 
@@ -3840,7 +3928,7 @@ WHERE p1.vend_id = p1.vend_id
 
 下面的SELECT语句给出一个简单的内部联结，检索所有客户及其订单：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT customers.cust_id, orders.order_num 
@@ -3848,7 +3936,7 @@ FROM customers INNER JOIN orders
 ON customers.cust_id = orders.cust_id;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+-----------+
@@ -3865,7 +3953,7 @@ ON customers.cust_id = orders.cust_id;
 
 外部联结语法类似，但可以检索所有客户，**包括那些没有订单的客户**【此处customers表的表列要求出给出“**全集**”】，语句如下：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT customers.cust_id, orders.order_num 
@@ -3873,7 +3961,7 @@ FROM customers LEFT OUTER JOIN orders
 ON customers.cust_id = orders.cust_id;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+-----------+
@@ -3918,7 +4006,7 @@ ON customers.cust_id = orders.cust_id
 GROUP BY customers.cust_id;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+---------+---------+
@@ -3931,7 +4019,7 @@ GROUP BY customers.cust_id;
 +----------------+---------+---------+
 ~~~
 
-#### 分析
+**分析**
 
 INNER JOIN将customers和orders表互相关联。GROUP BY 按客户分组数据；COUNT()对每个客户的订单计数，将它作为num_ord返回。
 
@@ -3939,7 +4027,7 @@ INNER JOIN将customers和orders表互相关联。GROUP BY 按客户分组数据�
 
 聚集函数也可以和其他联结一起使用。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT customers.cust_name, 
@@ -3950,7 +4038,7 @@ ON customers.cust_id = orders.cust_id
 GROUP BY customers.cust_id;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+---------+---------+
@@ -4053,7 +4141,7 @@ ON tableA.column1 = tableB.column2;
 
 **例**：检索价格小于等于5的所有物品的一个 列表，同时还包括供应商1001，1002生产的所有物品（不考虑价格）。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_id, prod_id, prod_price 
@@ -4065,7 +4153,7 @@ FROM products
 WHERE vend_id IN (1001,1002);
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+---------+------------+
@@ -4082,7 +4170,7 @@ WHERE vend_id IN (1001,1002);
 +---------+---------+------------+	#共8行结果，其中1行重复记录已被自动去除
 ~~~
 
-#### 分析
+**分析**
 
 这条语句由两条SELECT语句组成，语句中的UNION关键字分隔。UNION指示MySQL执行两条SELECT语句，并把输出组合成单个查询结果集。
 
@@ -4090,7 +4178,7 @@ WHERE vend_id IN (1001,1002);
 
 作为参考，在这里给出使用多条WHERE子句而不是使用UNION的相同查询语句。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_id, prod_id, prod_price 
@@ -4099,7 +4187,7 @@ WHERE prod_price <=5
 	OR vend_id IN (1001,1002);
 ~~~
 
-#### 分析
+**分析**
 
 在这里，使用UNION比WHERE子句更复杂。但对于更复杂的过滤条件，或从多个表中检索数据时，使用UNION可能会使处理更简单。
 
@@ -4125,7 +4213,7 @@ UNION有几条规则需要注意。
 
 例：与17.2.1的需求一致
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_id, prod_id, prod_price 
@@ -4137,7 +4225,7 @@ FROM products
 WHERE vend_id IN (1001,1002);
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+---------+------------+
@@ -4163,7 +4251,7 @@ WHERE vend_id IN (1001,1002);
 
 例：排序之前检索的内容。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT vend_id, prod_id, prod_price 
@@ -4176,7 +4264,7 @@ WHERE vend_id IN (1001,1002)
 ORDER BY vend_id, prod_price;	-- 指明排序标准
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +---------+---------+------------+
@@ -4248,7 +4336,7 @@ ORDER BY vend_id, prod_price;	-- 指明排序标准
 
 例：CREATE 语句演示FULLTEXT子句的使用方法
 
-#### 输入
+**输入**
 
 ~~~mysql
 CREATE TABLE productnotes
@@ -4262,7 +4350,7 @@ CREATE TABLE productnotes
 ) ENGINE=MyISAM;
 ~~~
 
-#### 分析
+**分析**
 
 一条建表语句。其中 note_text 列，为了进行全文本搜索，MySQL根据子句 FULLTEXT(note_text) 的指示对它进行索引。这里的FULLTEXT索引单个列，如果需要也可以逗号分隔指定多个列。
 
@@ -4283,7 +4371,7 @@ CREATE TABLE productnotes
 
 **例**：
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT note_text 
@@ -4291,7 +4379,7 @@ FROM productnotes
 WHERE Match(note_text) Against('rabbit');
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------------------------------------------------------------------------------------------------------------------+
@@ -4304,7 +4392,7 @@ All guaranteed to be bright and orange, and suitable for use as rabbit bait. |
 2 rows in set (0.01 sec)
 ~~~
 
-#### 分析
+**分析**
 
 由于WEHRE子句，一个全文本搜索被执行。Match(note_text)指示MySQL针对指定列进行搜索；Against('rabbit')zhi顶词 rabbit 作为搜索文本。最终返回包含词 rabbit 的两行。
 
@@ -4318,7 +4406,7 @@ All guaranteed to be bright and orange, and suitable for use as rabbit bait. |
 
 下面演示排序等级。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT note_text, 
@@ -4326,7 +4414,7 @@ SELECT note_text,
 FROM productnotes;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
@@ -4358,7 +4446,7 @@ Comment forwarded to vendor.                            |                  0 |
 +------------------------------------------------------------------------------------------------------------------------------------------------------------+--------------------+
 ~~~
 
-#### 分析
+**分析**
 
 ranks列为全文本搜索计算出的**等级值**。等级由MySQL根据行中词的数目、唯一词的数目、整个索引中词的总数以及包含该次的行的数目计算出来。
 
@@ -4380,7 +4468,7 @@ ranks列为全文本搜索计算出的**等级值**。等级由MySQL根据行中
 
 例：不使用与使用查询扩展对比
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT note_text
@@ -4388,7 +4476,7 @@ FROM productnotes
 WHERE Match(note_text) Against('anvils');
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -4399,11 +4487,11 @@ WHERE Match(note_text) Against('anvils');
 1 row in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 只有一行包含目标词，所以返回一行。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT note_text
@@ -4411,7 +4499,7 @@ FROM productnotes
 WHERE Match(note_text) Against('anvils' WITH QUERY EXPANSION);
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -4432,7 +4520,7 @@ Circular hole in safe floor can apparently be easily cut with handsaw.          
 7 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 包含了可能相关的行。
 
@@ -4454,7 +4542,7 @@ MySQL支持全文本搜索的另外一种形式，称为**布尔方式（boolean
 
 **例**：演示 **IN BOOLEAN MODE** 的作用。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT note_text 
@@ -4462,7 +4550,7 @@ FROM productnotes
 WHERE Match(note_text) Against('heavy' IN BOOLEAN MODE);
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -4475,7 +4563,7 @@ Not heavy enough to generate flying stars around head of victim. If being purcha
 2 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
 词全文本搜索检索包含词heavy的所有行（有两行）。其中使用了关键字 IN BOOLEAN MODE 但实际上没有指定布尔操作符，因此，其结果与没有指定布尔方式的结果相同。
 
@@ -4483,18 +4571,18 @@ Not heavy enough to generate flying stars around head of victim. If being purcha
 
 <br>
 
-下表给出支持的所有**全文本布尔操作符**：
+**表18-1 全文本布尔操作符**
 
-| 布尔操作符 |                             说明                             |
+| 布尔操作符 |                            说 明                             |
 | :--------: | :----------------------------------------------------------: |
-|     +      |                       包含，词必须存在                       |
-|     -      |                      排除，词必须不出现                      |
-|     >      |                     包含，而且增加等级值                     |
-|     <      |                     包含，而且减少等级制                     |
-|     ()     | 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、排列等） |
-|     ~      |                      取消一个词的排序值                      |
-|     *      |                         词尾的通配符                         |
-|     ""     | 定义一个短语（与单个词的列表不一样，它匹配整个短语以便博阿寒或排除这个短语） |
+|    `+`     |                       包含，词必须存在                       |
+|    `-`     |                      排除，词必须不出现                      |
+|    `>`     |                     包含，而且增加等级值                     |
+|    `<`     |                      包含，且减少等级值                      |
+|    `()`    | 把词组成子表达式（允许这些子表达式作为一个组被包含、排除、排列等） |
+|    `~`     |                      取消一个词的排序值                      |
+|    `*`     |                         词尾的通配符                         |
+|    `""`    | 定义一个短语（与单个词的列表不一样，它匹配整个短语以便包含或排除这个短语） |
 
 <br>
 
@@ -4633,7 +4721,7 @@ INSERT是用来插入（或添加）行到数据库表的。插入可以用几�
 
 **例**：插入一个新客户到 customers 表。
 
-#### 输入
+**输入**
 
 ~~~mysql
 INSERT INTO customers 
@@ -4650,13 +4738,13 @@ VALUES(NULL,
 
 > **没有输出**	INSERT语句一般不会产生输出。
 
-#### 分析
+**分析**
 
 这种语法简单，但**不安全，应尽量避免使用**。该SQL语句高度依赖表中列的定义次序。
 
 更安全的方法如下：
 
-#### 输入
+**输入**
 
 ~~~mysql
 INSERT INTO customers(cust_name, 
@@ -4704,7 +4792,7 @@ INSERT INTO customers(cust_name,
 
 **方法1**：使用多条SELECT语句，每条语句分号结束，一次提交
 
-#### 输入
+**输入**
 
 ~~~mysql
 INSERT INTO customers(cust_name, 
@@ -4735,7 +4823,7 @@ INSERT INTO customers(cust_name,
 
 **方法2**：只要每条SELECT语句中的列名（和次序）相同，可以如下组合各语句：
 
-#### 输入
+**输入**
 
 ~~~mysql
 INSERT INTO customers(cust_name, 
@@ -4760,7 +4848,7 @@ INSERT INTO customers(cust_name,
                    'USA');
 ~~~
 
-#### 分析
+**分析**
 
 其中单条语句有多组列名、次序一致的值，每组值用一对圆括号括起来，用逗号分隔。
 
@@ -4776,7 +4864,7 @@ INSERT INTO customers(cust_name,
 
 例：将custnew表中的数据导入customers表中。
 
-#### 输入
+**输入**
 
 ~~~mysql
 INSERT INTO customers(cust_id, 
@@ -4801,7 +4889,7 @@ INSERT INTO customers(cust_id,
                  WHERE cust_id IN (10010);
 ~~~
 
-#### 分析
+**分析**
 
 该语句插入表customers多少行，取决于表custnew中的数据有多少行，没有则不会插入。
 
@@ -4811,7 +4899,7 @@ INSERT INTO customers(cust_id,
 
 INSERT SELECT语句中SELECT语句可包含WHERE子句以过滤插入的数据。
 
-#### 输入
+**输入**
 
 ~~~mysql
 INSERT INTO customers(cust_id, 
@@ -4977,9 +5065,57 @@ DELETE不需要列名或通配符，DELETE删除的是整行的数据。要删�
 
 # 21. 创建和操纵表
 
-* 创建表
-* 更改表
+* 创建表：`CREATE TABLE`
+
+  * `NULL`值
+  * 主键
+  * 使用`AUTO_INCREMENT`
+  * 使用默认值`DEFAULT`
+  * 引擎类型
+
+* 更改表：`ALTER TABLE`
+
+  * 给表增加一个列
+
+    * ~~~mysql
+      ALTER TABLE vendors
+      ADD vend_phone CHAR(20);
+      ~~~
+
+  * 给表删除一个列
+
+    * ~~~mysql
+      ALTER TABLE Vendors
+      DROP COLUMN vend_phone;
+      ~~~
+
+  * 定义==外键==
+
+    * ~~~mysql
+      ALTER TABLE orderitems	-- 修改表orderitems
+      ADD CONSTRAINT fk_orderitems_orders	-- 为其添加外键约束 fk_orderitems_orders
+      FOREIGN KEY (order_num) REFERENCES orders (order_num);	-- 外键order_num，引用表orders的order_num列
+      
+      ALTER TABLE orderitems	-- 修改表orderitems
+      ADD CONSTRAINT fk_orderitems_products -- 为其添加外键约束 fk_orderitems_products
+      FOREIGN KEY (prod_id) REFERENCES products (prod_id);	-- 外键prod_id，引用表products的prod_id列
+      ~~~
+
 * 删除表
+
+  * 使用`DROP TABLE`语句删除表（删除整个表而不是其内容）。
+
+    * ~~~mysql
+      DROP TABLE customers2;	-- 执行这条语句将永久删除该表
+      ~~~
+
+* 重命名表
+
+  * 使用`RENAME TABLE` 语句可以重命名一个表：
+
+    * ~~~mysql
+      RENAME TABLE customers2 TO customers;
+      ~~~
 
 <br><br><br><br><br><br>
 
@@ -5158,13 +5294,13 @@ DROP COLUMN vend_phone;
 `ALTER TABLE` 的一种常见用途是定义外键。
 
 ~~~mysql
-ALTER TABLE orderitems
-ADD CONSTRAINT fk_orderitems_orders
-FOREIGN KEY (order_num) REFERENCES orders (order_num);
+ALTER TABLE orderitems	-- 修改表orderitems
+ADD CONSTRAINT fk_orderitems_orders	-- 为其添加外键约束 fk_orderitems_orders
+FOREIGN KEY (order_num) REFERENCES orders (order_num);	-- 外键order_num，引用表orders的order_num列
 
-ALTER TABLE orderitems
-ADD CONSTRAINT fk_orderitems_products FOREIGN KEY (prod_id)
-REFERENCES products (prod_id);
+ALTER TABLE orderitems	-- 修改表orderitems
+ADD CONSTRAINT fk_orderitems_products -- 为其添加外键约束 fk_orderitems_products
+FOREIGN KEY (prod_id) REFERENCES products (prod_id);	-- 外键prod_id，引用表products的prod_id列
 ~~~
 
 这里，由于要更改4个不同的表，使用了4条`ALTER TABLE` 语句。为了对单个表进行多个更改，可以使用单条`ALTER TABLE` 语句，每个更改用逗号分隔。
@@ -5187,7 +5323,7 @@ REFERENCES products (prod_id);
 使用`DROP TABLE`语句删除表（删除整个表而不是其内容）。
 
 ~~~mysql
-DROP TABLE customers2;
+DROP TABLE customers2;	-- 执行这条语句将永久删除该表
 ~~~
 
 删除表没有确认，也不能撤销，执行这条语句将永久删除该表。
@@ -5227,9 +5363,87 @@ RENAME TABLE backup_customers TO customers,
 # 22. 使用视图
 
 * 什么是视图
-* 视图怎样工作
-* 何时使用视图
+
+  * 视图为**虚拟的**表。
+  * 视图是包装的SQL查询，可将其当作一个表使用。
+  * 视图仅仅是用来查看存储在别处的数据的一种设施，所以视图本身并**不包含数据**。
+
+* 创建和修改视图
+
+  * 视图用`CREATE VIEW` 语句来创建。
+  * 使用`SHOW CREATE VIEW viewname;` 来查看创建视图的语句。
+  * 用`DROP` 删除视图，其语法为`DROP VIEW viewname;` 。
+  * 更新视图时，可以先用`DROP` 再用`CREATE` ，也可以直接用`CREATE OR REPLACE VIEW` 。如果要更新的视图不存在，则第2条更新语句会创建一个视图；如果要更新的视图存在，则第2条更新语句会替换原有视图。
+
 * 利用视图简化某些SQL操作
+
+  * 简化复杂的联结
+
+    * 创建一个名为`productcustomers` 的视图，它联结三个表，以返回已订购了任意产品的所有客户的列表。如果执行`SELECT * FROM productcustomers` ，将列出订购了任意产品的客户。
+
+    * ~~~mysql
+      CREATE VIEW productcustomers AS
+      SELECT cust_name, cust_contact, prod_id
+      FROM customers, orders, orderitems
+      WHERE customers.cust_id = orders.cust_id
+        AND orderitems.order_num = orders.order_num;	-- 创建视图productcustomers
+      ~~~
+
+    * ~~~mysql
+      SELECT cust_name, cust_contact
+      FROM productcustomers
+      WHERE prod_id = 'TNT2';		-- 使用视图productcustomers，检索订购了产品`TNT2` 的客户
+      ~~~
+
+  * 重新格式化检索出的数据
+
+    * 在单个组合计算列中返回供应商名和位置
+
+    * ~~~mysql
+      CREATE VIEW vendorlocations AS
+      SELECT Concat(RTrim(vend_name), ' (', RTrim(vend_country), ')')
+             AS vend_title
+      FROM vendors
+      ORDER BY vend_name;
+      ~~~
+
+    * ~~~mysql
+      SELECT *
+      FROM vendorlocations;
+      ~~~
+
+  * 过滤不想要的数据
+
+    * ~~~mysql
+      CREATE VIEW customeremaillist AS
+      SELECT cust_id, cust_name, cust_email
+      FROM customers
+      WHERE cust_email IS NOT NULL;
+      ~~~
+      
+      
+
+  * 与计算字段联用
+
+    * ~~~mysql
+      CREATE VIEW orderitemsexpanded AS
+      SELECT order_num,	-- 注意：增加了order_num列，用于在使用视图时通过该列检索
+             prod_id,
+             quantity,
+             item_price,
+             quantity*item_price AS expanded_price
+      FROM orderitems;
+      ~~~
+
+    * ~~~mysql
+      SELECT *
+      FROM orderitemsexpanded
+      WHERE order_num = 20005;
+      ~~~
+
+* 更新视图
+
+  * 视情况而定。详见后文。
 
 <br><br><br><br><br><br>
 
@@ -5337,7 +5551,7 @@ WHERE customers.cust_id = orders.cust_id
 ~~~mysql
 SELECT cust_name, cust_contact
 FROM productcustomers
-WHERE prod_id = 'TNT2';
+WHERE prod_id = 'TNT2';		-- 使用视图，检索订购了产品`TNT2` 的客户
 ~~~
 
 **输出**
@@ -5551,9 +5765,99 @@ WHERE order_num = 20005;
 # 23. 使用存储过程
 
 * 什么是存储过程
+
+  * 为以后的使用而保存的一条或多条MySQL语句的集合。类似批文件，但作用不仅限于批处理。
+
 * 为什么要使用存储过程
-* 如何使用存储过程
-* 创建和使用存储过程的基本语法
+
+  * 把处理封装在容易使用的单元中，**简化复杂的操作**；
+
+  * 不要求反复建立一系列处理步骤，这**保证了数据的完整性**；
+
+  * **简化对变动的管理**。如果表名、列名或业务逻辑（或别的内容）有变化，只需要更改存储过程的代码。使用它的人员甚至不需要知道这些变化。
+
+  * **提高性能**。因为使用存储过程比使用单独的SQL语句要快。
+
+  * 存在一些只能用在单个请求中的MySQL元素和特性，存储过程可以使用它们来编写功能更强更灵活的代码（在下一节的例子中可以看到。）
+
+    使用存储过程有3个主要的好处，即==简单、安全、高性能==。
+
+* 使用存储过程
+
+  * 执行存储过程`CALL procedurename();`
+  
+    * ~~~mysql
+      CALL productpricing(@pricelow,	-- 括号内为存储过程的参数，此处的3个参数用于保存调用结果
+                          @pricehigh,
+                          @priceaverage);	-- 执行存储过程productpricing
+      SELECT @pricelow, @pricehigh, @priceaverage;	-- 查看调用结果
+      ~~~
+  
+    * ~~~mysql
+      CALL ordertotal(20005,0,@total);	-- 调用存储过程ordertotal，前2个参数为传入参数，第3个为传出参数
+      SELECT @total;	-- 查看调用结果
+      ~~~
+  
+  * 创建存储过程
+  
+    * ~~~mysql
+      DELIMITER //
+      
+      CREATE PROCEDURE productpricing()
+      BEGIN
+        SELECT Avg(prod_price) AS priceaverage
+        FROM products;
+      END //
+      
+      DELIMITER ;
+      ~~~
+  
+    * 注意使用命令行创建存储过程时要临时修改分隔符。
+  
+  * 删除存储过程
+  
+    * ~~~mysql
+      DROP PROCEDURE productpricing;	-- 只给出存储过程名，不需要加括号及参数。
+      ~~~
+  
+  * 使用参数
+  
+    * 使用`IN` 和`OUT` 参数。`ordertotal` 接受订单号并返回该订单的合计
+  
+    * ~~~mysql
+      DELIMITER //
+      
+      CREATE PROCEDURE ordertotal(
+      	IN onumber INT,	-- 输入参数
+          OUT ototal DECIMAL(8,2)	-- 输出参数
+      )
+      BEGIN
+      	SELECT Sum(item_price*quantity)
+      	FROM orderitems
+      	WHERE order_num = onumber
+      	INTO ototal;
+      END//
+      
+      DELIMITER ;
+      ~~~
+  
+  * 建立智能存储过程
+  
+    * 包含分支等逻辑的存储过程，由输入的参数判定逻辑。
+  
+  * 检查存储过程
+  
+    * 显示用来创建一个存储过程的`CREATE` 语句，使用`SHOW CREATE PROCEDURE` 语句：
+  
+    * ~~~mysql
+      SHOW CREATE PROCEDURE ordertotal;
+      ~~~
+  
+    * 获得包括何时、由谁创建等详细信息的存储过程列表，使用`SHOW PROCEDURE STATUS` 。
+  
+    * ~~~mysql
+      SHOW PROCEDURE STATUS LIKE 'ordertotal';
+      ~~~
 
 <br><br><br><br><br><br>
 
@@ -5614,9 +5918,9 @@ MySQL称存储过程的执行为调用，因此MySQL执行存储过程的语句�
 **输入**
 
 ~~~mysql
-CALL productpricing(@pricelow,
+CALL productpricing(@pricelow,	-- 括号内为存储过程的参数，此处的3个参数用于保存调用结果
                     @pricehigh,
-                    @priceaverage);
+                    @priceaverage);	-- 执行存储过程productpricing
 ~~~
 
 **分析**
@@ -5828,8 +6132,8 @@ SELECT @pricelow, @pricehigh, @priceaverage;
 DELIMITER //
 
 CREATE PROCEDURE ordertotal(
-	IN onumber INT,
-    OUT ototal DECIMAL(8,2)
+	IN onumber INT,	-- 输入参数
+    OUT ototal DECIMAL(8,2)	-- 输出参数
 )
 BEGIN
 	SELECT Sum(item_price*quantity)
@@ -5935,8 +6239,8 @@ DELIMITER ;
 以下输入测试该存储过程
 
 ~~~mysql
-CALL ordertotal(20005,0,@total);
-SELECT @total;
+CALL ordertotal(20005,0,@total);	-- 调用存储过程ordertotal，前2个参数为输入参数
+SELECT @total;	-- 查看调用结果
 ~~~
 
 ~~~bash
