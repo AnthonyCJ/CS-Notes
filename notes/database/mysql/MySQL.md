@@ -1,4 +1,4 @@
-#MySQL 
+# MySQL 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -98,13 +98,13 @@
 
 对于大部分应用来说，通常自增类型的主键就能满足需求。我们在`students`表中定义的主键也是`BIGINT NOT NULL AUTO_INCREMENT`类型。
 
-> 注：如果使用INT自增类型，那么当一张表的记录数超过2147483647（约21亿）时，会达到上限而出错。使用BIGINT自增类型则可以最多约922亿亿条记录。
+> 注：如果使用`INT`自增类型，那么当一张表的记录数超过2147483647（约21亿）时，会达到上限而出错。使用`BIGINT`自增类型则可以最多约922亿亿条记录。
 
-> 主键的好习惯：
+> **主键的好习惯：**
 >
-> * 不更新主键列中的值
-> * 不重用主键列的值
-> * 不在主键列中使用可能会该的值。
+> * ==不更新主键列中的值==
+> * ==不重用主键列的值==
+> * ==不在主键列中使用可能会该的值。==
 
 <br><br><br>
 
@@ -280,8 +280,8 @@ MySQL、Oracle、Microsoft SQL Server 等数据库都是基于客户机-服务�
 ### 2.2.1 mysql命令行实用程序
 
 * 命令输入在 mysql> 之后
-* 命令用 ；或 \g 结束。仅按 Enter 不执行命令
-* 输入quit或exit推出命令行实用程序
+* 命令用 `；`或 `\g` 结束。仅按 Enter 不执行命令
+* 输入`quit`或`exit`推出命令行实用程序
 
 <br><br><br>
 
@@ -335,15 +335,15 @@ MySQL与所有客户机-服务器DBMS一样，要求在能之心工龄之前登�
      1. 手动
      2. cmd --> services.msc  // 打开服务的窗口
      3. 使用管理员打开cmd
-        * net start mysql：启动mysql的服务
-        * net stop mysql：关闭mysql服务
+        * `net start mysql`：启动mysql的服务
+        * `net stop mysql`：关闭mysql服务
    * **MySQL登录**
-     1. mysql -uroot -p + 输入密码 【默认连接本地 MySQL】
-     2. mysql -hip -uroot -p连接目标的密码【本机ip为：127.0.0.1】
-     3. mysql --host=ip --user=root --password=连接目标的密码
+     1. `mysql -u'User' -p'Password'` 【默认连接本地 MySQL】
+     2. `mysql -hip -u'User' -p'Password'`【本机ip为：127.0.0.1】
+     3. `mysql --host=ip --user='User' --password='Password'`
    * **MySQL退出**
-     1. exit
-     2. quit
+     1. `exit`
+     2. `quit`
 
    * MySQL目录结构
 
@@ -372,21 +372,21 @@ MySQL与所有客户机-服务器DBMS一样，要求在能之心工龄之前登�
 
 * **关键字（key word）**：作为MySQL语言组成部分的一个保留字。决不要用关键字命名一个表或列。
 
-### 输入
+**输入**
 
 ~~~mysql
 USE crashcourse;	-- 选择数据库crashcourse
 ~~~
 
-### 输出
+**输出**
 
 ~~~powershell
 Database changed
 ~~~
 
-### 分析
+**分析**
 
-USE 语句并不返回任何结果。依赖于使用的客户机，显示某种形式的通知。例如，这里显示出的 Database changed 消息是 mysql 命令行实用程序在数据库选择成功后显示的。
+`USE` 语句并不返回任何结果。依赖于使用的客户机，显示某种形式的通知。例如，这里显示出的 Database changed 消息是 mysql 命令行实用程序在数据库选择成功后显示的。
 
 <br><br><br><br><br><br>
 
@@ -396,13 +396,13 @@ USE 语句并不返回任何结果。依赖于使用的客户机，显示某种�
 
 ### 3.3.1查看所有数据库
 
-#### 输入
+**输入**
 
 ~~~mysql
 SHOW DATABASES;	-- 返回可用数据库的一个列表
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------------+
@@ -423,9 +423,9 @@ SHOW DATABASES;	-- 返回可用数据库的一个列表
 11 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
-**SHOW DATABASES;** 返回可用数据库的一个列表。列表中的数据库可能是 MySQL 内部使用的数据库（如例子中的 mysql 和 information_schema），也可能是用户自己创建的数据库。
+`SHOW DATABASES;` 返回可用数据库的一个列表。列表中的数据库可能是 MySQL 内部使用的数据库（如例子中的 mysql 和 information_schema），也可能是用户自己创建的数据库。
 
 <br><br><br>
 
@@ -433,13 +433,13 @@ SHOW DATABASES;	-- 返回可用数据库的一个列表
 
 为了获得一个数据库内的表的列表，使用如下命令。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SHOW TABLES;	-- 查看所有表
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +-----------------------+
@@ -455,21 +455,21 @@ SHOW TABLES;	-- 查看所有表
 6 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
-**SHOW TABLES;** 返回当前选择的数据库内可用表的列表。
+`SHOW TABLES;` 返回当前选择的数据库内可用表的列表。
 
 <br><br><br>
 
 ### 3.3.3 显示某表的所有列
 
-#### 输入
+**输入**
 
 ~~~mysql
 SHOW COLUMNS FROM customers;	-- 显示 customers 表的所有列
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +--------------+-----------+------+-----+---------+----------------+
@@ -488,17 +488,17 @@ SHOW COLUMNS FROM customers;	-- 显示 customers 表的所有列
 9 rows in set (0.00 sec)
 ~~~
 
-#### 分析
+**分析**
 
-**SHOW COLUMNS;** 要求给出一个表名，它对每个字段返回一行，行中包含**字段名**、**数据类型**、**是否允许NULL**、**键信息**、**默认值**以及**其它信息**（如字段 cust_id 的 auto_increment）。
+**`SHOW COLUMNS`** 要求给出一个表名，它对每个字段返回一行，行中包含**字段名**、**数据类型**、**是否允许`NULL`**、**键信息**、**默认值**以及**其它信息**（如字段 `cust_id` 的 `auto_increment`）。
 
 <br><br><br><br><br><br>
 
 ## 3.4 小结
 
 * 连接、登录MySQL
-* 如何用 USE 选择数据库
-* 如何用 SHOW 查看MySQL数据库、表和内部信息。
+* 如何用 `USE` 选择数据库
+* 如何用 `SHOW` 查看MySQL数据库、表和内部信息。
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -510,13 +510,63 @@ SHOW COLUMNS FROM customers;	-- 显示 customers 表的所有列
 
 本节内容为使用SELECT语句从表中检索一个或多个数据列。
 
+<br>
+
+* 检索数据的基本格式
+
+  * ~~~mysql
+    SELECT "what" FROM "where"
+    ~~~
+
+* 检索单个列
+
+  * ~~~mysql
+    SELECT prod_name
+    FROM products;
+    ~~~
+
+  * > **推荐**    SQL==**关键字**==统一==**大写**==，所有==**列名、表名小写**==。
+
+* 检索多个列
+
+  * ~~~mysql
+    SELECT prod_id, prod_name, prod_price
+    FROM products;
+    ~~~
+
+* 检索所有列
+
+  * ~~~mysql
+    SELECT * FROM products;
+    ~~~
+
+* 检索不同的行【检索结果去重】
+
+  * ~~~mysql
+    SELECT DISTINCT vend_id, prod_price
+    FROM products;
+    ~~~
+
+* 限制结果【的行数】
+
+  * ~~~mysql
+    SELECT prod_name
+    FROM products
+    LIMIT 5;	-- 返回查询结果的前5行
+    ~~~
+
+* 使用完全限定名
+
+  * 完全限定表名：`databasename.tablename`
+  * 完全限定列名：`tablename.columnname`
+
 <br><br><br><br><br><br>
 
 ## 4.1 SELECT 语句
 
 用途：从一个或多个表中检索信息
 
-为了使用 SELECT 检索表数据，必须至少给出两条信息——想选择什么，以及从什么地方选择。
+为了使用 `SELECT` 检索表数据，必须至少给出两条信息——想选择什么，以及从什么地方选择。
 
 ~~~mysql
 SELECT "what" FROM "where"
@@ -526,18 +576,18 @@ SELECT "what" FROM "where"
 
 ## 4.2 检索单个列
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name
 FROM products;
 ~~~
 
-### 分析
+**分析**
 
-上述语句利用 SELECT 语句从 products 表中检索一个名为 prod_name 的列。所需的列明在 SELECT 关键字之后给出；FROM 关键字之处目标检索数据所在的表的表名。
+上述语句利用 `SELECT` 语句从 `products` 表中检索一个名为` prod_name `的列。所需的列明在 `SELECT `关键字之后给出；`FROM` 关键字之处目标检索数据所在的表的表名。
 
-### 输出
+**输出**
 
 ~~~bash
 +----------------+
@@ -561,6 +611,8 @@ FROM products;
 14 rows in set (0.00 sec)
 ~~~
 
+<br>
+
 ### 附：SQL语句大小写问题
 
 > SQL语句不区分大小写。推荐使用固定的规范：SQL==**关键字**==统一==**大写**==，所有==**列名、表名小写**==。
@@ -573,16 +625,16 @@ FROM products;
 
 ## 4.3 检索多个列
 
-从一个表中检索多个列，必须在 SELECT 关键字后给出多个列名，==**列名之间**==必须==**以逗号分隔**==。
+从一个表中检索多个列，必须在 `SELECT `关键字后给出多个列名，==**列名之间**==必须==**以逗号分隔**==。
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_id, prod_name, prod_price
 FROM products;
 ~~~
 
-### 输出
+**输出**
 
 ~~~bash
 +---------+----------------+------------+
@@ -614,13 +666,13 @@ FROM products;
 
 ## 4.4 检索所有列
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT * FROM products;
 ~~~
 
-### 输出
+**输出**
 
 ~~~bash
 +---------+---------+----------------+------------+----------------------------------------------------------------+
@@ -646,22 +698,22 @@ SELECT * FROM products;
 
 <br><br><br><br><br><br>
 
-## 4.5 检索不同的行
+## 4.5 检索不同的行【去重】
 
-### 目标
+**目标**
 
-检索表 PRODUCTS 中产品的所有供应商ID （vend_id），要求检索的同时去掉重复的的id
+检索表 `products` 中产品的所有供应商ID （vend_id），要求检索的同时去掉重复的的id
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT DISTINCT vend_id
 FROM products;
 ~~~
 
-### 分析
+**分析**
 
-DISTINCT 关键字必须直接放在列名的前面。SELECT DISTINCT vend_id 告诉MySQL只返回不同的（唯一的）vend_id 行，因此只返回4行。
+`DISTINCT` 关键字必须直接放在列名的前面。`SELECT DISTINCT vend_id` 告诉MySQL只返回不同的（唯一的）`vend_id` 行，因此只返回4行。
 
 > **不能部分使用 DISTINCT 关键字**
 >
@@ -673,7 +725,7 @@ DISTINCT 关键字必须直接放在列名的前面。SELECT DISTINCT vend_id �
 >
 > 除非指定的两个列都相同，否则所有行都将被检索出来。
 
-### 输出
+**输出**
 
 ~~~bash
 +---------+
@@ -689,23 +741,23 @@ DISTINCT 关键字必须直接放在列名的前面。SELECT DISTINCT vend_id �
 
 <br><br><br><br><br><br>
 
-## 4.6 限制结果
+## 4.6 限制结果【行数】
 
 可用 LIMIT 子句限制查询返回的行数。
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name
 FROM products
-LIMIT 5;
+LIMIT 5;	-- 返回查询结果的前5行
 ~~~
 
-### 分析
+**分析**
 
 此句用 SELECT 关键字检索单个列。LIMIT 5 表示MySQL返回不超过5行【这里得出的是查询结果的前5行】。
 
-### 输出
+**输出**
 
 ~~~bash
 +--------------+
@@ -722,7 +774,7 @@ LIMIT 5;
 
 如果想得到指定部分的查询结果，可以**指定返回的起始位置**。
 
-### 输入
+**输入**
 
 ~~~mysql
 SELECT prod_name
@@ -730,7 +782,7 @@ FROM products
 LIMIT 5, 5;
 ~~~
 
-### 分析
+**分析**
 
 LIMIT 5, 5 表示MySQL返回从第5行开始的5行结果。第1个数为开始位置，第2个数为要检索的行数。
 
@@ -744,7 +796,7 @@ LIMIT 5, 5 表示MySQL返回从第5行开始的5行结果。第1个数为开始�
 >
 > **行数小于限制**时，将仅仅返回符合要求的所有行。
 
-### 输出
+**输出**
 
 ~~~BASH
 +--------------+
@@ -759,6 +811,8 @@ LIMIT 5, 5 表示MySQL返回从第5行开始的5行结果。第1个数为开始�
 5 rows in set (0.00 sec)
 ~~~
 
+<br>
+
 ### 附：MySQL5 的新LIMIT语法
 
 ~~~mysql
@@ -769,16 +823,9 @@ LIMIT 4 OFFSET 3	-- 表示从行3开始取4行
 
 ## 4.7 使用完全限定的表名
 
-数据库名.表名
+`databasename.tablename`
 
-表名.列名
-
-<br><br><br><br><br><br>
-
-## 4.8 小结
-
-* 学使用 SQL 的 SELECT 语句**检索**单个表列、多个表列、所有表列。
-* 下节将学习**排序**检索的数据。
+`tablename.columnname`
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -788,7 +835,7 @@ LIMIT 4 OFFSET 3	-- 表示从行3开始取4行
 
 # 5. 排序检索数据
 
-- 使用 SELECT 语句的 ORDER BY 子句，根据需要排序检索的数据。
+- 使用 `SELECT` 语句的 `ORDER BY` 子句，根据需要排序检索的数据。
 
 <br><br><br><br><br><br>
 
@@ -3308,7 +3355,7 @@ WHERE cust_id IN (SELECT cust_id
 
 为了对每个客户执行`COUNT(*)`计算，应该将 `COUNT(*)`作为一个子查询。
 
-#### 输入
+**输入**
 
 ~~~mysql
 SELECT cust_name, 
@@ -3320,7 +3367,7 @@ FROM customers
 ORDER BY cust_name;
 ~~~
 
-#### 输出
+**输出**
 
 ~~~bash
 +----------------+------------+--------+
@@ -3335,7 +3382,7 @@ ORDER BY cust_name;
 5 rows in set (0.01 sec)
 ~~~
 
-#### 分析
+**分析**
 
 orders是一个计算字段，它是由圆括号中的子查询建立的。该子查询对检索出的每个客户执行一次。在此例子中，该子查询执行了5次，因为检索出了5个客户。
 
@@ -3566,7 +3613,7 @@ ORDER BY vend_name, prod_name;
 
 <br>
 
-> **不要忘记WHERE子句**	应该保证所有联结都有WHERE子句。同时应该保证WHERE子句的正确性。
+> **不要忘记WHERE子句**	应该保证所有联结都有`WHERE`子句。同时应该保证`WHERE`子句的正确性。
 
 <br><br><br>
 
@@ -4072,9 +4119,9 @@ UNION有几条规则需要注意。
 
 ### 17.2.3 包含或取消重复的行
 
-UNION从查询结果集中自动去除了重复的行。
+`UNION`从查询结果集中自动去除了重复的行。
 
-这是UNION的默认行为，如果需要不去除重复的行，即返回所有匹配行，可以使用 **UNION ALL** 关键字。
+这是`UNION`的默认行为，如果需要不去除重复的行，即返回所有匹配行，可以使用 **`UNION ALL`** 关键字。
 
 例：与17.2.1的需求一致
 
@@ -4112,7 +4159,7 @@ WHERE vend_id IN (1001,1002);
 
 ### 17.2.4 对组合查询结果排序
 
-使用UNION组合查询时，只允许使用一条ORDER BY子句，它必须出现在最后一条SELECT语句之后。MySQL将按照它排序所有返回的结果。
+使用`UNION`组合查询时，只允许使用一条`ORDER BY`子句，它必须出现在最后一条`SELECT`语句之后。MySQL将按照它排序所有返回的结果。
 
 例：排序之前检索的内容。
 
@@ -4148,7 +4195,7 @@ ORDER BY vend_id, prod_price;	-- 指明排序标准
 
 <br>
 
-> **组合不同的表**	使用UNION可以应用于不同的表。
+> **组合不同的表**	使用`UNION`可以应用于不同的表。
 
 <br><br><br><br><br><br>
 
@@ -4793,8 +4840,8 @@ INSERT INTO customers(cust_id,
 
 ## 19.5 小结
 
-* 使用INSERT INTO语句将数据插入表
-* 使用INSERT INTO SELECT语句从其他表导入数据
+* 使用`INSERT INTO`语句将数据插入表
+* 使用`INSERT INTO SELECT`语句从其他表导入数据
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
@@ -5951,8 +5998,89 @@ SHOW CREATE PROCEDURE ordertotal;
 
 # 24. 使用游标
 
-* 什么是游标
-* 如何使用游标
+<br><br>
+
+* **游标（cursor）**：是一个存储在MySQL服务器上的数据库查询，它不是一条`SELECT` 语句，而是被该语句检索出来的结果集。在存储了游标之后，应用程序可以根据需要滚动或浏览其中的数据。
+
+* 什么要使用游标：有时，需要在检索出来的行中前进或后退一行或多行。
+
+* 创建游标
+
+  * 在存储过程中创建游标
+
+  * 语法：
+
+    ~~~mysql
+    DECLARE cursor_name CURSOR
+    FOR
+    SELECT column_name FROM a_table;
+    ~~~
+
+* 打开游标
+
+  * 语法：
+
+    ~~~mysql
+    OPEN cursor_name;
+    ~~~
+
+* 关闭游标
+
+  * 语法：
+
+    ~~~mysql
+    CLOSE cursor_name
+    ~~~
+
+* 一个完整的游标样例结构：
+
+  ~~~mysql
+  CREATE PROCEDURE procedure_name()
+  BEGIN
+  
+     -- Declare local variables
+     DECLARE done BOOLEAN DEFAULT 0;
+     DECLARE var1 INT;
+     DECLARE var2 DECIMAL(8,2);
+  
+     -- Declare the cursor
+     DECLARE cursor_name CURSOR
+     FOR
+     SELECT column_name FROM a_table;
+     -- Declare continue handler
+     DECLARE CONTINUE HANDLER FOR SQLSTATE '02000' SET done=1;
+  
+     -- Create a table to store the results
+     CREATE TABLE resulttable
+        (col1 INT, col2 DECIMAL(8,2));
+  
+     -- Open the cursor
+     OPEN cursor_name;
+  
+     -- Loop through all rows
+     REPEAT
+  
+        -- Get order number
+        FETCH ordernumbers INTO var1;
+  
+        -- Get the total for this order(call another procedure to assign value to variable o and t)
+        CALL ordertotal(var1, 1, var2);
+  
+        -- Insert order and total into ordertotals
+        INSERT INTO resulttable(col1, col2)
+        VALUES(var1, var2);
+  
+     -- End of loop
+     UNTIL done END REPEAT;
+  
+     -- Close the cursor
+     CLOSE cursor_name;
+  
+  END;
+  ~~~
+
+
+
 
 <br><br><br><br><br><br>
 
@@ -6277,7 +6405,7 @@ FROM ordertotals;
 
 ## 24.3 小结
 
-* 什么是游标：**游标（cursor）**是一个存储在MySQL服务器上的数据库查询，它不是一条`SELECT` 语句，而是被该语句检索出来的结果集。在存储了游标之后，应用程序可以根据需要滚动或浏览其中的数据。
+* **游标（cursor）**：是一个存储在MySQL服务器上的数据库查询，它不是一条`SELECT` 语句，而是被该语句检索出来的结果集。在存储了游标之后，应用程序可以根据需要滚动或浏览其中的数据。
 
 * 什么要使用游标：有时，需要在检索出来的行中前进或后退一行或多行。
 
@@ -6365,10 +6493,62 @@ FROM ordertotals;
 
 # 25. 使用触发器
 
-* 什么是触发器
-* 为什么使用触发器
-* 如何使用触发器
-* 创建和使用触发器的语法
+<br><br>
+
+* **触发器（TRIGGER）**：是MySQL响应`INSERT`、`DELETE`、`UPDATE` 语句而**自动执行的MySQL语句**（或位于`BEGIN`和`END` 语句之间的一组语句）。
+
+* 为什么使用触发器？
+
+  * 为了实现在某个表发生更改时的自动处理，如：
+    * 新增记录时提示
+    * 删除记录时记录【备份到另一张表】
+    * 修改记录时检验【保证数据的一致性（大小写、格式等）】
+
+* 创建触发器时，需给出以下四部分信息
+
+  * 唯一的**触发器名**；
+  * 触发器**关联的表**；
+  * 触发器应该**响应的活动**（`DELETE` 、`INSERT` 或`UPDATE` ）；
+  * 触发器**何时执行**（处理之前`BEFORE`或之后`AFTER`）。
+
+* 触发器的分类
+
+  * INSERT触发器
+
+    * ~~~mysql
+      CREATE TRIGGER neworder AFTER INSERT ON orders
+      FOR EACH ROW SELECT NEW.order_num INTO @new_order_num;	-- 返回 orders 表新记录的订单号
+      ~~~
+
+  * DELETE触发器
+
+    * ~~~mysql
+      DELIMITER //
+      
+      CREATE TRIGGER deleteorder BEFORE DELETE ON orders
+      FOR EACH ROW
+      BEGIN	-- 将表 orders 将要被删除的行记录到一个存档表 archive_orders 中
+         INSERT INTO archive_orders(order_num, order_date, cust_id)
+         VALUES(OLD.order_num, OLD.order_date, OLD.cust_id);
+      END//
+      
+      DELIMITER ;
+      ~~~
+
+  * UPDATE触发器
+
+    * ~~~mysql
+      CREATE TRIGGER updatevendor BEFORE UPDATE ON vendors
+      FOR EACH ROW SET NEW.vend_state = Upper(New.vend_state);	-- 保证UPDATE数据时字段vend_state总是大写
+      ~~~
+
+* 删除触发器
+
+  * ~~~mysql
+    DROP TRIGGER trigger_name;
+    ~~~
+
+  * 触发器不能更新或覆盖。为了修改一个触发器，必须先删除它，然后再重新创建。
 
 <br><br><br><br><br><br>
 
@@ -6399,7 +6579,7 @@ FROM ordertotals;
 - 唯一的**触发器名**；
 - 触发器**关联的表**；
 - 触发器应该**响应的活动**（`DELETE` 、`INSERT` 或`UPDATE` ）；
-- 触发器**何时执行**（处理之前或之后）。
+- 触发器**何时执行**（处理之前`BEFORE`或之后`AFTER`）。
 
 > **保持每个数据库的触发器名唯一** 	在MySQL 5中，触发器名必须在每个表中唯一，但不是在每个数据库中唯一。这表示同一数据库中的两个表可具有相同名字的触发器。这在其他每个数据库触发器名必须唯一的DBMS中是不允许的，而且后序的MySQL版本很可能会使命名规则更为严格。因此，最好在数据库范围内使用唯一的触发器名。
 
@@ -6486,13 +6666,13 @@ DROP TRIGGER newproduct;
 * 在`BEFORE INSERT` 触发器中，`NEW` 中的值也可以被更新（允许更改被插入的值）；
 * 对于`AUTO_INCREMENT` 列，`NEW` 在`INSERT` 执行之前包含`0` ，在`INSERT` 执行之后包含新的自动生成值。
 
-**例**：创建一个触发器，返回 orders 表新的订单号
+**例**：创建一个触发器，返回 orders 表新记录的订单号
 
 **创建触发器**
 
 ~~~mysql
 CREATE TRIGGER neworder AFTER INSERT ON orders
-FOR EACH ROW SELECT NEW.order_num INTO @new_order_num;
+FOR EACH ROW SELECT NEW.order_num INTO @new_order_num;	-- 返回 orders 表新记录的订单号
 ~~~
 
 **测试触发器**
@@ -6528,9 +6708,9 @@ SELECT @new_order_num;	-- 查看触发器结果
 * 在`DELETE` 触发器代码内，你可以引用一个名为`OLD` 的虚拟表，访问被删除的行；
 * `OLD` 中的值全都是只读的，不能更新。
 
+<br><br>
 
-
-**例**：使用`OLD` 保存表 orders 将要被删除的行到一个存档表 archive_orders 中
+**例**：使用`OLD` 将表 orders 将要被删除的行记录到一个存档表 archive_orders 中
 
 > 需先创建一个与orders表结构相同的表 archive_orders
 >
@@ -6556,7 +6736,7 @@ DELIMITER //
 
 CREATE TRIGGER deleteorder BEFORE DELETE ON orders
 FOR EACH ROW
-BEGIN
+BEGIN	-- 将表 orders 将要被删除的行记录到一个存档表 archive_orders 中
    INSERT INTO archive_orders(order_num, order_date, cust_id)
    VALUES(OLD.order_num, OLD.order_date, OLD.cust_id);
 END//
@@ -6586,44 +6766,1149 @@ SELECT * FROM archive_orders;	-- 从 archive_orders 表中查看触发器记录
 
 * 使用`BEFORE DELETE` 触发器的**优点**（相对于`AFTER DELETE` 触发器来说）为：如果由于某种原因，订单不能存档，`DELETE` 本身将被放弃【如档案表 archive_orders 被删除，则此时无法删除表 orders 中的记录】。
 
-> **多语句触发器** 	正如所见，触发器`deleteorder` 使用`BEGIN` 和`END` 语句标记触发器体。这在此例子中并不是必需的，不过也没有害处。使用`BEGIN END` 块的好处是触发器能容纳多条SQL语句（在`BEGIN END` 块中一条挨着一条）。
+> **多语句触发器** 	触发器`deleteorder` 使用`BEGIN` 和`END` 语句标记触发器体。这在此例子中并不是必需的，不过也没有害处。使用`BEGIN END` 块的好处是触发器能容纳多条SQL语句（在`BEGIN END` 块中一条挨着一条）。
 
-<br><br><br><br>
+<br><br><br>
 
 ### 25.4.3 UPDATE触发器
 
-<br><br><br><br>
+`UPDATE` 触发器在`UPDATE` 语句执行之前或之后执行。
+
+* 在`UPDATE` 触发器代码中，你可以引用一个名为`OLD` 的虚拟表访问以前（`UPDATE` 语句前）的值，引用一个名为`NEW` 的虚拟表访问新更新的值；
+* 在`BEFORE UPDATE` 触发器中，`NEW` 中的值可能也被更新（允许更改将要用于`UPDATE`语句中的值）；
+* `OLD` 中的值全都是只读的，不能更新。
+
+<br>
+
+例：创建UPDATE触发器保证州名缩写总是大写。
+
+**输入**
+
+~~~mysql
+CREATE TRIGGER updatevendor BEFORE UPDATE ON vendors
+FOR EACH ROW SET NEW.vend_state = Upper(New.vend_state);	-- 保证UPDATE数据时字段vend_state总是大写
+~~~
+
+**分析**
+
+显然，任何数据净化都需要在`UPDATE` 语句之前进行，如上所示。每次更新一个行时，`NEW.vend_state` 中的值（将用来更新表行的值）都用`Upper(NEW.vend_state)` 替换。
+
+**测试UPDATE触发器**
+
+**输入**
+
+~~~mysql
+UPDATE vendors
+SET vend_state = 'ab'
+WHERE vend_id = 1007;	-- 修改id为1007的记录州信息为小写ab
+SELECT * FROM vendors WHERE vend_id = 1007;	-- 查看修改的结果
+~~~
+
+**输出**
+
+~~~bash
+# 注意：vend_state字段自动更正为大写AB
++---------+---------------+--------------+-----------+------------+----------+--------------+
+| vend_id | vend_name     | vend_address | vend_city | vend_state | vend_zip | vend_country |
++---------+---------------+--------------+-----------+------------+----------+--------------+
+|    1007 | New Vendor 01 | Address01    | City01    | AB         | 00000    | Chinese      |
++---------+---------------+--------------+-----------+------------+----------+--------------+
+~~~
+
+<br><br><br>
 
 ### 25.4.4 关于触发器的进一步介绍
 
+**使用触发器**时需牢记的==**重点**==：
 
+* 与其他DBMS相比，MySQL5中支持的触发器相当初级。未来的MySQL版本中有一些改进和增强触发器支持的计划。
+* ==创建触发器==可能==需要特殊的安全访问权限==，但是，==**触发器的执行**==是==**自动的**==。如果`INSERT` 、`UPDATE` 或`DELETE` 语句能够执行，则相关的触发器也能执行。
+* **==应该用触发器来保证数据的一致性（大小写、格式等）==**。在触发器中执行这种类型的处理的优点是它总是进行这种处理，而且是==透明地进行==，==与客户机应用无关==。
+* 触发器的一种非常有意义的使用是==**创建审计跟踪**==。使用触发器，==把更改==（如果需要，甚至还有之前和之后的状态）==记录到另一个表==非常容易。
+* 遗憾的是，MySQL触发器中不支持`CALL` 语句。这表示**不能从触发器内调用存储过程**。所需的==存储过程代码需要复制到触发器内==。
 
+<br><br><br><br><br><br>
 
+## 25.5 小结
 
+* **触发器（TRIGGER）**：是MySQL响应`INSERT`、`DELETE`、`UPDATE` 语句而**自动执行的MySQL语句**（或位于`BEGIN`和`END` 语句之间的一组语句）。
 
+* 为什么使用触发器？
 
+  * 为了实现在某个表发生更改时的自动处理，如：
+    * 新增记录时提示
+    * 删除记录时记录【备份到另一张表】
+    * 修改记录时检验【保证数据的一致性（大小写、格式等）】
 
+* 创建触发器时，需给出以下四部分信息
 
+  * 唯一的**触发器名**；
+  * 触发器**关联的表**；
+  * 触发器应该**响应的活动**（`DELETE` 、`INSERT` 或`UPDATE` ）；
+  * 触发器**何时执行**（处理之前`BEFORE`或之后`AFTER`）。
 
+* 触发器的分类
 
+  * INSERT触发器
 
+    * ~~~mysql
+      CREATE TRIGGER neworder AFTER INSERT ON orders
+      FOR EACH ROW SELECT NEW.order_num INTO @new_order_num;	-- 返回 orders 表新记录的订单号
+      ~~~
 
+  * DELETE触发器
 
+    * ~~~mysql
+      DELIMITER //
+      
+      CREATE TRIGGER deleteorder BEFORE DELETE ON orders
+      FOR EACH ROW
+      BEGIN	-- 将表 orders 将要被删除的行记录到一个存档表 archive_orders 中
+         INSERT INTO archive_orders(order_num, order_date, cust_id)
+         VALUES(OLD.order_num, OLD.order_date, OLD.cust_id);
+      END//
+      
+      DELIMITER ;
+      ~~~
 
+  * UPDATE触发器
 
+    * ~~~mysql
+      CREATE TRIGGER updatevendor BEFORE UPDATE ON vendors
+      FOR EACH ROW SET NEW.vend_state = Upper(New.vend_state);	-- 保证UPDATE数据时字段vend_state总是大写
+      ~~~
 
+* 删除触发器
 
+  * ~~~mysql
+    DROP TRIGGER trigger_name;
+    ~~~
 
+  * 触发器不能更新或覆盖。为了修改一个触发器，必须先删除它，然后再重新创建。
 
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+# 26. 管理事务处理
+
+<br>
+
+* **事务处理（transactionprocessing）**：可以用来维护数据库的完整性，它保证成批的MySQL操作要么完全执行，要么完全不执行。
+
+* 控制事务处理：
+
+  * 事务启动
+
+    * ~~~mysql
+      START TRANSACTION;	-- 开启事务
+      ~~~
+
+  * 回退（撤销）到事务启动前的状态
+
+    * ~~~mysql
+      START TRANSACTION;	-- 开启事务
+      DELETE FROM ordertotals;	-- 删除表所有行
+      ROLLBACK;		-- 回退
+      ~~~
+
+  * 部分提交（部分回退）：使用保留点
+
+    * ~~~mysql
+      SAVEPOINT delete1;
+      ...
+      ROLLBACK TO delete1;
+      ~~~
+
+  * 更改默认的提交行为
+
+    * ~~~mysql
+      SET autocommit=0;	-- 设置为默认不提交
+      SET autocommit=1;	-- 设置为默认提交
+      ~~~
+
+    * 注意：`autocommit` 标志是针对每个==连接==而不是服务器的。
+
+<br><br><br><br><br><br>
+
+## 26.1 事务处理
+
+> **并非所有引擎都支持事务处理** 	MySQL支持几种基本的数据库引擎。`MyISAM` 和`InnoDB` 是两种最常使用的引擎。前者不支持明确的事务处理管理，而后者支持。如果你的应用中需要事务处理功能，则一定要使用正确的引擎类型。
+
+**事务处理（transactionprocessing）**：可以用来维护数据库的完整性，它保证成批的MySQL操作要么完全执行，要么完全不执行。
+
+事务处理是一种机制，用来管理必须成批执行的MySQL操作，以保证数据库不包含不完整的操作结果。利用事务处理，可以保证一组操作不会中途停止，它们或者作为整体执行，或者完全不执行（除非明确指示）。如果没有错误发生，整组语句提交给（写到）数据库表。如果发生错误，则进行回退（撤销）以恢复数据库到某个已知且安全的状态。
+
+例：对比**给系统添加订单**流程无事务和有事务的系列操作。
+
+* 无事务
+  1. 检查数据库中是否存在相应的客户（从`customers` 表查询），如果不存在，添加他/她。
+  2. 检索客户的ID。
+  3. 添加一行到`orders` 表，把它与客户ID关联。
+  4. 检索`orders` 表中赋予的新订单ID。
+  5. 对于订购的每个物品在`orderitems` 表中添加一行，通过检索出来的ID把它与`orders`表关联（以及通过产品ID与`products` 表关联）。
+* 使用事务
+  1. 检查数据库`customers`表中是否存在相应的客户，如果不存在，添加他/她。
+  2. 提交客户信息。
+  3. 检索客户的ID。
+  4. 添加一行到`orders` 表。
+  5. 如果在添加行到`orders` 表时出现故障，回退。
+  6. 检索`orders` 表中赋予的新订单ID。
+  7. 对于订购的每项物品，添加新行到`orderitems` 表。
+  8. 如果在添加新行到`orderitems` 时出现故障，回退所有添加的`orderitems` 行和`orders` 行。
+  9. 提交订单信息。
+
+事务的几个关键术语：
+
+* **事务（transaction）** ：指一组SQL语句；
+* **回退（rollback）** ：指撤销指定SQL语句的过程；
+* **提交（commit）** ：指将未存储的SQL语句结果写入数据库表；
+* **保留点（savepoint）** 指事务处理中设置的临时占位符（place-holder），你可以对它发布回退（与回退整个事务处理不同）。
+
+<br><br><br><br><br><br>
+
+## 26.2 控制事务处理
+
+**==管理事务处理的关键==**在于**==将SQL语句组分解为逻辑块==，并==明确规定数据何时应该回退，何时不应该回退==。**
+
+MySQL标识事务的开始：
+
+**输入**
+
+~~~mysql
+START TRANSACTION;	-- 开启事务
+~~~
+
+<br><br><br>
+
+### 26.2.1 使用ROLLBACK
+
+例：使用`ROLLBACK` 命令回退（撤销）MySQL语句
+
+**输入**
+
+~~~mysql
+SELECT * FROM ordertotals;	
+START TRANSACTION;	-- 开启事务
+DELETE FROM ordertotals;	-- 删除表所有行
+SELECT * FROM ordertotals;	-- 查看删除结果
+ROLLBACK;		-- 回退
+SELECT * FROM ordertotals;	-- 重新查看结果
+~~~
+
+**分析**
+
+这个例子从显示`ordertotals` 表（此表在第24节中填充）的内容开始。首先执行一条`SELECT` 以显示该表不为空。然后开始一个事务处理，用一条`DELETE` 语句删除`ordertotals` 中的所有行。另一条`SELECT` 语句验证`ordertotals` 确实为空。这时用一条`ROLLBACK` 语句回退`START TRANSACTION` 之后的所有语句，最后一条`SELECT` 语句显示该表不为空。
+
+显然，`ROLLBACK` 只能在一个事务处理内使用（在执行一条`START TRANSACTION` 命令之后）。
+
+> **哪些语句可以回退？** 	事务处理用来管理`INSERT` 、`UPDATE` 和`DELETE` 语句。
+>
+> 不能回退`SELECT` 语句。（这样做也没有什么意义。）不能回退`CREATE` 或`DROP` 操作。事务处理块中可以使用这两条语句，但如果你执行回退，它们不会被撤销。
+
+<br><br><br>
+
+### 26.2.2 使用COMMIT
+
+一般的MySQL语句都是直接针对数据库表执行和编写的。这就是所谓的**隐含提交（implicitcommit）**，即提交（写或保存）操作是自动进行的。
+
+但是，在事务处理块中，需进行明确的提交，使用`COMMIT` 语句，如下所示：
+
+**输入**
+
+~~~mysql
+START TRANSACTION;
+DELETE FROM orderitems WHERE order_num = 20010;
+DELETE FROM orders WHERE order_num = 20010;
+COMMIT;
+~~~
+
+**分析**
+
+在这个例子中，从系统中完全删除订单`20010` 。因为涉及更新两个数据库表`orders` 和`orderItems` ，所以使用事务处理块来保证订单不被部分删除。最后的`COMMIT` 语句仅在不出错时写出更改。如果第一条`DELETE` 起作用，但第二条失败，则`DELETE` 不会提交（实际上，它是被自动撤销的）。
+
+> **隐含事务关闭** 	当`COMMIT` 或`ROLLBACK` 语句执行后，事务会**自动关闭**（将来的更改会隐式地自动提交）。
+
+<br><br><br>
+
+### 26.2.3 使用保留点
+
+简单的`ROLLBACK` 和`COMMIT` 语句就可以写入或撤销整个事务处理。但是，**更复杂的**事务处理可能需要==**部分提交**==或==**回退**==。
+
+例如，前面描述的添加订单的过程为一个事务处理。如果发生错误，只需要返回到添加`orders` 行之前即可，不需要回退到`customers` 表（如果存在的话）。
+
+为了支持回退部分事务处理，必须能在事务处理块中合适的位置放置占位符。这样，如果需要回退，可以回退到某个占位符。
+
+这些占位符称为==**保留点**==。为了创建占位符，可如下使用`SAVEPOINT` 语句：
+
+**输入**
+
+~~~mysql
+SAVEPOINT delete1;
+~~~
+
+每个保留点都取标识它的唯一名字，以便在回退时，MySQL知道要回退到何处。为了回退到本例给出的保留点，可如下进行：
+
+**输入**
+
+~~~mysql
+ROLLBACK TO delete1;
+~~~
+
+> **保留点越多越好** 	可以在MySQL代码中设置任意多的保留点，越多越好。保留点越多，就越能按自己的意愿灵活地进行回退。
+
+> **释放保留点** 	保留点在事务处理完成（执行一条`ROLLBACK` 或`COMMIT` ）后自动释放。自MySQL 5以来，也可以用`RELEASE SAVEPOINT` 明确地释放保留点。
+
+<br><br><br>
+
+### 26.2.4 更改默认的提交行为
+
+**默认**的MySQL行为是**自动提交所有更改**。换句话说，任何时候执行一条MySQL语句，该语句实际上都是针对表执行的，而且所做的更改立即生效。为指示MySQL不自动提交更改，需要使用以下语句：
+
+**输入**
+
+~~~mysql
+SET autocommit=0;	-- 设置为默认不提交
+SET autocommit=1;	-- 设置为默认提交
+~~~
+
+**分析**
+
+`autocommit` 标志决定是否自动提交更改，不管有没有`COMMIT` 语句。设置`autocommit` 为`0` （假）指示MySQL不自动提交更改（直到`autocommit` 被设置为真为止）。
+
+> **标志为连接专用** 	`autocommit` 标志是针对每个==连接==而不是服务器的。
+
+<br><br><br><br><br><br>
+
+## 26.3 小结
+
+* **事务处理（transactionprocessing）**：可以用来维护数据库的完整性，它保证成批的MySQL操作要么完全执行，要么完全不执行。
+
+* 控制事务处理：
+
+  * 事务启动
+
+    * ~~~mysql
+      START TRANSACTION;	-- 开启事务
+      ~~~
+
+  * 回退（撤销）到事务启动前的状态
+
+    * ~~~mysql
+      START TRANSACTION;	-- 开启事务
+      DELETE FROM ordertotals;	-- 删除表所有行
+      ROLLBACK;		-- 回退
+      ~~~
+      
+    
+  * 部分提交（部分回退）：使用保留点
+  
+    * ~~~mysql
+      SAVEPOINT delete1;
+      ...
+      ROLLBACK TO delete1;
+      ~~~
+  
+  * 更改默认的提交行为
+  
+    * ~~~mysql
+      SET autocommit=0;	-- 设置为默认不提交
+      SET autocommit=1;	-- 设置为默认提交
+      ~~~
+  
+    * 注意：`autocommit` 标志是针对每个==连接==而不是服务器的。
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+# 27. 全球化和本地化
+
+* 涉及MySQL处理不同字符集和语言的基础知识。
+
+* 查看字符集和校对
+
+  * ~~~mysql
+    SHOW CHARACTER SET;		-- 查看MySQL所支持的字符集完整列表
+    SHOW VARIABLES LIKE 'character%';	-- 确定默认的字符集
+    SHOW COLLATION;		-- 查看MySQL所支持校对的完整列表
+    SHOW VARIABLES LIKE 'collation%';	-- 确定默认的校对
+    ~~~
+
+* 指定字符集和校对
+
+  * 建表时为表指定字符集和校对
+
+    * ~~~mysql
+      CREATE TABLE mytable
+      (
+         columnn1   INT,
+         columnn2   VARCHAR(10)
+      ) DEFAULT CHARACTER SET hebrew
+        COLLATE hebrew_general_ci;
+      ~~~
+
+  * 建表时单独对某个列设置字符集和校对
+
+    * ~~~mysql
+      CREATE TABLE mytable
+      (
+         columnn1   INT,
+         columnn2   VARCHAR(10),
+         column3    VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_general_ci
+      ) DEFAULT CHARACTER SET hebrew
+        COLLATE hebrew_general_ci;
+      ~~~
+
+  * 在SELECT语句中的ORDER BY子句指定校对
+
+    * ~~~mysql
+      SELECT * FROM customers
+      ORDER BY lastname, firstname COLLATE latin1_general_cs;	-- 指定校对为区分大小写
+      ~~~
+
+
+
+<br><br><br><br><br><br>
+
+## 27.1 字符集和校对顺序
+
+数据库表被用来存储和检索数据。不同的语言和字符集需要以不同的方式存储和检索。因此，MySQL需要适应不同的字符集（不同的字母和字符），适应不同的排序和检索数据的方法。
+
+语言和字符集的相关重要术语：
+
+- **字符集**（`CHARACTER SET`）：为字母和符号的集合；
+- **编码**：为某个字符集成员的内部表示；
+- **校对**（`COLLATE`）：为规定字符如何比较的指令。
+
+> **校对为什么重要** 	排序英文正文很容易，对吗？或许不。考虑词APE、apex和Apple。它们处于正确的排序顺序吗？这有赖于你是否想区分大小写。使用区分大小写的校对顺序，这些词有一种排序方式，使用不区分大小写的校对顺序有另外一种排序方式。这不仅影响排序（如用`ORDER BY` 排序数据），还影响搜索（例如，寻找apple的`WHERE` 子句是否能找到APPLE）。在使用诸如法文à或德文ö这样的字符时，情况更复杂，在使用不基于拉丁文的字符集（日文、希伯来文、俄文等）时，情况更为复杂。
+
+在MySQL的正常数据库活动（`SELECT` 、`INSERT` 等）中，不需要考虑太多。使用何种字符集和校对的决定在服务器、数据库和表级进行。
+
+<br><br><br><br><br><br>
+
+## 27.2 使用字符集和校对顺序
+
+查看MySQL所支持的字符集完整列表，使用以下语句：
+
+**输入**
+
+~~~mysql
+SHOW CHARACTER SET;		-- 查看MySQL所支持的字符集完整列表
+~~~
+
+**分析**
+
+这条语句显示所有可用的字符集以及每个字符集的描述和默认校对。
+
+<br>
+
+查看所支持校对的完整列表，使用以下语句：
+
+**输入**
+
+```mysql
+SHOW COLLATION;		-- 查看MySQL所支持校对的完整列表
+```
+
+**分析**
+
+此语句显示所有可用的校对，以及它们适用的字符集。可以看到有的字符集具有不止一种校对。例如，`latin1` 对不同的欧洲语言有几种校对，而且许多校对出现两次，一次==区分大小写==（由`_cs` 表示），一次不区分大小写（由`_ci` 表示）。
+
+通常系统管理在安装时定义一个默认的字符集和校对。此外，也可以在创建数据库时，指定默认的字符集和校对。为了确定所用的字符集和校对，可以使用以下语句：**输入**
+
+```mysql
+SHOW VARIABLES LIKE 'character%';	-- 确定默认的字符集
+SHOW VARIABLES LIKE 'collation%';	-- 确定默认的校对
+```
+
+实际上，**字符集很少是服务器范围（甚至数据库范围）的设置**。**不同的表，甚至不同的列都可能需要不同的字符集，而且两者都可以在创建表时指定。**
+
+<br>
+
+### 给表指定字符集和校对
+
+可使用带子句的`CREATE TABLE` （参见第21章）：
+
+**输入**
+
+```mysql
+CREATE TABLE mytable
+(
+   columnn1   INT,
+   columnn2   VARCHAR(10)
+) DEFAULT CHARACTER SET hebrew
+  COLLATE hebrew_general_ci;
+```
+
+**分析**
+
+此语句创建一个包含两列的表，并且指定一个字符集和一个校对顺序。
+
+该例子中指定了`CHARACTER SET` 和`COLLATE` 两者。一般，MySQL如下确定使用什么样的字符集和校对。
+
+- 如果指定`CHARACTER SET` 和`COLLATE` 两者，则使用这些值。
+- 如果只指定`CHARACTER SET` ，则使用此字符集及其默认的校对（如`SHOW CHARACTER SET` 的结果中所示）。
+- 如果既不指定`CHARACTER SET` ，也不指定`COLLATE` ，则使用数据库默认。
+
+<br>
+
+### 单独对某个列设置字符集和校对
+
+**输入**
+
+```mysql
+CREATE TABLE mytable
+(
+   columnn1   INT,
+   columnn2   VARCHAR(10),
+   column3    VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_general_ci
+) DEFAULT CHARACTER SET hebrew
+  COLLATE hebrew_general_ci;
+```
+
+**分析**
+
+这里对整个表以及一个特定的列指定了`CHARACTER SET` 和`COLLATE` 。
+
+<br>
+
+### 在SELECT语句中的ORDER BY子句指定校对
+
+**输入**
+
+```mysql
+SELECT * FROM customers
+ORDER BY lastname, firstname COLLATE latin1_general_cs;	-- 指定校对为区分大小写
+```
+
+**分析**
+
+此`SELECT` 使用`COLLATE` 指定一个备用的校对顺序（在这个例子中，为==区分大小写==的校对）。这显然将会影响到结果排序的次序。
+
+> **临时区分大小写** 	上面的`SELECT` 语句演示了在通常不区分大小写的表上进行区分大小写搜索的一种技术。当然，反过来也是可以的（使用`COLLATE latin1_general_ci`）。
+
+> **`SELECT` 的其他`COLLATE` 子句** 	除了这里看到的在`ORDER BY` 子句中使用以外，`COLLATE` 还可以用于`GROUP BY` 、`HAVING` 、聚集函数、别名等。
+
+> **串的字符集转换**	如果绝对需要，串可以在字符集之间进行转换。为此，使用`Cast()`或`Convert()` 函数。
+
+
+
+
+
+<br><br><br><br><br><br>
+
+## 27.3 小结
+
+* 查看字符集和校对
+
+  * ~~~mysql
+    SHOW CHARACTER SET;		-- 查看MySQL所支持的字符集完整列表
+    SHOW VARIABLES LIKE 'character%';	-- 确定默认的字符集
+    SHOW COLLATION;		-- 查看MySQL所支持校对的完整列表
+    SHOW VARIABLES LIKE 'collation%';	-- 确定默认的校对
+    ~~~
+
+* 指定字符集和校对
+
+  * 建表时为表指定字符集和校对
+
+    * ~~~mysql
+      CREATE TABLE mytable
+      (
+         columnn1   INT,
+         columnn2   VARCHAR(10)
+      ) DEFAULT CHARACTER SET hebrew
+        COLLATE hebrew_general_ci;
+      ~~~
+
+  * 建表时单独对某个列设置字符集和校对
+
+    * ~~~mysql
+      CREATE TABLE mytable
+      (
+         columnn1   INT,
+         columnn2   VARCHAR(10),
+         column3    VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_general_ci
+      ) DEFAULT CHARACTER SET hebrew
+        COLLATE hebrew_general_ci;
+      ~~~
+
+  * 在SELECT语句中的ORDER BY子句指定校对
+
+    * ~~~mysql
+      SELECT * FROM customers
+      ORDER BY lastname, firstname COLLATE latin1_general_cs;	-- 指定校对为区分大小写
+      ~~~
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+# 28. 安全管理
+
+数据库服务器通常包含关键的数据，确保这些数据的安全和完整需要利用访问控制。本节涉及MySQL的访问控制和用户管理。
+
+* 访问控制：给用户提供且仅提供需要的访问权限
+
+  * 应该严肃对待`root` 登录的使用。==仅在绝对需要时使用它==（或许在你不能登录其他管理账号时使用）。不应该在日常的MySQL操作中使用`root` 。
+
+* 管理用户
+
+  * 创建用户账号
+
+    * ~~~mysql
+      CREATE USER '用户名' IDENTIFIED BY '密码';
+      CREATE USER 'ben' IDENTIFIED BY '111';	-- 例
+      CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
+      CREATE USER 'ben'@'localhost' IDENTIFIED BY '123';	-- 例
+      ~~~
+
+  * 重命名用户账号
+
+    * ~~~mysql
+      RENAME USER 'ben' TO 'bfortaplus';
+      RENAME USER 'ben'@'localhost' TO 'bforta'@'localhost';
+      ~~~
+
+  * 删除用户账号
+
+    * ~~~mysql
+      DROP USER '用户名';
+      DROP USER 'bfortaplus';	-- 例
+      DROP USER '用户名'@'主机名';
+      DROP USER 'bforta'@'localhost';	-- 例
+      ~~~
+
+  * 设置访问权限
+
+    * 查询用户权限
+
+      * ~~~mysql
+        -- 查询权限
+        SHOW GRANTS FOR '用户名'@'主机名';
+        SHOW GRANTS FOR ben@'localhost';	-- accessible
+        SHOW GRANTS FOR ben@localhost;	-- accessible
+        ~~~
+
+    * 设置用户权限
+
+      * ~~~mysql
+        -- 授予权限
+        GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名';
+        -- 允许用户在crashcourse.* （crashcourse 数据库的所有表）上使用SELECT。即授予只读访问权限。
+        GRANT SELECT ON crashcourse.* TO ben@localhost;
+        -- 给主机的ben用户授予SELECT,和INSERT权限，在crashcourse数据库任意表上
+        GRANT SELECT, INSERT ON crashcourse.* TO ben@localhost;
+        -- 给主机的ben用户授予所有权限，在任意数据库任意表上
+        GRANT ALL ON *.* TO 'ben'@'localhost';
+        ~~~
+
+      * ~~~mysql
+        -- 移除权限
+        REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名';
+        -- 移除用户在crashcourse.* （crashcourse 数据库的所有表）上使用SELECT的权限。即移除只读访问权限。
+        REVOKE SELECT ON crashcourse.* FROM ben@localhost;
+        ~~~
+
+  * 修改密码
+
+    * ~~~mysql
+      ALTER USER '用户名'@'主机名' IDENTIFIED BY '新密码';	-- 8.0.25版本可执行语法
+      ALTER USER ben@localhost IDENTIFIED BY '123456';	-- 样例
+      
+      UPDATE USER SET PASSWORD = PASSWORD('新密码') WHERE USER = '用户名';
+      UPDATE USER SET PASSWORD = PASSWORD('abc') WHERE USER = 'ben';
+      
+      SET PASSWORD FOR '用户名'@'主机名' = Password('新密码');
+      SET PASSWORD FOR ben@localhost = Password('123456');
+      ~~~
+
+<br><br><br><br><br><br>
+
+## 28.1 访问控制
+
+需要给用户提供他们所需的访问权，且仅提供他们所需的访问权。这就是所谓的**访问控制**，==**管理访问控制需要创建和管理用户账号**==。
+
+> **使用MySQL Administrator** 	MySQL Administrator（第2节提到）提供了一个图形用户界面，可用来管理用户及账号权限。MySQL Administrator在内部利用本章介绍的语句，使你能交互地、方便地管理访问控制。
+
+（第3节提到）为了执行数据库操作，需要登录MySQL。MySQL创建一个名为`root` 的用户账号，它对整个MySQL服务器具有完全的控制。在学习中可以使用`root` 进行过登录；不过在现实世界的日常工作中，决==不能==使用`root` 。应该创建一系列的账号，有的用于管理，有的供用户使用，有的供开发人员使用，等等。
+
+> **防止无意的错误** 	重要的是注意到，访问控制的目的不仅仅是防止用户的恶意企图。数据梦魇更为常见的是无意识错误的结果，如错打MySQL语句，在不合适的数据库中操作或其他一些用户错误。通过保证用户不能执行他们不应该执行的语句，访问控制有助于避免这些情况的发生。
+
+> **不要使用`root`** 	应该严肃对待`root` 登录的使用。==仅在绝对需要时使用它==（或许在你不能登录其他管理账号时使用）。不应该在日常的MySQL操作中使用`root` 。
+
+<br><br><br><br><br><br>
+
+## 28.2 管理用户
+
+MySQL用户账号和信息存储在名为`mysql` 的MySQL数据库中。
+
+需要获得所有用户账号列表时，访问该数据库。使用以下代码：
+
+**输入**
+
+```mysql
+USE mysql;
+SELECT user FROM user;
+```
+
+**输出**
+
+```bash
++------------------+
+| user             |
++------------------+
+| mysql.infoschema |
+| mysql.session    |
+| mysql.sys        |
+| root             |
++------------------+
+```
+
+<br><br><br>
+
+### 28.2.1 创建用户账号
+
+使用`CREATE USER` 语句创建一个新用户账号：
+
+**输入**
+
+```mysql
+CREATE USER '用户名' IDENTIFIED BY '密码';
+CREATE USER 'ben' IDENTIFIED BY '111';	-- 例
+CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
+CREATE USER 'ben'@'localhost' IDENTIFIED BY '123';	-- 例
+```
+
+**分析**
+
+`CREATE USER` 创建一个新用户账号。在创建用户账号时不一定需要口令，不过这个例子用`IDENTIFIED BY 'p@$$wOrd'` 给出了一个口令。
+
+> **指定散列口令** 	`IDENTIFIED BY` 指定的口令为纯文本，MySQL将在保存到`user` 表之前对其进行加密。为了作为散列值指定口令，使用`IDENTIFIED BY PASSWORD` 。
+
+> **使用`GRANT` 或`INSERT`** 	`GRANT` 语句（稍后介绍）也可以创建用户账号，但一般来说`CREATE USER` 是最清楚和最简单的句子。此外，也可以通过直接插入行到`user` 表来增加用户，不过为安全起见，一般不建议这样做。MySQL用来存储用户账号信息的表（以及表模式等）极为重要，对它们的任何毁坏都可能严重地伤害到MySQL服务器。因此，相对于直接处理来说，最好是用标记和函数来处理这些表。
+
+<br>
+
+为重新命名一个用户账号，使用`RENAME USER` 语句，如下所示：
+
+**输入**
+
+```mysql
+RENAME USER 'ben' TO 'bfortaplus';
+RENAME USER 'ben'@'localhost' TO 'bforta'@'localhost';
+```
+
+> **MySQL 5之前** 	仅MySQL 5或之后的版本支持`RENAME USER` 。为了在以前的MySQL中重命名一个用户，可使用`UPDATE` 直接更新`user` 表。
+
+<br><br><br>
+
+### 28.2.2 删除用户账号
+
+删除一个用户账号（以及相关的权限），使用`DROP USER` 语句，如下所示：
+
+**输入**
+
+```mysql
+DROP USER '用户名';
+DROP USER 'bfortaplus';	-- 例
+DROP USER '用户名'@'主机名';
+DROP USER 'bforta'@'localhost';	-- 例
+```
+
+> **MySQL 5之前** 	自MySQL 5以来，`DROP USER` 删除用户账号和所有相关的账号权限。在MySQL 5以前，`DROP USER` 只能用来删除用户账号，不能删除相关的权限。因此，如果使用旧版本的MySQL，需要先用`REVOKE` 删除与账号相关的权限，然后再用`DROP USER` 删除账号。
+
+<br><br><br>
+
+### 28.2.3 设置访问权限
+
+#### 查询权限
+
+~~~mysql
+-- 查询权限
+SHOW GRANTS FOR '用户名'@'主机名';
+SHOW GRANTS FOR ben@'localhost';	-- accessible
+SHOW GRANTS FOR ben@localhost;	-- accessible
+~~~
+
+ **输出**
+
+~~~bash
++-----------------------------------------+
+| Grants for ben@localhost                |
++-----------------------------------------+
+| GRANT USAGE ON *.* TO `ben`@`localhost` |
++-----------------------------------------+
+~~~
+
+**分析**
+
+输出结果显示用户`bforta` 有一个权限`USAGE ON*.*` 。`USAGE` 表示*根本没有权限* ，所以，此结果表示在*任意数据库* 和*任意表* 上对*任何东西没有权限* 。
+
+> **用户定义为`user@host`** 	MySQL的权限用用户名和主机名结合定义。如果不指定主机名，则使用默认的主机名%（授予用户访问权限而不管主机名）。
+
+<br><br>
+
+#### 设置权限
+
+* 使用 `GRANT` 语句授予/更新权限；
+* 使用 `REVOKE` 语句移除权限。与 `GRANT` 语句语法一致。
+
+`GRANT` 要求你至少给出以下信息：
+
+- 要授予的权限；
+- 被授予访问权限的数据库或表；
+- 用户名。
+
+~~~mysql
+-- 授予权限
+GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名';
+-- 允许用户在crashcourse.* （crashcourse 数据库的所有表）上使用SELECT。即授予只读访问权限。
+GRANT SELECT ON crashcourse.* TO ben@localhost;
+-- 给主机的ben用户授予SELECT,和INSERT权限，在crashcourse数据库任意表上
+GRANT SELECT, INSERT ON crashcourse.* TO ben@localhost;
+-- 给主机的ben用户授予所有权限，在任意数据库任意表上
+GRANT ALL ON *.* TO 'ben'@'localhost';
+
+-- 移除权限
+REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名';
+-- 移除用户在crashcourse.* （crashcourse 数据库的所有表）上使用SELECT的权限。即移除只读访问权限。
+REVOKE SELECT ON crashcourse.* FROM ben@localhost;
+~~~
+
+
+
+<br><br>
+
+`GRANT` 和`REVOKE` 可在几个层次上控制访问权限：
+
+- 整个服务器，使用`GRANT ALL` 和`REVOKE ALL` ；
+- 整个数据库，使用`ON database.*` ；
+- 特定的表，使用`ON database.table` ；
+- 特定的列；
+- 特定的存储过程。
+
+表28-1列出可以授予或撤销的每个权限。
+
+**表28-1 权限**
+
+|           权 限           |                            说 明                             |
+| :-----------------------: | :----------------------------------------------------------: |
+|           `ALL`           |                除`GRANT OPTION` 外的所有权限                 |
+|          `ALTER`          |                      使用`ALTER TABLE`                       |
+|      `ALTER ROUTINE`      |           使用`ALTER PROCEDURE` 和`DROP PROCEDURE`           |
+|         `CREATE`          |                      使用`CREATE TABLE`                      |
+|     `CREATE ROUTINE`      |                    使用`CREATE PROCEDURE`                    |
+| `CREATE TEMPORARY TABLES` |                 使用`CREATE TEMPORARY TABLE`                 |
+|       `CREATE USER`       | 使用`CREATE USER` 、`DROP USER` 、`RENAME USER` 和`REVOKE ALL PRIVILEGES` |
+|       `CREATE VIEW`       |                      使用`CREATE VIEW`                       |
+|         `DELETE`          |                         使用`DELETE`                         |
+|          `DROP`           |                       使用`DROP TABLE`                       |
+|         `EXECUTE`         |                    使用`CALL` 和存储过程                     |
+|          `FILE`           |        使用`SELECT INTO OUTFILE` 和`LOAD DATA INFILE`        |
+|      `GRANT OPTION`       |                    使用`GRANT` 和`REVOKE`                    |
+|          `INDEX`          |              使用`CREATE INDEX` 和`DROP INDEX`               |
+|         `INSERT`          |                         使用`INSERT`                         |
+|       `LOCK TABLES`       |                      使用`LOCK TABLES`                       |
+|         `PROCESS`         |                 使用`SHOW FULL PROCESSLIST`                  |
+|         `RELOAD`          |                         使用`FLUSH`                          |
+|   `REPLICATION CLIENT`    |                       服务器位置的访问                       |
+|    `REPLICATION SLAVE`    |                        由复制从属使用                        |
+|         `SELECT`          |                         使用`SELECT`                         |
+|     `SHOW DATABASES`      |                     使用`SHOW DATABASES`                     |
+|        `SHOW VIEW`        |                    使用`SHOW CREATE VIEW`                    |
+|        `SHUTDOWN`         |         使用`mysqladmin shutdown` （用来关闭MySQL）          |
+|          `SUPER`          | 使用`CHANGE MASTER` 、`KILL` 、`LOGS` 、`PURGE` 、`MASTER` 和`SET GLOBAL` 。还允许`mysqladmin` 调试登录 |
+|         `UPDATE`          |                         使用`UPDATE`                         |
+|          `USAGE`          |                          无访问权限                          |
+
+<br>
+
+> **未来的授权** 	在使用`GRANT` 和`REVOKE` 时，用户账号必须存在，但对所涉及的对象没有这个要求。这允许管理员在创建数据库和表之前设计和实现安全措施。
+>
+> 这样做的副作用是，当某个数据库或表被删除时（用`DROP` 语句），相关的访问权限仍然存在。而且，如果将来重新创建该数据库或表，这些权限仍然起作用。
+
+> **简化多次授权** 	可通过列出各权限并用逗号分隔，将多条`GRANT` 语句串在一起，如下所示：
+>
+> ```mysql
+>   GRANT SELECT, INSERT ON crashcourse.* TO ben@localhost;
+> ```
+
+<br><br><br>
+
+### 28.2.4 更改密码
+
+修改密码
+
+~~~mysql
+ALTER USER '用户名'@'主机名' IDENTIFIED BY '新密码';	-- 8.0.25版本可执行语法
+ALTER USER ben@localhost IDENTIFIED BY '123456';	-- 样例
+
+UPDATE USER SET PASSWORD = PASSWORD('新密码') WHERE USER = '用户名';
+UPDATE USER SET PASSWORD = PASSWORD('abc') WHERE USER = 'ben';
+
+SET PASSWORD FOR '用户名'@'主机名' = Password('新密码');
+SET PASSWORD FOR ben@localhost = Password('123456');
+~~~
+
+<br><br><br><br><br><br>
+
+## 28.3 小结
+
+* 访问控制：给用户提供且仅提供需要的访问权限
+  * 应该严肃对待`root` 登录的使用。==仅在绝对需要时使用它==（或许在你不能登录其他管理账号时使用）。不应该在日常的MySQL操作中使用`root` 。
+  
+* 管理用户
+
+  * 创建用户账号
+
+    * ~~~mysql
+      CREATE USER '用户名' IDENTIFIED BY '密码';
+      CREATE USER 'ben' IDENTIFIED BY '111';	-- 例
+      CREATE USER '用户名'@'主机名' IDENTIFIED BY '密码';
+      CREATE USER 'ben'@'localhost' IDENTIFIED BY '123';	-- 例
+      ~~~
+
+  * 重命名用户账号
+
+    * ~~~mysql
+      RENAME USER 'ben' TO 'bfortaplus';
+      RENAME USER 'ben'@'localhost' TO 'bforta'@'localhost';
+      ~~~
+
+  * 删除用户账号
+
+    * ~~~mysql
+      DROP USER '用户名';
+      DROP USER 'bfortaplus';	-- 例
+      DROP USER '用户名'@'主机名';
+      DROP USER 'bforta'@'localhost';	-- 例
+      ~~~
+
+  * 设置访问权限
+
+    * 查询用户权限
+
+      * ~~~mysql
+        -- 查询权限
+        SHOW GRANTS FOR '用户名'@'主机名';
+        SHOW GRANTS FOR ben@'localhost';	-- accessible
+        SHOW GRANTS FOR ben@localhost;	-- accessible
+        ~~~
+
+    * 设置用户权限
+
+      * ~~~mysql
+        -- 授予权限
+        GRANT 权限列表 ON 数据库名.表名 TO '用户名'@'主机名';
+        -- 允许用户在crashcourse.* （crashcourse 数据库的所有表）上使用SELECT。即授予只读访问权限。
+        GRANT SELECT ON crashcourse.* TO ben@localhost;
+        -- 给主机的ben用户授予SELECT,和INSERT权限，在crashcourse数据库任意表上
+        GRANT SELECT, INSERT ON crashcourse.* TO ben@localhost;
+        -- 给主机的ben用户授予所有权限，在任意数据库任意表上
+        GRANT ALL ON *.* TO 'ben'@'localhost';
+        ~~~
+
+      * ~~~mysql
+        -- 移除权限
+        REVOKE 权限列表 ON 数据库名.表名 FROM '用户名'@'主机名';
+        -- 移除用户在crashcourse.* （crashcourse 数据库的所有表）上使用SELECT的权限。即移除只读访问权限。
+        REVOKE SELECT ON crashcourse.* FROM ben@localhost;
+        ~~~
+
+  * 修改密码
+
+    * ~~~mysql
+      ALTER USER '用户名'@'主机名' IDENTIFIED BY '新密码';	-- 8.0.25版本可执行语法
+      ALTER USER ben@localhost IDENTIFIED BY '123456';	-- 样例
+      
+      UPDATE USER SET PASSWORD = PASSWORD('新密码') WHERE USER = '用户名';
+      UPDATE USER SET PASSWORD = PASSWORD('abc') WHERE USER = 'ben';
+      
+      SET PASSWORD FOR '用户名'@'主机名' = Password('新密码');
+      SET PASSWORD FOR ben@localhost = Password('123456');
+      ~~~
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+# 29. 数据库维护
+
+本章学习如何进行常见的数据库维护。
+
+<br><br><br><br><br><br>
+
+## 29.1 备份数据
+
+### 数据备份
+
+MySQL数据库是基于磁盘的文件，普通的备份系统和例程就能备份MySQL的数据。但是，由于这些文件总是处于打开和使用状态，普通的文件副本备份不一定总是有效。
+
+下面列出这个问题的可能解决方案。
+
+- 使用命令行实用程序`mysqldump` 转储所有数据库内容到某个外部文件。在进行常规备份前这个实用程序应该正常运行，以便能正确地备份转储文件。
+
+  - ~~~bash
+    mysqldump -u username -p dbname table1 table2... > BackupName.sql	# 格式
+    mysqldump -u root -p crashcourse orders > E:backupOrders.sql	-- 备份crashcourse.orders表
+    mysqldump -u root -p crashcourse > E:backupCrashcourse.sql		-- 备份crashcourse数据库所有内容
+    
+    mysqldump -u username -p --databases dbname1 dbname2 > E:Backup.sql	-- 同时备份多个数据库
+    mysqldump -u root -p --databases db1 db2 > E:backupdb1db2.sql	-- 同时备份多个数据库
+    ~~~
+
+- 
+- 可用命令行实用程序`mysqlhotcopy` 从一个数据库复制所有数据（并非所有数据库引擎都支持这个实用程序）。
+- 可以使用MySQL的`BACKUP TABLE` 或`SELECT INTO OUTFILE` 转储所有数据到某个外部文件。这两条语句都接受将要创建的系统文件名，此系统文件必须不存在，否则会出错。数据可以用`RESTORE TABLE` 来复原。
+
+<br><br>
+
+### 数据还原
+
+~~~bash
+mysql -u root -p [dbname] < backup.sql	# 格式
+mysql -uroot -p123456 dbtest < E:backupOrders.sql
+mysql -uroot -p123456 crashcourse <E:backupOrders.sql
+~~~
+
+> 注意：
+>
+> 在cmd下使用命令`mysql -uUser -pPassword [dbname] < backup.sql`导入数据时会报错，内容如下
+>
+> ~~~bash
+> ERROR: ASCII '\0' appeared in the statement, but this is not allowed unless option --binary-mode is enabled and mysql is run in non-interactive mode. Set --binary-mode to 1 if ASCII '\0' is expected. Query: '?'.
+> ~~~
+>
+> 解决办法：使用任意编辑器打开`.sql`脚本，将其编码格式转为`UTF-8`，再重新使用命令恢复数据即可。
+>
+> 问题解决方案链接：[mysql - Enable binary mode while restoring a Database from an SQL dump - Stack Overflow](https://stackoverflow.com/questions/17158367/enable-binary-mode-while-restoring-a-database-from-an-sql-dump)
+
+> **首先刷新未写数据** 	为了保证所有数据被写到磁盘（包括索引数据），可能需要在进行备份前使用`FLUSH TABLES` 语句。
+
+<br><br><br><br><br><br>
+
+## 29.2 数据库维护
+
+MySQL提供了一系列的语句，可以（应该）用来保证数据库正确和正常运行。
+
+<br>
+
+- `ANALYZE TABLE` ，用来检查表键是否正确。`ANALYZE TABLE` 返回如下所示的状态信息：
+
+**输入**
+
+```mysql
+ANALYZE TABLE orders;
+```
+
+**输出**
+
+```bash
++--------------------+---------+----------+----------+
+| Table              | Op      | Msg_type | Msg_text |
++--------------------+---------+----------+----------+
+| crashcourse.orders | analyze | status   | OK       |
++--------------------+---------+----------+----------+
+```
+
+- `CHECK TABLE` 用来针对许多问题对表进行检查。在`MyISAM` 表上还对索引进行检查。`CHECK TABLE` 支持一系列的用于`MyISAM` 表的方式。`CHANGED` 检查自最后一次检查以来改动过的表。`EXTENDED` 执行最彻底的检查，`FAST` 只检查未正常关闭的表，`MEDIUM` 检查所有被删除的链接并进行键检验，`QUICK` 只进行快速扫描。如下所示，`CHECK TABLE` 发现和修复问题：
+
+**输入**
+
+```mysql
+CHECK TABLE orders, orderitems;
+```
+
+**输出**
+
+```bash
++------------------------+-------+----------+----------+
+| Table                  | Op    | Msg_type | Msg_text |
++------------------------+-------+----------+----------+
+| crashcourse.orders     | check | status   | OK       |
+| crashcourse.orderitems | check | status   | OK       |
++------------------------+-------+----------+----------+
+```
+
+- 如果`MyISAM` 表访问产生不正确和不一致的结果，可能需要用`REPAIR TABLE` 来修复相应的表。这条语句不应该经常使用，如果需要经常使用，可能会有更大的问题要解决。
+- 如果从一个表中删除大量数据，应该使用`OPTIMIZE TABLE` 来收回所用的空间，从而优化表的性能。
+
+<br><br><br><br><br><br>
+
+## 29.3 诊断启动问题
+
+服务器启动问题通常在对MySQL配置或服务器本身进行更改时出现。MySQL在这个问题发生时报告错误，但由于多数MySQL服务器是作为系统进程或服务自动启动的，这些消息可能看不到。
+
+在排除系统启动问题时，首先应该尽量用手动启动服务器。MySQL服务器自身通过在命令行上执行`mysqld` 启动。下面是几个重要的`mysqld` 命令行选项：
+
+- `--help` 显示帮助——一个选项列表；
+- `--safe-mode` 装载减去某些最佳配置的服务器；
+- `--verbose` 显示全文本消息（为获得更详细的帮助消息与`--help` 联合使用）；
+- `--version` 显示版本信息然后退出。
+
+几个另外的命令行选项（与日志文件的使用有关）在 29.4 列出。
+
+<br><br><br><br><br><br>
+
+## 29.4 查看日志文件
+
+MySQL维护管理员依赖的一系列日志文件。主要的日志文件有以下几种。
+
+- 错误日志。它包含启动和关闭问题以及任意关键错误的细节。此日志通常名为`hostname.err`，位于`data` 目录中。此日志名可用`--log-error` 命令行选项更改。
+- 查询日志。它记录所有MySQL活动，在诊断问题时非常有用。此日志文件可能会很快地变得非常大，因此不应该长期使用它。此日志通常名为`hostname.log` ，位于`data` 目录中。此名字可以用`--log` 命令行选项更改。
+- 二进制日志。它记录更新过数据（或者可能更新过数据）的所有语句。此日志通常名为`hostname-bin` ，位于`data` 目录内。此名字可以用`--log-bin` 命令行选项更改。注意，这个日志文件是MySQL 5中添加的，以前的MySQL版本中使用的是更新日志。
+- 缓慢查询日志。顾名思义，此日志记录执行缓慢的任何查询。这个日志在确定数据库何处需要优化很有用。此日志通常名为`hostname-slow.log` ，位于`data` 目录中。此名字可以用`--log-slow-queries` 命令行选项更改。
+
+在使用日志时，可用`FLUSH LOGS` 语句来刷新和重新开始所有日志文件。
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+# 30. 改善性能
+
+* 涉及与MySQL性能有关的某些要点。
+
+<br><br><br><br><br><br>
+
+## 30.1 改善性能
+
+以下内容并不能完全决定MySQL的性能。此处仅通过回顾前面各章的重点，提供进行性能优化探讨和分析的一个出发点。
+
+- 首先，MySQL（与所有DBMS一样）具有特定的硬件建议。在学习和研究MySQL时，使用任何旧的计算机作为服务器都可以。但对用于生产的服务器来说，应该坚持遵循这些硬件建议。
+- 一般来说，关键的生产DBMS应该运行在自己的专用服务器上。
+- MySQL是用一系列的默认设置预先配置的，从这些设置开始通常是很好的。但过一段时间后你可能需要调整内存分配、缓冲区大小等。（为查看当前设置，可使用`SHOW VARIABLES;` 和`SHOW STATUS;` 。）
+- MySQL一个多用户多线程的DBMS，换言之，它经常同时执行多个任务。如果这些任务中的某一个执行缓慢，则所有请求都会执行缓慢。如果你遇到显著的性能不良，可使用`SHOW PROCESS LIST` 显示所有活动进程（以及它们的线程ID和执行时间）。你还可以用`KILL` 命令终结某个特定的进程（使用这个命令需要作为管理员登录）。【此处测试无法使用SHOW命令】
+- 总是有不止一种方法编写同一条`SELECT` 语句。应该试验联结、并、子查询等，找出最佳的方法。
+- 使用`EXPLAIN` 语句让MySQL解释它将如何执行一条`SELECT` 语句。
+  - `EXPLAIN`语句详见[mysql 用法 Explain_lvhaizhen的博客-CSDN博客](https://blog.csdn.net/lvhaizhen/article/details/90763799)
+- 一般来说，**存储过程**执行得比一条一条地执行其中的各条MySQL语句快。
+- 应该总是使用正确的数据类型。
+- 决不要检索比需求还要多的数据。换言之，不要用`SELECT*` （除非你真正需要每个列）。
+- 有的操作（包括`INSERT` ）支持一个可选的`DELAYED` 关键字，如果使用它，将把控制立即返回给调用程序，并且一旦有可能就实际执行该操作。
+- 在==导入数据时，应该关闭自动提交==。你可能还想删除索引（包括`FULLTEXT` 索引），然后在导入完成后再重建它们。
+- 必须==索引数据库表==以改善数据检索的性能。确定索引什么不是一件微不足道的任务，需要分析使用的`SELECT` 语句以找出重复的`WHERE` 和`ORDER BY` 子句。如果一个简单的`WHERE` 子句返回结果所花的时间太长，则可以断定其中使用的列（或几个列）就是需要索引的对象。
+- 你的`SELECT` 语句中有一系列复杂的`OR` 条件吗？通过使用多条`SELECT` 语句和连接它们的`UNION`语句【组合查询】，你能看到极大的性能改进。
+- **索引改善数据检索的性能，但损害数据插入、删除和更新的性能。**如果你有一些表，它们收集数据且不经常被搜索，则在有必要之前不要索引它们。（索引可根据需要添加和删除。）
+- `LIKE` 很慢。一般来说，最好是使用`FULLTEXT`【全文索引】 而不是`LIKE` 。
+- 数据库是不断变化的实体。一组优化良好的表一会儿后可能就面目全非了。由于表的使用和内容的更改，理想的优化和配置也会改变。
+- 最重要的规则就是，==**每条规则在某些条件下都会被打破**==。
+
+
+
+> **浏览文档** 	位于http://dev.mysql.com/doc/ 的MySQL文档有许多提示和技巧（甚至有用户提供的评论和反馈）。一定要查看这些非常有价值的资料。
 
 
 
@@ -6635,63 +7920,45 @@ SELECT * FROM archive_orders;	-- 从 archive_orders 表中查看触发器记录
 
 
 
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 附录0：Tables_in_crashcourse
 
+<br>
 
-
-### customers
-
-~~~bash
-+---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
-| cust_id | cust_name      | cust_address        | cust_city | cust_state | cust_zip | cust_country | cust_contact | cust_email          |
-+---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
-|   10001 | Coyote Inc.    | 200 Maple Lane      | Detroit   | MI         | 44444    | USA          | Y Lee        | ylee@coyote.com     |
-|   10002 | Mouse House    | 333 Fromage Lane    | Columbus  | OH         | 43333    | USA          | Jerry Mouse  | NULL                |
-|   10003 | Wascals        | 1 Sunny Place       | Muncie    | IN         | 42222    | USA          | Jim Jones    | rabbit@wascally.com |
-|   10004 | Yosemite Place | 829 Riverside Drive | Phoenix   | AZ         | 88888    | USA          | Y Sam        | sam@yosemite.com    |
-|   10005 | E Fudd         | 4545 53rd Street    | Chicago   | IL         | 54545    | USA          | E Fudd       | NULL                |
-+---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
-5 rows in set (0.00 sec)
-~~~
-
-### orderitems
+### vendors
 
 ~~~bash
-+-----------+------------+---------+----------+------------+
-| order_num | order_item | prod_id | quantity | item_price |
-+-----------+------------+---------+----------+------------+
-|     20005 |          1 | ANV01   |       10 |       5.99 |
-|     20005 |          2 | ANV02   |        3 |       9.99 |
-|     20005 |          3 | TNT2    |        5 |      10.00 |
-|     20005 |          4 | FB      |        1 |      10.00 |
-|     20006 |          1 | JP2000  |        1 |      55.00 |
-|     20007 |          1 | TNT2    |      100 |      10.00 |
-|     20008 |          1 | FC      |       50 |       2.50 |
-|     20009 |          1 | FB      |        1 |      10.00 |
-|     20009 |          2 | OL1     |        1 |       8.99 |
-|     20009 |          3 | SLING   |        1 |       4.49 |
-|     20009 |          4 | ANV03   |        1 |      14.99 |
-+-----------+------------+---------+----------+------------+
-11 rows in set (0.00 sec)
++---------+----------------+-----------------+-------------+------------+----------+--------------+
+| vend_id | vend_name      | vend_address    | vend_city   | vend_state | vend_zip | vend_country |
++---------+----------------+-----------------+-------------+------------+----------+--------------+
+|    1001 | Anvils R Us    | 123 Main Street | Southfield  | MI         | 48075    | USA          |
+|    1002 | LT Supplies    | 500 Park Street | Anytown     | OH         | 44333    | USA          |
+|    1003 | ACME           | 555 High Street | Los Angeles | CA         | 90046    | USA          |
+|    1004 | Furball Inc.   | 1000 5th Avenue | New York    | NY         | 11111    | USA          |
+|    1005 | Jet Set        | 42 Galaxy Road  | London      | NULL       | N16 6PS  | England      |
+|    1006 | Jouets Et Ours | 1 Rue Amusement | Paris       | NULL       | 45678    | France       |
++---------+----------------+-----------------+-------------+------------+----------+--------------+
+6 rows in set (0.00 sec)
 ~~~
 
-### orders
+`vendors` 表存储销售产品的供应商。每个供应商在这个表中有一个记录，供应商ID（`vend_id` ）列用来匹配产品和供应商。
 
-~~~bash
-+-----------+---------------------+---------+
-| order_num | order_date          | cust_id |
-+-----------+---------------------+---------+
-|     20005 | 2005-09-01 00:00:00 |   10001 |
-|     20006 | 2005-09-12 00:00:00 |   10003 |
-|     20007 | 2005-09-30 00:00:00 |   10004 |
-|     20008 | 2005-10-03 00:00:00 |   10005 |
-|     20009 | 2005-10-08 00:00:00 |   10001 |
-+-----------+---------------------+---------+
-5 rows in set (0.00 sec)
-~~~
+**表B-1 `vendors` 表的列**
+
+|       列       |      说 明       |
+| :------------: | :--------------: |
+|   `vend_id`    |  唯一的供应商ID  |
+|  `vend_name`   |     供应商名     |
+| `vend_address` |   供应商的地址   |
+|  `vend_city`   |   供应商的城市   |
+|  `vend_state`  |    供应商的州    |
+|   `vend_zip`   | 供应商的邮政编码 |
+| `vend_country` |   供应商的国家   |
+
+- 所有表都应该有主键。这个表使用`vend_id` 作为主键。`vend_id` 为一个自动增量字段。
+
+<br>
 
 ### products
 
@@ -6716,6 +7983,127 @@ SELECT * FROM archive_orders;	-- 从 archive_orders 表中查看触发器记录
 +---------+---------+----------------+------------+----------------------------------------------------------------+
 14 rows in set (0.00 sec)
 ~~~
+
+`products` 表包含产品目录，每行一个产品。每个产品有唯一的ID（`prod_id` 列），通过`vend_id`（供应商的唯一ID）关联到它的供应商。
+
+**表B-2 `products` 表的列**
+
+|      列      |                      说 明                       |
+| :----------: | :----------------------------------------------: |
+|  `prod_id`   |                   唯一的产品ID                   |
+|  `vend_id`   | 产品供应商ID（关联到`vendors` 表中的`vend_id` ） |
+| `prod_name`  |                      产品名                      |
+| `prod_price` |                     产品价格                     |
+| `prod_desc`  |                     产品描述                     |
+
+- 所有表都应该有一个主键，这个表用`prod_id` 作为其主键。
+- 为实施引用完整性，应该在`vend_id` 上定义一个外键，关联到`vendors` 的`vend_id` 。
+
+<br>
+
+### customers
+
+~~~bash
++---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
+| cust_id | cust_name      | cust_address        | cust_city | cust_state | cust_zip | cust_country | cust_contact | cust_email          |
++---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
+|   10001 | Coyote Inc.    | 200 Maple Lane      | Detroit   | MI         | 44444    | USA          | Y Lee        | ylee@coyote.com     |
+|   10002 | Mouse House    | 333 Fromage Lane    | Columbus  | OH         | 43333    | USA          | Jerry Mouse  | NULL                |
+|   10003 | Wascals        | 1 Sunny Place       | Muncie    | IN         | 42222    | USA          | Jim Jones    | rabbit@wascally.com |
+|   10004 | Yosemite Place | 829 Riverside Drive | Phoenix   | AZ         | 88888    | USA          | Y Sam        | sam@yosemite.com    |
+|   10005 | E Fudd         | 4545 53rd Street    | Chicago   | IL         | 54545    | USA          | E Fudd       | NULL                |
++---------+----------------+---------------------+-----------+------------+----------+--------------+--------------+---------------------+
+5 rows in set (0.00 sec)
+~~~
+
+`customers` 表存储所有顾客的信息。每个顾客有唯一的ID（`cust_id` 列）。
+
+**表B-3 `customers` 表的列**
+
+|       列       |       说 明        |
+| :------------: | :----------------: |
+|   `cust_id`    |    唯一的顾客ID    |
+|  `cust_name`   |       顾客名       |
+| `cust_address` |     顾客的地址     |
+|  `cust_city`   |     顾客的城市     |
+|  `cust_state`  |      顾客的州      |
+|   `cust_zip`   |   顾客的邮政编码   |
+| `cust_country` |     顾客的国家     |
+| `cust_contact` |    顾客的联系名    |
+|  `cust_email`  | 顾客的联系emal地址 |
+|                |                    |
+
+- 所有表都应该定义主键，这个表将使用`cust_id` 作为它的主键。`cust_id` 是一个自动增量字段。
+
+<br>
+
+### orders
+
+~~~bash
++-----------+---------------------+---------+
+| order_num | order_date          | cust_id |
++-----------+---------------------+---------+
+|     20005 | 2005-09-01 00:00:00 |   10001 |
+|     20006 | 2005-09-12 00:00:00 |   10003 |
+|     20007 | 2005-09-30 00:00:00 |   10004 |
+|     20008 | 2005-10-03 00:00:00 |   10005 |
+|     20009 | 2005-10-08 00:00:00 |   10001 |
++-----------+---------------------+---------+
+5 rows in set (0.00 sec)
+~~~
+
+`orders` 表存储顾客订单（但不是订单细节）。每个订单唯一地编号（`order_num` 列）。订单用`cust_id` 列（它关联到`customer` 表的顾客唯一ID）与相应的顾客关联。
+
+**表B-4 `orders` 表的列**
+
+|      列      |                      说 明                      |
+| :----------: | :---------------------------------------------: |
+| `order_num`  |                   唯一订单号                    |
+| `order_date` |                    订单日期                     |
+|  `cust_id`   | 订单顾客ID（关系到`customers` 表的 `cust_id` ） |
+
+- 所有表都应该定义主键，这个表使用`order_num` 作为它的主键。`order_num` 是一个自动增量字段。
+- 为实施引用完整性，应该在`cust_id` 上定义一个外键，关联到`customers` 的`cust_id` 。
+
+<br>
+
+### orderitems
+
+~~~bash
++-----------+------------+---------+----------+------------+
+| order_num | order_item | prod_id | quantity | item_price |
++-----------+------------+---------+----------+------------+
+|     20005 |          1 | ANV01   |       10 |       5.99 |
+|     20005 |          2 | ANV02   |        3 |       9.99 |
+|     20005 |          3 | TNT2    |        5 |      10.00 |
+|     20005 |          4 | FB      |        1 |      10.00 |
+|     20006 |          1 | JP2000  |        1 |      55.00 |
+|     20007 |          1 | TNT2    |      100 |      10.00 |
+|     20008 |          1 | FC      |       50 |       2.50 |
+|     20009 |          1 | FB      |        1 |      10.00 |
+|     20009 |          2 | OL1     |        1 |       8.99 |
+|     20009 |          3 | SLING   |        1 |       4.49 |
+|     20009 |          4 | ANV03   |        1 |      14.99 |
++-----------+------------+---------+----------+------------+
+11 rows in set (0.00 sec)
+~~~
+
+`orderitems` 表存储每个订单中的实际物品，每个订单的每个物品占一行。对`orders` 中的每一行，`orderitems` 中有一行或多行。每个订单物品由订单号加订单物品（第一个物品、第二个物品等）唯一标识。订单物品通过`order_num` 列（关联到`orders` 中订单的唯一ID）与它们相应的订单相关联。此外，每个订单项包含订单物品的产品ID（它关联物品到`products` 表）。
+
+**表B-5 `orderitems` 表的列**
+
+|      列      |                   说 明                   |
+| :----------: | :---------------------------------------: |
+| `order_num`  | 订单号（关联到`orders` 表的`order_num` ） |
+| `order_item` |     订单物品号（在某个订单中的顺序）      |
+|  `prod_id`   | 产品ID（关联到`products` 表的`prod_id` ） |
+|  `quantity`  |                 物品数量                  |
+| `item_price` |                 物品价格                  |
+
+- 所有表都应该有主键，这个表使用`order_num` 和`order_item` 作为其主键。
+- 为实施引用完整性，应该在`order_num` 上定义外键，关联它到`orders` 的`order_num` ，在`prod_id` 上定义外键，关联它到`products` 的`prod_id` 。
+
+<br>
 
 ### productnotes
 
@@ -6750,39 +8138,30 @@ Comment forwarded to vendor.                            |
 14 rows in set (0.01 sec)
 ~~~
 
-### vendors
+`productnotes` 表存储与特定产品有关的注释。并非所有产品都有相关的注释，而有的产品可能有许多相关的注释。
 
-~~~bash
-+---------+----------------+-----------------+-------------+------------+----------+--------------+
-| vend_id | vend_name      | vend_address    | vend_city   | vend_state | vend_zip | vend_country |
-+---------+----------------+-----------------+-------------+------------+----------+--------------+
-|    1001 | Anvils R Us    | 123 Main Street | Southfield  | MI         | 48075    | USA          |
-|    1002 | LT Supplies    | 500 Park Street | Anytown     | OH         | 44333    | USA          |
-|    1003 | ACME           | 555 High Street | Los Angeles | CA         | 90046    | USA          |
-|    1004 | Furball Inc.   | 1000 5th Avenue | New York    | NY         | 11111    | USA          |
-|    1005 | Jet Set        | 42 Galaxy Road  | London      | NULL       | N16 6PS  | England      |
-|    1006 | Jouets Et Ours | 1 Rue Amusement | Paris       | NULL       | 45678    | France       |
-+---------+----------------+-----------------+-------------+------------+----------+--------------+
-6 rows in set (0.00 sec)
-~~~
+**表B-6 `productnotes` 表的列**
 
+|     列      |                    说 明                    |
+| :---------: | :-----------------------------------------: |
+|  `note_id`  |                 唯一注释ID                  |
+|  `prod_id`  | 产品ID（对应于`products` 表中的`prod_id` ） |
+| `note_date` |               增加注释的日期                |
+| `note_text` |                  注释文本                   |
 
+- 所有表都应该有主键，这个表应该使用`note_id` 作为其主键。
+- 列`note_text` 必须为`FULLTEXT` 搜索进行索引。
+- 由于这个表使用全文本搜索，因此必须指定`ENGINE=MyISAM` 。
 
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 附录1：MySQL关键字书写顺序、执行顺序
 
-
+<br>
 
 在SQL语句中每个关键字都会按照顺序往下执行，而每一步操作，会生成一个**虚拟表**，最后的虚拟表就是最终结果。
 
@@ -6801,7 +8180,7 @@ Comment forwarded to vendor.                            |
 (11)LIMIT <limit_number>
 ~~~
 
-
+<br>
 
 ## 常用执行顺序
 
@@ -6817,45 +8196,25 @@ Comment forwarded to vendor.                            |
 10. **`ORDER BY`** ：将虚拟表VT9中的记录按照进行**排序**操作，产生虚拟表VT10；
 11. **`LIMIT`** ：取出指定行的记录，**限定行数**，产生虚拟表VT11，并将结果返回。
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
 # 附录2：SHOW命令用法
 
 ~~~mysql
-1. SHOW TABLES 或 SHOW TABLES FROM database_name; -- 显示当前数据库中所有表的名称。
-2. SHOW DATABASES; -- 显示mysql中所有数据库的名称。 
-3. SHOW COLUMNS FROM table_name FROM database_name; 
-或 SHOW COLUMNS FROM database_name.table_name; -- 显示表中列名称。
-4. SHOW GRANTS FOR user_name; -- 显示一个用户的权限，显示结果类似于grant 命令。
-5. SHOW INDEX FROM table_name; -- 显示表的索引。
-6. SHOW STATUS; -- 显示一些系统特定资源的信息，例如，正在运行的线程数量。
-7. SHOW VARIABLES; -- 显示系统变量的名称和值。
-8. SHOW PROCESSLIST; -- 显示系统中正在运行的所有进程，也就是当前正在执行的查询。大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，就可以查看所有人的进程，包括密码。
-9. SHOW TABLE STATUS; -- 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间。
+1. 	SHOW TABLES 或 SHOW TABLES FROM database_name; -- 显示当前数据库中所有表的名称。
+2. 	SHOW DATABASES; -- 显示mysql中所有数据库的名称。 
+3. 	SHOW COLUMNS FROM table_name FROM database_name; 
+	SHOW COLUMNS FROM database_name.table_name; -- 显示表中列名称。
+4. 	SHOW GRANTS FOR user_name; -- 显示一个用户的权限，显示结果类似于grant 命令。
+5. 	SHOW INDEX FROM table_name; -- 显示表的索引。
+6. 	SHOW STATUS; -- 显示一些系统特定资源的信息，例如，正在运行的线程数量。
+7. 	SHOW VARIABLES; -- 显示系统变量的名称和值。
+8. 	SHOW PROCESSLIST; -- 显示系统中正在运行的所有进程，也就是当前正在执行的查询。大多数用户可以查看他们自己的进程，但是如果他们拥有process权限，就可以查看所有人的进程，包括密码。
+9. 	SHOW TABLE STATUS; -- 显示当前使用或者指定的database中的每个表的信息。信息包括表类型和表的最新更新时间。
 10. SHOW PRIVILEGES; -- 显示服务器所支持的不同权限。
 11. SHOW CREATE DATABASE database_name; -- 显示create database 语句是否能够创建指定的数据库。
 12. SHOW CREATE TABLE table_name; -- 显示create database 语句是否能够创建指定的数据库。
@@ -6865,31 +8224,209 @@ Comment forwarded to vendor.                            |
 16. SHOW WARNINGS; -- 显示最后一个执行的语句所产生的错误、警告和通知。
 17. SHOW ERRORS; -- 只显示最后一个执行语句所产生的错误。
 18. SHOW [STORAGE] ENGINES; --显示安装后的可用存储引擎和默认引擎。
+19. SHOW CHARACTER SET;		-- 查看MySQL所支持的字符集完整列表
+	SHOW VARIABLES LIKE 'character%';	-- 确定默认的字符集
+20. SHOW COLLATION;		-- 查看MySQL所支持校对的完整列表
+	SHOW VARIABLES LIKE 'collation%';	-- 确定默认的校对
 ~~~
 
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
+---
 
+<br><br><br><br><br><br><br><br><br><br><br><br>
 
+# 附录3：MySQL数据类型
 
+<br><br>
 
+数据类型是定义列中可以存储什么数据以及该数据实际怎样存储的基本规则。
 
+数据类型用于以下目的。
 
+- 数据类型允许限制可存储在列中的数据。例如，数值数据类型列只能接受数值。
+- 数据类型允许在内部更有效地存储数据。可以用一种比文本串更简洁的格式存储数值和日期时间值。
+- 数据类型允许变换排序顺序。如果所有数据都作为串处理，则1位于10之前，而10又位于2之前（串以字典顺序排序，从左边开始比较，一次一个字符）。作为数值数据类型，数值才能正确排序。
 
+在设计表时，应该特别重视所用的数据类型。使用错误的数据类型可能会严重地影响应用程序的功能和性能。更改包含数据的列不是一件小事（而且这样做可能会导致数据丢失）。
 
+本附录虽然不是关于数据类型及其如何使用的一个完整的教材，但介绍了MySQL主要的数据类型和用途。
 
+<br><br>
 
+## 附录3.1 串数据类型
 
+最常用的数据类型是串数据类型。它们存储串，如名字、地址、电话号码、邮政编码等。有两种基本的串类型，分别为定长串和变长串（参见表D-1）。
 
+定长串接受长度固定的字符串，其长度是在创建表时指定的。例如，名字列可允许30个字符，而社会安全号列允许11个字符（允许的字符数目中包括两个破折号）。定长列不允许多于指定的字符数目。它们分配的存储空间与指定的一样多。因此，如果串`Ben` 存储到30个字符的名字字段，则存储的是30个字符，`CHAR` 属于定长串类型。
 
+变长串存储可变长度的文本。有些变长数据类型具有最大的定长，而有些则是完全变长的。不管是哪种，只有指定的数据得到保存（额外的数据不保存）`TEXT` 属于变长串类型。
 
+既然变长数据类型这样灵活，为什么还要使用定长数据类型？回答是因为性能。MySQL处理定长列远比处理变长列快得多。此外，MySQL不允许对变长列（或一个列的可变部分）进行索引。这也会极大地影响性能。
 
+**表D-1 串数据类型**
 
+|   数据类型   |                            说 明                             |
+| :----------: | :----------------------------------------------------------: |
+|    `CHAR`    | 1～255个字符的定长串。它的长度必须在创建时指定，否则MySQL假定为`CHAR(1)` |
+|    `ENUM`    |         接受最多64 K个串组成的一个预定义集合的某个串         |
+|  `LONGTEXT`  |               与`TEXT` 相同，但最大长度为4 GB                |
+| `MEDIUMTEXT` |               与`TEXT` 相同，但最大长度为16 K                |
+|    `SET`     |       接受最多64个串组成的一个预定义集合的零个或多个串       |
+|    `TEXT`    |                   最大长度为64 K的变长文本                   |
+|  `TINYTEXT`  |              与`TEXT` 相同，但最大长度为255字节              |
+|  `VARCHAR`   | 长度可变， 最多不超过255 字节。如果在创建时指定为`VARCHAR(n)` ，则可存储`0` 到`n` 个字符的变长串（其中`n` ≤255） |
 
+> **使用引号** 	不管使用何种形式的串数据类型，串值都必须括在引号内（通常单引号更好）。
 
+> **当数值不是数值时** 	你可能会认为电话号码和邮政编码应该存储在数值字段中（数值字段只存储数值数据），但是，这样做却是不可取的。如果在数值字段中存储邮政编码01234，则保存的将是数值1234，实际上丢失了一位数字。需要遵守的基本规则是：如果数值是计算（求和、平均等）中使用的数值，则应该存储在数值数据类型列中。如果作为字符串（可能只包含数字）使用，则应该保存在串数据类型列中。
 
+<br><br>
 
+## 附录3.2 数值数据类型
 
+‘数值数据类型存储数值。MySQL支持多种数值数据类型，每种存储的数值具有不同的取值范围。显然，支持的取值范围越大，所需存储空间越多。此外，有的数值数据类型支持使用十进制小数点（和小数），而有的则只支持整数。表D-2列出了常用的MySQL数值数据类型。
 
+> **有符号或无符号** 	所有数值数据类型（除`BIT` 和`BOOLEAN` 外）都可以有符号或无符号。有符号数值列可以存储正或负的数值，无符号数值列只能存储正数。默认情况为有符号，但如果你知道自己不需要存储负值，可以使用`UNSIGNED` 关键字，这样做将允许你存储两倍大小的值。
 
+**表D-2 数值数据类型**
 
+|        数据类型         |                            说 明                             |
+| :---------------------: | :----------------------------------------------------------: |
+|          `BIT`          | 位字段，1～64位。（在MySQL 5之前，`BIT` 在功能上等价于`TINYINT` |
+|        `BIGINT`         | 整数值，支持−9223372036854775808～9223372036854775807（如果是`UNSIGNED` ，为0～18446744073709551615）的数 |
+| `BOOLEAN` （或`BOOL` ） |    布尔标志，或者为0或者为1，主要用于开/关（on/off）标志     |
+| `DECIMAL` （或`DEC` ）  |                       精度可变的浮点值                       |
+|        `DOUBLE`         |                         双精度浮点值                         |
+|         `FLOAT`         |                         单精度浮点值                         |
+| `INT` （或`INTEGER` ）  | 整数值，支持−2147483648～2147483647（如果是`UNSIGNED` ，为0～4294967295）的数 |
+|       `MEDIUMINT`       | 整数值，支持−8388608～8388607（如果是`UNSIGNED` ，为0～16777215）的数 |
+|         `REAL`          |                        4字节的浮点值                         |
+|       `SMALLINT`        | 整数值，支持−32768～32767（如果是`UNSIGNED` ，为0～65535）的数 |
+|        `TINYINT`        |   整数值，支持−128～127（如果为`UNSIGNED` ，为0～255）的数   |
+
+> **不使用引号** 	与串不一样，数值不应该括在引号内。
+
+> **存储货币数据类型** 	MySQL中没有专门存储货币的数据类型，一般情况下使用`DECIMAL(8,2)`
+
+<br><br>
+
+## 附录3.3 日期和时间数据类型
+
+MySQL使用专门的数据类型来存储日期和时间值（见表D-3）。
+
+**表D-3 日期和时间数据类型**
+
+|  数据类型   |                            说 明                             |
+| :---------: | :----------------------------------------------------------: |
+|   `DATE`    |   表示`1000-01-01～9999-12-31` 的日期，格式为`YYYY-MM-DD`    |
+| `DATETIME`  |                    `DATE` 和`TIME` 的组合                    |
+| `TIMESTAMP` |             功能和`DATETIME` 相同（但范围较小）              |
+|   `TIME`    |                       格式为`HH:MM:SS`                       |
+|   `YEAR`    | 用2位数字表示，范围是70（1970年）～69（2069年），用4位数字表示，范围是1901年～2155年 |
+
+<br><br>
+
+## 附录3.4 二进制数据类型
+
+二进制数据类型可存储任何数据（甚至包括二进制信息），如图像、多媒体、字处理文档等（参见表D-4）。
+
+**表D-4 二进制数据类型**
+
+|   数据类型   |         说 明         |
+| :----------: | :-------------------: |
+|    `BLOB`    |  Blob最大长度为64 KB  |
+| `MEDIUMBLOB` |  Blob最大长度为16 MB  |
+|  `LONGBLOB`  |  Blob最大长度为4 GB   |
+|  `TINYBLOB`  | Blob最大长度为255字节 |
+
+> **数据类型对比** 	如果你想看一个使用不同数据库的实际例子，请参看样例表的表创建脚本。
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+---
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+
+# 附录4：MySQL保留字
+
+* 保留字——即关键字。
+
+MySQL是由关键字组成的语言，关键字是一些用于执行MySQL操作的特殊词汇。在命名数据库、表、列和其他数据库对象时，一定不要使 用这些关键字。因此，这些关键字是一定要保留的。本附录列出主要 MySQL（自MySQL 5以后的版本）中所有的保留字。
+
+| `ACTION`           | `CASE`                | `DATABASE`           |
+| ------------------ | --------------------- | -------------------- |
+| `ADD`              | `CHANGE`              | `DATABASES`          |
+| `ALL`              | `CHAR`                | `DATE`               |
+| `ALTER`            | `CHARACTER`           | `DAY_HOUR`           |
+| `ANALYZE`          | `CHECK`               | `DAY_MICROSECOND`    |
+| `AND`              | `COLLATE`             | `DAY_MINUTE`         |
+| `AS`               | `COLUMN`              | `DAY_SECOND`         |
+| `ASC`              | `CONDITION`           | `DEC`                |
+| `ASENSITIVE`       | `CONNECTION`          | `DECIMAL`            |
+| `BEFORE`           | `CONSTRAINT`          | `DECLARE`            |
+| `BETWEEN`          | `CONTINUE`            | `DEFAULT`            |
+| `BIGINT`           | `CONVERT`             | `DELAYED`            |
+| `BINARY`           | `CREATE`              | `DELETE`             |
+| `BIT`              | `CROSS`               | `DESC`               |
+| `BLOB`             | `CURRENT_DATE`        | `DESCRIBE`           |
+| `BOTH`             | `CURRENT_TIME`        | `DETERMINISTIC`      |
+| `BY`               | `CURRENT_TIMESTAMP`   | `DISTINCT`           |
+| `CALL`             | `CURRENT_USER`        | `DISTINCTROW`        |
+| `CASCADE`          | `CURSOR`              | `DIV`                |
+| `DOUBLE`           | `HOUR_MINUTE`         | `LINES`              |
+| `DROP`             | `HOUR_SECOND`         | `LOAD`               |
+| `DUAL`             | `IF`                  | `LOCALTIME`          |
+| `EACH`             | `IGNORE`              | `LOCALTIMESTAMP`     |
+| `ELSE`             | `IN`                  | `LOCK`               |
+| `ELSEIF`           | `INDEX`               | `LONG`               |
+| `ENCLOSED`         | `INFILE`              | `LONGBLOB`           |
+| `ENUM`             | `INNER`               | `LONGTEXT`           |
+| `ESCAPED`          | `INOUT`               | `LOOP`               |
+| `EXISTS`           | `INSENSITIVE`         | `LOW_PRIORITY`       |
+| `EXIT`             | `INSERT`              | `MATCH`              |
+| `EXPLAIN`          | `INT`                 | `MEDIUMBLOB`         |
+| `FALSE`            | `INTEGER`             | `MEDIUMINT`          |
+| `FETCH`            | `INTERVAL`            | `MEDIUMTEXT`         |
+| `FLOAT`            | `INTO`                | `MIDDLEINT`          |
+| `FOR`              | `IS`                  | `MINUTE_MICROSECOND` |
+| `FORCE`            | `ITERATE`             | `MINUTE_SECOND`      |
+| `FOREIGN`          | `JOIN`                | `MOD`                |
+| `FROM`             | `KEY`                 | `MODIFIES`           |
+| `FULLTEXT`         | `KEYS`                | `NATURAL`            |
+| `GOTO`             | `KILL`                | `NO`                 |
+| `GRANT`            | `LEADING`             | `NO_WRITE_TO_BINLOG` |
+| `GROUP`            | `LEAVE`               | `NOT`                |
+| `HAVING`           | `LEFT`                | `NULL`               |
+| `HIGH_PRIORITY`    | `LIKE`                | `NUMERIC`            |
+| `HOUR_MICROSECOND` | `LIMIT`               | `ON`                 |
+| `OPTIMIZE`         | `RLIKE`               | `THEN`               |
+| `OPTION`           | `SCHEMA`              | `TIME`               |
+| `OPTIONALLY`       | `SCHEMAS`             | `TIMESTAMP`          |
+| `OR`               | `SECOND_MICROSECOND`  | `TINYBLOB`           |
+| `ORDER`            | `SELECT`              | `TINYINT`            |
+| `OUT`              | `SENSITIVE`           | `TINYTEXT`           |
+| `OUTER`            | `SEPARATOR`           | `TO`                 |
+| `OUTFILE`          | `SET`                 | `TRAILING`           |
+| `PRECISION`        | `SHOW`                | `TRIGGER`            |
+| `PRIMARY`          | `SMALLINT`            | `TRUE`               |
+| `PROCEDURE`        | `SONAME`              | `UNDO`               |
+| `PURGE`            | `SPATIAL`             | `UNION`              |
+| `READ`             | `SPECIFIC`            | `UNIQUE`             |
+| `READS`            | `SQL`                 | `UNLOCK`             |
+| `REAL`             | `SQL_BIG_RESULT`      | `UNSIGNED`           |
+| `REFERENCES`       | `SQL_CALC_FOUND_ROWS` | `UPDATE`             |
+| `REGEXP`           | `SQL_SMALL_RESULT`    | `USAGE`              |
+| `RELEASE`          | `SQLEXCEPTION`        | `USE`                |
+| `RENAME`           | `SQLSTATE`            | `USING`              |
+| `REPEAT`           | `SQLWARNING`          | `UTC_DATE`           |
+| `REPLACE`          | `SSL`                 | `UTC_TIME`           |
+| `REQUIRE`          | `STARTING`            | `UTC_TIMESTAMP`      |
+| `RESTRICT`         | `STRAIGHT_JOIN`       | `VALUES`             |
+| `RETURN`           | `TABLE`               | `VARBINARY`          |
+| `REVOKE`           | `TERMINATED`          | `VARCHAR`            |
+| `RIGHT`            | `TEXT`                | `VARCHARACTER`       |
+| `VARYING`          | `WHILE`               | `XOR`                |
+| `WHEN`             | `WITH`                | `YEAR_MONTH`         |
+| `WHERE`            | `WRITE`               | `ZEROFILL`           |
 
