@@ -1,3 +1,24 @@
+---
+title: MySQL基础
+date: 2021-09-30 20:15:53
+categories:
+    - CS-Notes
+    - database
+    - mysql
+tags:
+    - MySQL
+    - 数据库
+---
+
+
+MySQL学习笔记分享，包含MySQL较全面的CRUD基本操作。该笔记是对《MySQL必知必会》的梳理，包含全部知识点、示例语句、本地运行结果以及自己做的一些总结。
+
+书中代码基于MySQL 5.x版本，本机使用的是MySQL 8.0.25版本，个别不是皮欸的命令已标注解决方案。笔记内容如果存在问题我会努力及时更正。
+
+<!-- more -->
+
+
+
 # MySQL 
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
@@ -304,7 +325,7 @@ MySQL、Oracle、Microsoft SQL Server 等数据库都是基于客户机-服务�
 
 <br><br><br><br><br><br><br><br><br><br><br><br>
 
-#3. 使用MySQL
+# 3. 使用MySQL
 
 本节内容为如何连接和登录到MySQL，如何执行MySQL语句，以及如何获得数据库和表的信息。
 
@@ -2215,7 +2236,7 @@ ORDER BY prod_name;	-- -- 匹配以数字或点开始的所有串
 >
 > **输出（一致）**
 >
-> ~~~baash
+> ~~~bash
 > +---------+-------------+
 > | prod_id | prod_name   |
 > +---------+-------------+
@@ -4077,19 +4098,19 @@ ON tableA.column1 = tableB.column2;
 
 我们把tableA看作左表，把tableB看成右表，那么 **INNER JOIN** 是选出两张表都存在的记录：
 
-<img src="image-20210923082407583.png" style="zoom:67%;" />
+<img src="MySQL基础_INNERJOIN.png" alt="MySQL基础_INNERJOIN" style="zoom:67%;" />
 
 **LEFT OUTER JOIN** 是选出左表存在的记录：
 
-![image-20210922214104970](image-20210922214104970.png)
+![MySQL基础_LEFTOUTERJOIN](MySQL基础_LEFTOUTERJOIN.png)
 
 **RIGHT OUTER JOIN** 是选出右表存在的记录：
 
-![](image-20210922214200926.png)
+<img src="MySQL基础_RIGHTOUTERJOIN.png"  />
 
 **FULL OUTER JOIN** 则是选出左右表都存在的记录：
 
-<img src="image-20210923082313943.png" style="zoom:67%;" />
+<img src="MySQL基础_FULLOUTERJOIN.png" alt="MySQL基础_FULLOUTERJOIN" style="zoom:67%;" />
 
 ### 注意：
 
@@ -6306,6 +6327,10 @@ SHOW CREATE PROCEDURE ordertotal;
 
 * **游标（cursor）**：是一个存储在MySQL服务器上的数据库查询，它不是一条`SELECT` 语句，而是被该语句检索出来的结果集。在存储了游标之后，应用程序可以根据需要滚动或浏览其中的数据。
 
+* 个人理解：游标的作用类似于<font color="ff0000">**迭代器（Iterator）**</font>，它可以<font color="ffa600">**结合流程控制**</font>，提供了一种按需求<font color="ffa600">**遍历数据**</font>或<font color="ffa600">**访问某一特定行**</font>的途径。
+
+* <font color="ffa600">**注意**：游标需要在**存储过程内**定义、开启和使用。</font>
+
 * 什么要使用游标：有时，需要在检索出来的行中前进或后退一行或多行。
 
 * 创建游标
@@ -8060,14 +8085,18 @@ MySQL数据库是基于磁盘的文件，普通的备份系统和例程就能备
 
 下面列出这个问题的可能解决方案。
 
-- 使用命令行实用程序`mysqldump` 转储所有数据库内容到某个外部文件。在进行常规备份前这个实用程序应该正常运行，以便能正确地备份转储文件。
+- 使用<font color="ffa600">cmd命令行实用程序</font>`mysqldump` 转储所有数据库内容到某个外部文件。在进行常规备份前这个实用程序应该正常运行，以便能正确地备份转储文件。
 
   - ~~~bash
+    ########## 备份表 ##########
     mysqldump -u username -p dbname table1 table2... > BackupName.sql	# 格式
+    # 样例如下
     mysqldump -u root -p crashcourse orders > E:backupOrders.sql	-- 备份crashcourse.orders表
     mysqldump -u root -p crashcourse > E:backupCrashcourse.sql		-- 备份crashcourse数据库所有内容
     
+    ########## 备份数据库 ##########
     mysqldump -u username -p --databases dbname1 dbname2 > E:Backup.sql	-- 同时备份多个数据库
+    # 样例如下
     mysqldump -u root -p --databases db1 db2 > E:backupdb1db2.sql	-- 同时备份多个数据库
     ~~~
 
@@ -8087,7 +8116,7 @@ mysql -uroot -p123456 crashcourse <E:backupOrders.sql
 
 > 注意：
 >
-> 在cmd下使用命令`mysql -uUser -pPassword [dbname] < backup.sql`导入数据时会报错，内容如下
+> <font color="ffa600">**在cmd命令行界面下**</font>使用命令`mysql -uUser -pPassword [dbname] < backup.sql`导入数据时会报错，内容如下
 >
 > ~~~bash
 > ERROR: ASCII '\0' appeared in the statement, but this is not allowed unless option --binary-mode is enabled and mysql is run in non-interactive mode. Set --binary-mode to 1 if ASCII '\0' is expected. Query: '?'.
@@ -8212,7 +8241,7 @@ MySQL维护管理员依赖的一系列日志文件。主要的日志文件有以
 
 
 
-> **浏览文档** 	位于http://dev.mysql.com/doc/ 的MySQL文档有许多提示和技巧（甚至有用户提供的评论和反馈）。一定要查看这些非常有价值的资料。
+> **浏览文档** 	位于http://dev.mysql.com/doc/ 的官方MySQL文档有许多提示和技巧（包括用户提供的评论和反馈）。
 
 
 
