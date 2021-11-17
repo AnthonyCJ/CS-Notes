@@ -7499,8 +7499,14 @@ SET autocommit=1;	-- 设置为默认提交
       SELECT * FROM customers
       ORDER BY lastname, firstname COLLATE latin1_general_cs;	-- 指定校对为区分大小写
       ~~~
-
-
+  
+  * 使用 `ALTER` 命令指定字符集（或校对）
+  
+    ~~~sql
+    ALTER DATABASE database_name CHARACTER SET charset_name COLLATE collation_name;
+    ~~~
+  
+    
 
 <br><br><br><br><br><br>
 

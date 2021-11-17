@@ -1,7 +1,5 @@
 # LeetCode_01.08._零矩阵
 
----
-
 难度（medium）
 
 ## 方法1：使用标记数组
@@ -20,35 +18,35 @@
 ### 代码实现
 
 ~~~java
-    public void setZeroes(int[][] matrix) {
-        int m = matrix.length;		// 矩阵行数
-        int n = matrix[0].length;	// 矩阵列数
-        boolean[] row = new boolean[m];
-        boolean[] col = new boolean[n];
-        // 记录位置
-        for (int i = 0; i < m; i++) 
-            for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == 0) {
-                    row[i] = col[j] = true;
-                }
+public void setZeroes(int[][] matrix) {
+    int m = matrix.length;		// 矩阵行数
+    int n = matrix[0].length;	// 矩阵列数
+    boolean[] row = new boolean[m];
+    boolean[] col = new boolean[n];
+    // 记录位置
+    for (int i = 0; i < m; i++) 
+        for (int j = 0; j < n; j++) {
+            if (matrix[i][j] == 0) {
+                row[i] = col[j] = true;
             }
-        // 遍历，根据标识数组置0
-        for (int i = 0; i < m; i++)
-            for (int j = 0; j < n; j++) {
-                if (row[i] || col[j]) {
-                    matrix[i][j] = 0;
-                }
+        }
+    // 遍历，根据标识数组置0
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++) {
+            if (row[i] || col[j]) {
+                matrix[i][j] = 0;
             }
-    }
+        }
+}
 ~~~
 
----
+<br>
 
 ## 方法2：使用两个变量优化空间（方法一改进）
 
 ### 思路
 
-方法一使用了两个数组以坐标的形式存储每个矩阵元素的**为0状态**，本方法尝试将矩阵原空间的第一行第一列作为标志数组存储。要使用第一行和第一列，就需要在使用前记录第一行第一列的状态（即第一行第一列是否含有0元素），所以先分别扫描矩阵第一行和第一列是否有0元素，并使用==两个 boolean 变量==记录。记录后，即可使用第一行和第一列作为标志数组记录其它位置的信息。最后根据**两个标志数组**和**两个 boolean 变量**进行矩阵元素置0处理。
+方法一使用了两个数组以坐标的形式存储每个矩阵元素的**为0状态**，本方法尝试将矩阵原空间的第一行第一列作为标志数组存储。要使用第一行和第一列，就需要在使用前记录第一行第一列的状态（即第一行第一列是否含有0元素），所以先分别扫描矩阵第一行和第一列是否有0元素，并使用<font color="ff9f44">两个 boolean 变量</font>记录。记录后，即可使用第一行和第一列作为标志数组记录其它位置的信息。最后根据**两个标志数组**和**两个 boolean 变量**进行矩阵元素置0处理。
 
 ### 步骤
 
@@ -56,10 +54,10 @@
 
 整理如下：
 
-1. 分别扫描矩阵第0行、第0列，结果存入 boolean **flagRow0**, **flagCol0**。==（Push）==
-2. 使用矩阵第0行、第0列记录其它位置的含0状态。==（Push）==
-3. 通过第0行、第0列信息处理其它位置的置0操作。==（Pop）==
-4. 通过boolean flagRow, flagCol处理第0行、第0列的置0操作。==（Pop）==
+1. 分别扫描矩阵第0行、第0列，结果存入 boolean **flagRow0**, **flagCol0**。<font color="ff9f44">（Push）</font>
+2. 使用矩阵第0行、第0列记录其它位置的含0状态。<font color="ff9f44">（Push）</font>
+3. 通过第0行、第0列信息处理其它位置的置0操作。<font color="ff9f44">（Pop）</font>
+4. 通过boolean flagRow, flagCol处理第0行、第0列的置0操作。<font color="ff9f44">（Pop）</font>
 
 ### 复杂度分析
 
@@ -69,54 +67,54 @@
 ### 代码实现
 
 ~~~ java
-    public void setZeroes(int[][] matrix) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        boolean flagRow0 = false, flagCol0 = false;
-        // 扫描记录第一列
-        for (int i = 0; i < m; i++) {
-            if (matrix[i][0] == 0) {
-                flagCol0 = true;
-                break;
-            }
+public void setZeroes(int[][] matrix) {
+    int m = matrix.length;
+    int n = matrix[0].length;
+    boolean flagRow0 = false, flagCol0 = false;
+    // 扫描记录第一列
+    for (int i = 0; i < m; i++) {
+        if (matrix[i][0] == 0) {
+            flagCol0 = true;
+            break;
         }
-        // 扫描记录第一行
-        for (int j = 0; j < n; j++) {
-            if (matrix[0][j] == 0) {
-                flagRow0 = true;
-                break;
-            }
+    }
+    // 扫描记录第一行
+    for (int j = 0; j < n; j++) {
+        if (matrix[0][j] == 0) {
+            flagRow0 = true;
+            break;
         }
-        // 使用第一行第一列记录其它位置信息
-        for (int i = 1; i < m; i++)
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][j] == 0) {
-                    matrix[0][j] = 0;
-                    matrix[i][0] = 0;
-                }
-            }
-        // 使用第一行第一列处理其它位置信息
-        for (int i = 1; i < m; i++)
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
-                    matrix[i][j] = 0;
-                }
-            }
-        // 处理第一行和第一列
-        if(flagRow0) {
-            for (int j = 0; j < n; j++) {
+    }
+    // 使用第一行第一列记录其它位置信息
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++) {
+            if (matrix[i][j] == 0) {
                 matrix[0][j] = 0;
-            }
-        }
-        if(flagCol0) {
-            for (int i = 0; i < m; i++) {
                 matrix[i][0] = 0;
             }
-        }        
+        }
+    // 使用第一行第一列处理其它位置信息
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++) {
+            if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                matrix[i][j] = 0;
+            }
+        }
+    // 处理第一行和第一列
+    if(flagRow0) {
+        for (int j = 0; j < n; j++) {
+            matrix[0][j] = 0;
+        }
     }
+    if(flagCol0) {
+        for (int i = 0; i < m; i++) {
+            matrix[i][0] = 0;
+        }
+    }        
+}
 ~~~
 
----
+<br>
 
 ## 方法3：使用1个变量（对方法2继续空间优化）
 
@@ -132,81 +130,80 @@
 ### 代码实现
 
 ~~~java
-    public void setZeroes(int[][] matrix) {
-        int m = matrix.length;
-        int n = matrix[0].length;
-        boolean flagCol0 = false;   // 列
-        // 扫描记录第一列
-        for (int i = 0; i < m; i++) {
-            if (matrix[i][0] == 0) {
-                flagCol0 = true;   // flag of row[0]
-                break;
-            }
+public void setZeroes(int[][] matrix) {
+    int m = matrix.length;
+    int n = matrix[0].length;
+    boolean flagCol0 = false;   // 列
+    // 扫描记录第一列
+    for (int i = 0; i < m; i++) {
+        if (matrix[i][0] == 0) {
+            flagCol0 = true;   // flag of row[0]
+            break;
         }
-        // 扫描记录第一行
-        for (int j = 0; j < n; j++) {
-            if (matrix[0][j] == 0) {
-                matrix[0][0] = 0;
-                break;
-            }
+    }
+    // 扫描记录第一行
+    for (int j = 0; j < n; j++) {
+        if (matrix[0][j] == 0) {
+            matrix[0][0] = 0;
+            break;
         }
-        // 使用第一行第一列记录其它位置信息
-        for (int i = 1; i < m; i++)
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][j] == 0) {
-                    matrix[0][j] = 0;
-                    matrix[i][0] = 0;
-                }
-            }
-        // 使用第一行第一列处理其它位置信息
-        for (int i = 1; i < m; i++)
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
-                    matrix[i][j] = 0;
-                }
-            }
-        // 处理第一行和第一列
-        if(matrix[0][0] == 0) {
-            for (int j = 1; j < n; j++) {
+    }
+    // 使用第一行第一列记录其它位置信息
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++) {
+            if (matrix[i][j] == 0) {
                 matrix[0][j] = 0;
-            }
-        }
-        if(flagCol0) {
-            for (int i = 0; i < m; i++) {
                 matrix[i][0] = 0;
             }
-        }        
+        }
+    // 使用第一行第一列处理其它位置信息
+    for (int i = 1; i < m; i++)
+        for (int j = 1; j < n; j++) {
+            if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                matrix[i][j] = 0;
+            }
+        }
+    // 处理第一行和第一列
+    if(matrix[0][0] == 0) {
+        for (int j = 1; j < n; j++) {
+            matrix[0][j] = 0;
+        }
     }
+    if(flagCol0) {
+        for (int i = 0; i < m; i++) {
+            matrix[i][0] = 0;
+        }
+    }        
+}
 ~~~
 
 > PS：如果改变一下处理顺序，能精简一下处理部分的代码。为了防止每一列的第一个元素被提前更新，我们需要从最后一行开始，倒序地处理矩阵元素。具体实现如下。
 
 ~~~java
-   public void setZeroes(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        boolean flagCol0 = false;
-       // 记录位置信息
-        for (int i = 0; i < m; i++) {
-            if (matrix[i][0] == 0) {
-                flagCol0 = true;
-            }
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][j] == 0) {
-                    matrix[i][0] = matrix[0][j] = 0;
-                }
-            }
+public void setZeroes(int[][] matrix) {
+    int m = matrix.length, n = matrix[0].length;
+    boolean flagCol0 = false;
+    // 记录位置信息
+    for (int i = 0; i < m; i++) {
+        if (matrix[i][0] == 0) {
+            flagCol0 = true;
         }
-       // 根据位置信息 行倒序处理矩阵
-        for (int i = m - 1; i >= 0; i--) {
-            for (int j = 1; j < n; j++) {
-                if (matrix[i][0] == 0 || matrix[0][j] == 0) {
-                    matrix[i][j] = 0;
-                }
-            }
-            if (flagCol0) {
-                matrix[i][0] = 0;
+        for (int j = 1; j < n; j++) {
+            if (matrix[i][j] == 0) {
+                matrix[i][0] = matrix[0][j] = 0;
             }
         }
     }
-
+    // 根据位置信息 行倒序处理矩阵
+    for (int i = m - 1; i >= 0; i--) {
+        for (int j = 1; j < n; j++) {
+            if (matrix[i][0] == 0 || matrix[0][j] == 0) {
+                matrix[i][j] = 0;
+            }
+        }
+        if (flagCol0) {
+            matrix[i][0] = 0;
+        }
+    }
+}
 ~~~

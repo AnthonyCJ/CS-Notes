@@ -12,14 +12,14 @@
 
 题目要求以对角线遍历的顺序进行访问，所以考虑使用两个顶点（四个坐标）定位当前对角线的位置。算法思路如下：
 
-1. 右上坐标 (tR, tC) 初始位置为 (0, 0)，==**先沿**==着矩阵==**第一行向右**==移动 (tC++)，当到达第一行最右边的元素后，==**再沿**==着矩阵==**最后一列向下**==移动 (tR++)。
-2. 左下坐标 (dR, dC) 初始位置为 (0, 0)，==**先沿**==着矩阵==**第一列向下**==移动 (dR++)，当到达第一列最下边的元素后，==**再沿**==着矩阵==**最后一行向右**==移动 (tR++)。
+1. 右上坐标 (tR, tC) 初始位置为 (0, 0)，<font color="ff9f44">先沿</font>着矩阵<font color="ff9f44">第一行向右</font>移动 (tC++)，当到达第一行最右边的元素后，<font color="ff9f44">再沿</font>着矩阵<font color="ff9f44">最后一列向下</font>移动 (tR++)。
+2. 左下坐标 (dR, dC) 初始位置为 (0, 0)，<font color="ff9f44">先沿</font>着矩阵<font color="ff9f44">第一列向下</font>移动 (dR++)，当到达第一列最下边的元素后，<font color="ff9f44">再沿</font>着矩阵<font color="ff9f44">最后一行向右</font>移动 (tR++)。
 3. 右上顶点与左下顶点同步移动，每次移动后的右上顶点与左下顶点连线即为矩阵中的一条斜线，按顺序访问斜线上的元素即可。
 4. 如果上次斜线是从左下向右上访问的，这一次一定从右上向左下访问，反之亦然。因此，可以把打印方向用一个 boolean 标识表示，每次更新对角线时取反。
 
 ### 注意
 
-更新对角线时，==横纵坐标的更新顺序==具有依赖关系，不可随意颠倒。（否则会导致**数组下标越界**）
+更新对角线时，<font color="ff9f44">横纵坐标的更新顺序</font>具有依赖关系，不可随意颠倒。（否则会导致**数组下标越界**）
 
 * 右上顶点是否向下移动取决于**当前**是否已到达最右侧。（tR 依赖 tC 的当前状态）
   * 所以先更新行 tR 再更新列 tC。
@@ -98,48 +98,48 @@
 ### 代码实现
 
 ~~~java
-   /**
+/**
      * 方法2：找规律
      * Version 1.0 2021-07-27 from LeetCode comments
      * @param matrix 待遍历数组
      * @return 对角线遍历结果
      */
-     public int[] findDiagonalOrder_2(int[][] matrix) {
-        if (matrix == null || matrix.length == 0) {
-            return new int[]{};
-        }
-        int r = 0, c = 0;
-        int row = matrix.length, col = matrix[0].length;
-        int[] res = new int[row * col];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = matrix[r][c];
-            // r + c == 当前层数，偶数向右上遍历，奇数向左下遍历
-            if ((r + c) % 2 == 0) {
-                if (c == col - 1) {
-                    // 下移一格准备向下遍历
-                    r++;
-                } else if (r == 0) {
-                    // 向右移动一格准备向下遍历
-                    c++;
-                } else {
-                    // 向右上方移动
-                    r--;
-                    c++;
-                }
+public int[] findDiagonalOrder_2(int[][] matrix) {
+    if (matrix == null || matrix.length == 0) {
+        return new int[]{};
+    }
+    int r = 0, c = 0;
+    int row = matrix.length, col = matrix[0].length;
+    int[] res = new int[row * col];
+    for (int i = 0; i < res.length; i++) {
+        res[i] = matrix[r][c];
+        // r + c == 当前层数，偶数向右上遍历，奇数向左下遍历
+        if ((r + c) % 2 == 0) {
+            if (c == col - 1) {
+                // 下移一格准备向下遍历
+                r++;
+            } else if (r == 0) {
+                // 向右移动一格准备向下遍历
+                c++;
             } else {
-                if (r == row - 1) {
-                    // 移一格准备向上遍历
-                    c++;
-                } else if (c == 0) {
-                    // 向下移动一格准备向上遍历
-                    r++;
-                } else {
-                    // 向下移动
-                    r++;
-                    c--;
-                }
+                // 向右上方移动
+                r--;
+                c++;
+            }
+        } else {
+            if (r == row - 1) {
+                // 移一格准备向上遍历
+                c++;
+            } else if (c == 0) {
+                // 向下移动一格准备向上遍历
+                r++;
+            } else {
+                // 向下移动
+                r++;
+                c--;
             }
         }
-        return res;
     }
+    return res;
+}
 ~~~
