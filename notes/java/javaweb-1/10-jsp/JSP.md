@@ -160,9 +160,9 @@ JSP 作用：简化开发，避免了在Servlet中直接输出HTML标签。
 
 ## 3，JSP 原理
 
-我们之前说 JSP 就是一个页面，那么在 JSP 中写 `html` 标签，我们能理解，但是为什么还可以写 `Java` 代码呢？
+ <font color="ff9f44">**JSP 本质上就是一个 Servlet。**</font>
 
-因为 ==JSP 本质上就是一个 Servlet。==接下来我们聊聊访问jsp时的流程
+访问jsp时的流程如下：
 
 <img src="assets/image-20210818111039350.png" alt="image-20210818111039350" style="zoom:70%;" />
 
@@ -170,6 +170,8 @@ JSP 作用：简化开发，避免了在Servlet中直接输出HTML标签。
 2. `tomcat` 会将 `hello.jsp` 转换为名为 `hello_jsp.java` 的一个 `Servlet`
 3. `tomcat` 再将转换的 `servlet` 编译成字节码文件 `hello_jsp.class`
 4. `tomcat` 会执行该字节码文件，向外提供服务
+
+
 
 我们可以到项目所在磁盘目录下找 `target\tomcat\work\Tomcat\localhost\jsp-demo\org\apache\jsp` 目录，而这个目录下就能看到转换后的 `servlet`
 
@@ -201,9 +203,15 @@ JSP脚本用于在 JSP页面内定义 Java代码。在之前的入门案例中�
 
 JSP 脚本有如下三个分类：
 
-* <%...%>：内容会直接放到_jspService()方法之中
-* <%=…%>：内容会放到out.print()中，作为out.print()的参数
-* <%!…%>：内容会放到_jspService()方法之外，被类直接包含
+* `<%...%>`：内容会直接放到`_jspService()`方法之中
+  * Java语句，Servlet中`service()`方法的内容
+
+* `<%=…%>`：内容会放到`out.print()`中，作为out.print()的参数
+  * 标签等页面内容
+
+* `<%!…%>`：内容会放到`_jspService()`方法之外，被类直接包含
+  * 成员方法、成员变量
+
 
 **代码演示：**
 

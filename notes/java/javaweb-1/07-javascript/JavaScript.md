@@ -9,25 +9,25 @@
 > * 掌握常用的事件
 > * 能独立完成表单校验案例
 
-## 1，JavaScript简介
+## 1. JavaScript简介
 
-==JavaScript 是一门跨平台、面向对象的脚本语言==，而Java语言也是跨平台的、面向对象的语言，只不过Java是编译语言，是需要编译成字节码文件才能运行的；JavaScript是脚本语言，不需要编译，由浏览器直接解析并执行。
+<font color="ff9f44">JavaScript 是一门跨平台、面向对象的脚本语言</font>，而Java语言也是跨平台的、面向对象的语言，只不过Java是编译语言，是需要编译成字节码文件才能运行的；JavaScript是脚本语言，<font color="ff9f44">不需要编译，由浏览器直接解析并执行</font>。
 
 JavaScript 是用来控制网页行为的，它能使网页可交互；那么它可以做什么呢？如改变页面内容、修改指定元素的属性值、对表单进行校验等，下面是这些功能的效果展示：
 
-* **改变页面内容**
+* <font color="ff9f44">**改变页面内容**</font>
 
   <img src="assets/image-20210814173417834.png" alt="image-20210814173417834" style="zoom:80%;" />
 
   当我点击上面左图的 `点击我` 按钮，按钮上面的文本就改为上面右图内容，这就是js 改变页面内容的功能。
 
-* **修改指定元素的属性值**
+* <font color="ff9f44">**修改指定元素的属性值**</font>
 
   <img src="assets/image-20210814173719505.png" alt="image-20210814173719505" style="zoom:70%;" />
 
   当我们点击上图的 `开灯` 按钮，效果就是上面右图效果；当我点击 `关灯` 按钮，效果就是上面左图效果。其他这个功能中有两张灯泡的图片（使用img标签进行展示），通过修改 img 标签的 src 属性值改变展示的图片来实现。
 
-* **对表单进行校验**
+* <font color="ff9f44">**对表单进行校验**</font>
 
   <img src="assets/image-20210814174242688.png" alt="image-20210814174242688" style="zoom:70%;" />
 
@@ -37,7 +37,7 @@ JavaScript 和 Java 是完全不同的语言，不论是概念还是设计，只
 
 JavaScript（简称：JS） 在 1995 年由 Brendan Eich 发明，并于 1997 年成为一部 ECMA 标准。ECMA 规定了一套标准 就叫 `ECMAScript` ，所有的客户端校验语言必须遵守这个标准，当然 JavaScript 也遵守了这个标准。ECMAScript 6 (简称ES6) 是最新的 JavaScript 版本（发布于 2015 年)，我们的课程就是基于最新的 `ES6` 进行讲解。
 
-## 2，JavaScript引入方式
+## 2. JavaScript引入方式
 
 JavaScript 引入方式就是 HTML 和 JavaScript 的结合方式。JavaScript引入方式有两种：
 
@@ -147,7 +147,7 @@ alert("hello js");
 >
 >   在页面中引入外部js文件时，不能写成 `<script src="../js/demo.js" />`。
 
-## 3，JavaScript基础语法
+## 3. JavaScript基础语法
 
 ### 3.1  书写语法
 
@@ -397,7 +397,6 @@ JavaScript 提供了如下的运算符。大部分和 Java语言 都是一样的
   2. 再去比较其值
 
 * ===：js 中的全等于
-
   1. 判断类型是否一样，如果不一样，直接返回false
   2. 再去比较其值
 
@@ -641,7 +640,7 @@ let result = add(10,20);
 >
 >   它是将数据 1 传递给了变量a，将数据 2 传递给了变量 b，而数据 3 没有变量接收。
 
-## 4，JavaScript常用对象
+## 4. JavaScript常用对象
 
 JavaScript 提供了很多对象供使用者来使用。这些对象总共分类三类
 
@@ -807,7 +806,7 @@ String对象的创建方式有两种
 
 **属性：**
 
-String对象提供了很多属性，下面给大家列举了一个属性 `length` ，该属性是用于动态的获取字符串的长度
+String对象提供了很多属性，以属性 `length` 为例，该属性是用于动态的获取字符串的长度
 
 <img src="assets/image-20210815192504884.png" alt="image-20210815192504884" style="zoom:60%;" />
 
@@ -885,7 +884,7 @@ alert(person.age); //23
 person.eat();  //干饭~
 ```
 
-## 5，BOM
+## 5. BOM
 
 BOM：Browser Object Model 浏览器对象模型。也就是 JavaScript 将浏览器的各个组成部分封装为对象。
 
@@ -1129,7 +1128,7 @@ setTimeout(function (){
 },3000);
 ```
 
-## 6，DOM
+## 6. DOM
 
 ### 6.1  概述
 
@@ -1344,7 +1343,7 @@ HTML 中的 `Element` 元素对象有很多，不可能全部记住，以后是�
    }
    ```
 
-## 7，事件监听
+## 7. 事件监听
 
 要想知道什么是事件监听，首先先聊聊什么是事件？
 
@@ -1491,7 +1490,7 @@ JavaScript 提供了两种事件绑定方式：
   }
   ```
 
-## 8，表单验证案例
+## 8. 表单验证案例
 
 ### 8.1  需求
 
@@ -1739,7 +1738,7 @@ regForm.onsubmit = function () {
 }
 ```
 
-## 9，RegExp对象
+## 9. RegExp对象
 
 RegExp 是正则对象。正则对象是判断指定字符串是否符合规则。
 

@@ -1,4 +1,4 @@
-##Request&Response
+# Request&Response
 
 **今日目标**
 
@@ -7,7 +7,7 @@
 >* 能够完成用户登录注册案例的实现
 >* 能够完成SqlSessionFactory工具类的抽取
 
-## 1，Request和Response的概述
+## 1. Request和Response的概述
 
 ==Request是请求对象，Response是响应对象。==这两个对象在我们使用Servlet的时候有看到：![1628735216156](assets/1628735216156.png)
 
@@ -67,7 +67,7 @@ public class ServletDemo3 extends HttpServlet {
 * request获取请求参数
 * request请求转发
 
-## 2，Request对象
+## 2. Request对象
 
 ### 2.1 Request继承体系
 
@@ -140,31 +140,31 @@ HTTP请求数据总共分为三部分内容，分别是==请求行、请求头�
 
 * 获取请求方式: `GET`
 
-```
+```java
 String getMethod()
 ```
 
 * 获取虚拟目录(项目访问路径): `/request-demo`
 
-```
+```java
 String getContextPath()
 ```
 
 * 获取URL(统一资源定位符): `http://localhost:8080/request-demo/req1`
 
-```
+```java
 StringBuffer getRequestURL()
 ```
 
 * 获取URI(统一资源标识符): `/request-demo/req1`
 
-```
+```java
 String getRequestURI()
 ```
 
-* 获取请求参数(GET方式): `username=zhangsan&password=123`
+* <font color="ff9f44">获取请求参数(GET方式)</font>: `username=zhangsan&password=123`
 
-```
+```java
 String getQueryString()
 ```
 
@@ -247,19 +247,18 @@ public class RequestDemo1 extends HttpServlet {
 
 ![1628768665185](assets/1628768665185.png)
 
-对于请求体中的数据，Request对象提供了如下两种方式来获取其中的数据，分别是:
+Request对象提供了如下<font color="ff9f44">两种方法获取请求体的数据：</font>
 
-* 获取字节输入流，如果前端发送的是字节数据，比如传递的是文件数据，则使用该方法
+* <font color="ff9f44">对于文件数据，获取字节输入流。</font>如果前端发送的是字节数据。比如传递的是文件数据，则使用该方法
 
+```java
+ServletInputStream getInputStream() // 该方法可以获取字节
 ```
-ServletInputStream getInputStream()
-该方法可以获取字节
-```
 
-* 获取字符输入流，如果前端发送的是纯文本数据，则使用该方法
+* <font color="ff9f44">对于纯文本数据，获取字符输入流。</font>如果前端发送的是纯文本数据，则使用该方法
 
-```
-BufferedReader getReader()
+```java
+BufferedReader getReader();
 ```
 
 接下来，大家需要思考，要想获取到请求体的内容该如何实现?
@@ -328,11 +327,11 @@ public class RequestDemo1 extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-         //获取post 请求体：请求参数
-        //1. 获取字符输入流
-        BufferedReader br = req.getReader();
-        //2. 读取数据
-        String line = br.readLine();
+        // 获取post请求体
+        // 1.获取字符输入流
+        BufferedReader bufferedReader = req.getReader();
+        // 2.读取数据
+        String line = bufferedReader.readLine();
         System.out.println(line);
     }
 }
@@ -404,13 +403,13 @@ HTTP请求数据中包含了`请求行`、`请求头`和`请求体`，针对这�
 
 对于请求参数的获取,常用的有以下两种:
 
-* GET方式:
+* <font color="ff9f44">GET方式:</font>
 
 ```
 String getQueryString()
 ```
 
-* POST方式:
+* <font color="ff9f44">POST方式:</font>
 
 ```
 BufferedReader getReader();
@@ -1244,7 +1243,7 @@ public class RequestDemo6 extends HttpServlet {
 
   虽然后台从`/req5`转发到`/req6`，但是这个==只有一次请求==
 
-## 3，Response对象
+## 3. Response对象
 
 前面讲解完Request对象，接下来我们回到刚开始的那张图:
 
@@ -1272,7 +1271,7 @@ HTTP响应数据总共分为三部分内容，分别是==响应行、响应头�
 
 ![1628858926498](assets/1628858926498.png)
 
-对于响应头，比较常用的就是设置响应状态码:
+对于响应行，比较常用的就是设置响应状态码:
 
 ```
 void setStatus(int sc);
@@ -1477,8 +1476,8 @@ public class ResponseDemo1 extends HttpServlet {
 
 * `<a href='路劲'>`
 * `<form action='路径'>`
-* req.getRequestDispatcher("路径")
-* resp.sendRedirect("路径")
+* `req.getRequestDispatcher("路径")`
+* `resp.sendRedirect("路径")`
 
 答案:
 
@@ -1521,9 +1520,9 @@ public class ResponseDemo1 extends HttpServlet {
 
 要想将字符数据写回到浏览器，我们需要两个步骤:
 
-* 通过Response对象获取字符输出流： PrintWriter writer = resp.getWriter();
+* 通过Response对象获取字符输出流： `PrintWriter writer = resp.getWriter();`
 
-* 通过字符输出流写数据: writer.write("aaa");
+* 通过字符输出流写数据: `writer.write("aaa");`
 
 接下来，我们实现通过些案例把响应字符数据给实际应用下:
 
@@ -1567,9 +1566,11 @@ writer.write("<h1>aaa</h1>");
 3. 返回一个中文的字符串`你好`，需要注意设置响应数据的编码为`utf-8`
 
 ```
-//设置响应的数据格式及数据的编码
+// 设置响应的数据格式及数据的编码
 response.setContentType("text/html;charset=utf-8");
-writer.write("你好");
+// 获取字符输出流
+PrintWriter writer = response.getWriter();
+writer.write("中文...");
 ```
 
 ![1628864390263](assets/1628864390263.png)
@@ -1662,7 +1663,7 @@ public class ResponseDemo4 extends HttpServlet {
 }
 ```
 
-## 4，用户注册登录案例
+## 4. 用户注册登录案例
 
 接下来我们通过两个比较常见的案例，一个是==注册==，一个是==登录==来对今天学习的内容进行一个实战演练，首先来实现用户登录。
 
